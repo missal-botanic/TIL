@@ -1,3 +1,6 @@
+!pip3 install torch
+!pip3 install torchvisio
+
 
 conda create --name pandas_course #콘다 가상 설치
 conda activate pandas_course #콘다 가상 활성화

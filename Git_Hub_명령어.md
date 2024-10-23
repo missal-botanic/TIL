@@ -6,9 +6,11 @@ Git_Hub_명령어
 $ git config --global user.name "John Doe"
 $ git config --global user.email johndoe@example.com
 ```
-### 사용자 정보 설정 확인
+### 정보 확인
 ```
-$ git config --list
+git config --list # 사용자 확인
+git remote -v # 리모트 확인
+git status [git log #커밋 후 로그확인]
 ```
 ```
 > 제어판
@@ -20,12 +22,11 @@ $ git config --list
 ### 최초 환경 구성
 ```
 git init
-git remote add origin https://github.com/missal-botanic/remote_class.git
+git remote add origin https://github.com/missal-botanic/remote_class.git # origin02 or origin03 가능
 git branch -M main
 git add . [git add 001.py]
-# git status [git log #커밋 후 로그확인]
 git commit -m "$(date +'%Y-%m-%d %H:%M:%S')"
-git push origin main
+git push origin main 
 ```
 
 ### 삭제 및 되돌리기
@@ -40,11 +41,19 @@ git reset --soft HEAD^ # Repository 삭제
 ```
 
 ### branch
+#### 최초 커밋 이후에 시작
 ```
 git branch [이름]    #생성
 git branch           #확인
 git checkout [이름]  #변경
 git branch -D [이름] #삭제
+
+```
+
+
+```
+git checkout main #모을 장소로 이동
+git merge [brach] #branch 끌어와서 합치기
 ```
 
 ### fetch 
