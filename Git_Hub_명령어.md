@@ -8,9 +8,14 @@ $ git config --global user.email johndoe@example.com
 ```
 ### 사용자 정보 설정 확인
 ```
-$ git config -list
+$ git config --list
 ```
-
+```
+> 제어판
+>>자격 증명 관리자 
+>>> windows 자격 증명 
+>>>> 일반 자격 증명
+```
 
 ### 최초 환경 구성
 ```
