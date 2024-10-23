@@ -20,7 +20,7 @@ git pull origin main --allow-unrelated-histories
 ```
 
 ```
-git merge --abort 머지 중단
+git merge --abort #머지 중단
 ```
 
 git pull #git pull origin master
