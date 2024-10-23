@@ -26,3 +26,8 @@ git merge --abort #머지 중단
 git pull #git pull origin master
 git fetch
 git clone
+git 
+
+git stash
+
+:wq
