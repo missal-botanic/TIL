@@ -12,9 +12,9 @@ $ git config --list
 ```
 ```
 > 제어판
->>자격 증명 관리자 
->>> windows 자격 증명 
->>>> 일반 자격 증명
+>	> 자격 증명 관리자 
+>	> 	>  windows 자격 증명 
+>	> 	> 	> 일반 자격 증명
 ```
 
 ### 최초 환경 구성
@@ -23,10 +23,23 @@ git init
 git remote add origin https://github.com/missal-botanic/remote_class.git
 git branch -M main
 git add . [git add 001.py]
-# git status
+# git status [git log #커밋 후 로그확인]
 git commit -m "$(date +'%Y-%m-%d %H:%M:%S')"
 git push origin main
 ```
+
+### 삭제 및 되돌리기
+```
+git rm --cached [파일명] #후보저장소에서 삭제
+
+git reset --hard HAED^ # Woking Directory + Staging Area + Repository 삭제
+git reset --mixed HEAD^ # Staging Area + Repository 삭제
+git reset --soft HEAD^ # Repository 삭제
+
+^한 단계, ^^ 두 단계 ^^^ 세 단계
+```
+
+
 
 ### fetch 
 ```
