@@ -51,7 +51,7 @@ git merge main
 
 ### merge 중단
 ```
-git merge --abort #머지 중단
+git merge --abort # 머지 중단
 ```
 
 ### pull
