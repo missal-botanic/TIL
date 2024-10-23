@@ -26,7 +26,7 @@ git add . [git add 001.py]
 # git status [git log #커밋 후 로그확인]
 git commit -m "$(date +'%Y-%m-%d %H:%M:%S')"
 git push origin main
-```
+``` 
 
 ### 삭제 및 되돌리기
 ```
