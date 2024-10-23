@@ -39,7 +39,13 @@ git reset --soft HEAD^ # Repository 삭제
 ^한 단계, ^^ 두 단계 ^^^ 세 단계
 ```
 
-
+### branch
+```
+git branch [이름]    #생성
+git branch           #확인
+git checkout [이름]  #변경
+git branch -D [이름] #삭제
+```
 
 ### fetch 
 ```
