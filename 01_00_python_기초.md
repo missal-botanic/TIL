@@ -10,6 +10,35 @@ df['sentiment_label'] == 'positive'
 df[df['sentiment_label'] == 'positive'] # 필터링 된 내용을 정의
 df[df['sentiment_label'] == 'negative']['content_c'] #그 정의에서 content_c 부분을 선택
 
+데이터프레임 구조
++----+------------------+------------+
+|    |   sentiment_label | content_c  |
++----+------------------+------------+
+| 0  |        positive   |  'Text A'  |
+| 1  |        negative   |  'Text B'  |
+| 2  |        positive   |  'Text C'  |
+| 3  |        negative   |  'Text D'  |
+| 4  |        neutral    |  'Text E'  |
+| ...|        ...       |    ...     |
++----+------------------+------------+
+행 선택 : df['sentiment_label'] == 'negative'
++----+------------------+------------+
+|    |   sentiment_label | content_c  |
++----+------------------+------------+
+| 1  |        negative   |  'Text B'  |
+| 3  |        negative   |  'Text D'  |
++----+------------------+------------+
+열 선택 : 필터링된 데이터에서 ['content_c']를 선택
++------------+
+| content_c  |
++------------+
+|  'Text B'  |
+|  'Text D'  |
++------------+
+
+
+
+
 ### 기본적인 열 처리 함수
 titanic['family_size'] = titanic['sibsp'] + titanic['parch'] + 1
 

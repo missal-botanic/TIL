@@ -10,9 +10,42 @@ import numpy as np
 ```
 import pandas as pd
 
+
+df = pd.read_csv('data.csv') # CSV 파일 불러오기
+
+df = pd.read_excel('data.xlsx', sheet_name='Sheet1') # 엑셀 파일 불러오기
+
+print(df.head())
+
+df.shape # 데이터 프레임의 크기 (행, 열) 확인
+
+
+df.columns # 데이터 프레임의 컬럼명 확인
+
+
+df.dtypes # 데이터 프레임의 데이터 타입 확인
+
+
+df.describe() # 데이터 프레임의 요약 통계량 확인
+
+
+df.info() # 데이터 프레임의 정보 확인 (null 값, 데이터 타입 등)
+
 df = pd.DataFrame(data)
 df["이름"][0]
+
 ```
+
+### kaggle
+```
+pip install kaggle
+kaggle datasets download -d <dataset-identifier> #데이터셋 다운로드
+
+kaggle competitions download -c titanic # 타이타닉 데이터셋 다운로드
+
+unzip titanic.zip # 다운로드된 파일 압축 해제
+```
+
 
 ### PyTorch 및 필요한 라이브러리 임포트
 ```
