@@ -1,5 +1,18 @@
 라이브러리
 =============
+### as 까지 가능
+```
+from sklean.linear_model import LinearRegression as LR
+```
+대문자는 클래스
+as 가능 
+
+### 각 최소 단위
+```
+import pandas as pd
+from pandas import DataFrame
+```
+
 
 ### numpy
 ```
