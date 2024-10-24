@@ -14,6 +14,15 @@ df = pd.DataFrame(data)
 df["이름"][0]
 ```
 
+### PyTorch 및 필요한 라이브러리 임포트
+```
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
 데이터 분석을 위해 사용되는 라이브러리로, 주로 데이터프레임(dataframe) 형식으로 데이터를 처리하고 분석하는 데 사용됩니다. CSV 파일, 엑셀 파일 등 다양한 형식의 데이터를 쉽게 다룰 수 있습니다.
 nltk (Natural Language Toolkit):
 
