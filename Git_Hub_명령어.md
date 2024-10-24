@@ -19,6 +19,11 @@ git status [git log #커밋 후 로그확인]
 >	> 	> 	> 일반 자격 증명
 ```
 
+### 변경사항을 임시로 저장한 후, git pull을 수행하고 다시 변경사항을 적용합니다.
+git stash
+git pull origin main
+git stash pop
+
 ### 최초 환경 구성
 ```
 git init
@@ -27,6 +32,7 @@ git branch -M main
 git add . [git add 001.py]
 git commit -m "$(date +'%Y-%m-%d %H:%M:%S')"
 git push origin main 
+git push origin chad --force
 ```
 
 ### 삭제 및 되돌리기
@@ -38,6 +44,12 @@ git reset --mixed HEAD^ # Staging Area + Repository 삭제
 git reset --soft HEAD^ # Repository 삭제
 
 ^한 단계, ^^ 두 단계 ^^^ 세 단계
+```
+
+### 모두 지우고 원격 저장소의 내용을 그대로 가져옵니다.
+```
+git checkout -- assignment1.ipynb
+git pull origin main
 ```
 
 ### branch

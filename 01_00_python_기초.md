@@ -24,42 +24,16 @@ X = df.drop('data') #는 열이기 떄문에 axis=1 자동 인식
 X = df.drop('sdata', axis=1) #가독성을 위해 명시적으로 표시
 
 
+### lambda x:, (map(), apply(), filter(), sorted())
+
+```
+def add_one(x):
+    return x + 1 
+
+add_one_lambda = lambda x: x + 1
+
+print(add_one(5))  # 출력: 6 # 일반 함수
+print(add_one_lambda(5))  # 출력: 6 # 람다 함수
+```
 
 
-print(not a)    # False
-
-x = 10
-x = x + 10
-x
-와
-x += 10
-같다
-
-비트연산자?
-
-
-
-이터레이터
-
-
-
-data = {
-    '이름': ['철수', '영희', '민수'],
-    '나이': [25, 30, 35],
-    '직업': ['학생', '회사원', '프리랜서']
-}
-길이가 같아야 한다
-
-df = pd.DataFrame(data)
-df["이름"][0]
-
-inpace= 영구 변환
-그냥 set 한번 변환
-
-복합 /= 은 안되도 a=a/n은 될 수 있다.
-
-~반대조건
-
-기본값은 오름 차순 ascending = False 내림차순으로
-
-!pip install matplotlib

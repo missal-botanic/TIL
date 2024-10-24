@@ -1,3 +1,22 @@
+라이브러리
+=============
+
+### numpy
+```
+import numpy as np
+```
+
+### pandas
+```
+import pandas as pd
+
+df = pd.DataFrame(data)
+df["이름"][0]
+```
+
+데이터 분석을 위해 사용되는 라이브러리로, 주로 데이터프레임(dataframe) 형식으로 데이터를 처리하고 분석하는 데 사용됩니다. CSV 파일, 엑셀 파일 등 다양한 형식의 데이터를 쉽게 다룰 수 있습니다.
+nltk (Natural Language Toolkit):
+
 ### train_test_split
 ```
 from sklearn.model_selection import train_test_split
@@ -41,3 +60,46 @@ from sklearn.metrics import classification_report
 ```
 기능: 분류 모델의 성능을 상세히 평가하는 함수입니다.
 용도: 정확도, 정밀도(precision), 재현율(recall), F1 점수 등 다양한 성능 지표를 포함하여 출력합니다. 이는 클래스 불균형이 있는 데이터셋에서 모델의 성능을 더 잘 이해하는 데 도움이 됩니다.
+
+
+### nltk (Natural Language Toolkit)
+```
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
+
+nltk.download('punkt')
+```
+자연어 처리를 위한 라이브러리로, 다양한 텍스트 처리 작업을 지원합니다. 텍스트 토큰화, 품사 태깅, 구문 분석, 감정 분석 등 다양한 NLP 작업을 수행할 수 있도록 도와줍니다.
+
+
+print(sent_tokenize(text))  # 문장 단위로 분리
+print(word_tokenize(text))   # 단어 단위로 분리
+
+
+### TextBlob:
+```
+from textblob import TextBlob
+
+def get_sentiment(text):
+    return TextBlob(text).sentiment.polarity
+
+df['sentiment'] = df['content_c'].apply(get_sentiment)
+```
+
+간단한 API로 자연어 처리 기능을 제공하는 라이브러리입니다. 감정 분석, 명사구 추출, 번역 등 다양한 기능을 쉽게 사용할 수 있습니다. TextBlob 객체를 사용하면 텍스트에 대한 감정 분석이나 언어 처리 작업을 간편하게 수행할 수 있습니다.
+
+### re (정규 표현식):
+```
+import re
+```
+문자열에서 패턴을 검색하고 조작하기 위한 라이브러리로, 정규 표현식을 사용하여 텍스트에서 특정 패턴을 찾거나 대체, 분할하는 등의 작업을 수행할 수 있습니다. 예를 들어, 구두점 제거, 특정 문자 또는 숫자를 찾는 작업에 유용합니다.
+
+### 단어 구름을 생성하는 클래스
+```
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
+```
+
+WordCloud: 단어 구름을 생성하는 클래스
+STOPWORDS: 제외할 일반 단어 리스트
+matplotlib.pyplot: 그래프를 그리기 위한 라이브러리
