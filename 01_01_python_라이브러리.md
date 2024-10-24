@@ -98,8 +98,24 @@ import re
 ```
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
-```
 
+nltk.download('stopwords')
+
+stopwords = set(STOPWORDS) # 기본 불용어 목록을 STOPWORDS로부터 가져와 set 형태로 저장합니다.
+stopwords.update(['netflix', 'movie', 'show', 'time', 'app', 'series', 'phone']) #추가적으로 분석에서 제외할 단어를 update 메서드를 통해 추가합니다.
+```
 WordCloud: 단어 구름을 생성하는 클래스
 STOPWORDS: 제외할 일반 단어 리스트
 matplotlib.pyplot: 그래프를 그리기 위한 라이브러리
+
+## 불용어
+```
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
+
+stop_words = set(stopwords.words('english')) # NLTK에서 제공하는 영어 불용어 목록을 가져와 set 형태로 저장합니다. 
+
+```
+stopwords: NLTK(Natural Language Toolkit) 라이브러리에서 제공하는 불용어 목록을 사용합니다.
+word_tokenize: 문장을 단어 단위로 분리(tokenize)하는 함수입니다.
+

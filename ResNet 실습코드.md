@@ -1,0 +1,81 @@
+```
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class Block(nn.Module):
+    def __init__(self, in_ch, out_ch, stride=1):
+        super(Block, self).__init__()
+        # 첫 번째 컨볼루션 레이어
+        self.conv1 = nn.Conv2d(in_ch, out_ch, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(out_ch)  # 배치 정규화
+        # 두 번째 컨볼루션 레이어
+        self.conv2 = nn.Conv2d(out_ch, out_ch, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(out_ch)  # 배치 정규화
+
+        # 입력과 출력의 차원이 다를 경우 shortcut 경로 정의
+        self.skip_connection = nn.Sequential()
+        if stride != 1 or in_ch != out_ch:
+            self.skip_connection = nn.Sequential(
+                nn.Conv2d(in_ch, out_ch, kernel_size=1, stride=stride, bias=False),  # 차원 맞추기 위한 1x1 컨볼루션
+                nn.BatchNorm2d(out_ch)  # 배치 정규화
+            )
+        
+    def forward(self, x):
+        # 첫 번째 컨볼루션 + ReLU 활성화 함수
+        output = F.relu(self.bn1(self.conv1(x)))
+        # 두 번째 컨볼루션 후 배치 정규화
+        output = self.bn2(self.conv2(output))
+        # shortcut 경로 출력과 현재 블록의 출력 더하기
+        output += self.skip_connection(x)
+        # 최종 ReLU 활성화 함수 적용
+        output = F.relu(output)
+        return output
+
+# ResNet 모델 정의
+class CustomResNet(nn.Module):
+    def __init__(self, block, layers, num_classes=10):
+        super(CustomResNet, self).__init__()
+        self.initial_channels = 64  # 첫 번째 레이어의 입력 채널 수 정의
+        # 첫 번째 컨볼루션 레이어
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)  # 배치 정규화
+        # ResNet의 각 레이어 생성
+        self.layer1 = self._create_layer(block, 64, layers[0], stride=1)
+        self.layer2 = self._create_layer(block, 128, layers[1], stride=2)
+        self.layer3 = self._create_layer(block, 256, layers[2], stride=2)
+        self.layer4 = self._create_layer(block, 512, layers[3], stride=2)
+        # 평균 풀링 레이어
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        # 최종 완전 연결 레이어
+        self.fc = nn.Linear(512, num_classes)
+        
+    # ResNet의 각 레이어를 생성하는 함수
+    def _create_layer(self, block, out_ch, num_layers, stride):
+        layer_list = []
+        # 첫 번째 블록은 stride를 받을 수 있음
+        layer_list.append(block(self.initial_channels, out_ch, stride))
+        self.initial_channels = out_ch  # 다음 블록을 위해 채널 수 업데이트
+        # 나머지 블록들은 기본 stride를 사용
+        for _ in range(1, num_layers):
+            layer_list.append(block(out_ch, out_ch))
+        return nn.Sequential(*layer_list)
+    
+    def forward(self, x):
+        # 첫 번째 컨볼루션 + ReLU 활성화 함수
+        x = F.relu(self.bn1(self.conv1(x)))
+        # 각 레이어를 순차적으로 통과
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        # 평균 풀링 및 텐서의 차원 축소
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        # 최종 완전 연결 레이어를 통해 클래스별 예측값 출력
+        x = self.fc(x)
+        return x
+
+# Custom ResNet-18 모델 생성 (각 레이어의 블록 수는 2개씩)
+model = CustomResNet(Block, [2, 2, 2, 2], num_classes=10)
+```
