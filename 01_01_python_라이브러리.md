@@ -1,3 +1,11 @@
+### train_test_split
+```
+from sklearn.model_selection import train_test_split
+```
+기능: 데이터를 학습용(train)과 테스트용(test)으로 나누는 함수입니다.
+용도: 모델의 성능을 평가하기 위해 데이터를 두 개의 세트로 분리합니다. 일반적으로 test_size를 지정하여 테스트 세트의 비율을 설정합니다. 이를 통해 과적합(overfitting)을 방지할 수 있습니다.
+
+
 ### StandardScaler
 ```
 from sklearn.preprocessing import StandardScaler
@@ -5,12 +13,6 @@ from sklearn.preprocessing import StandardScaler
 기능: 데이터의 표준화를 수행하는 클래스입니다.
 용도: 특성(feature)의 평균을 0, 표준편차를 1로 조정하여 데이터의 스케일을 통일합니다. 이는 특히 거리 기반 알고리즘이나 선형 모델에서 성능을 향상시킬 수 있습니다.
 
-### train_test_split
-```
-from sklearn.model_selection import train_test_split
-```
-기능: 데이터를 학습용(train)과 테스트용(test)으로 나누는 함수입니다.
-용도: 모델의 성능을 평가하기 위해 데이터를 두 개의 세트로 분리합니다. 일반적으로 test_size를 지정하여 테스트 세트의 비율을 설정합니다. 이를 통해 과적합(overfitting)을 방지할 수 있습니다.
 
 ### LogisticRegression
 ```
