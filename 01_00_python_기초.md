@@ -1,4 +1,47 @@
 
+### df[df[]]
+df[df[]] 형태는 pandas에서 데이터프레임을 필터링하는 방법
+filtered_df = df[df['column_name'] > 10]
+
+### range 활용
+
+'id': range(1, 201)
+
+### print 기법
+r2 = r2_score(y_te, pre_v) #작동
+print(r2 = r2_score(y_te, pre_v)) #미작동
+print(r2_score(y_te, pre_v)) #작동
+
+### random number
+```
+import random
+rn = random.random()
+```
+괄호 안에는 아무것도 들어가지 못함
+
+```
+rn = random.random()
+df['01'] = [rn for _ in range(100)] # 한번 생성된 값만 저장
+
+df['01'] = [random.random() for _ in range(100)] # 매번 생성
+
+df['01'] = [random.random() for i in range(100)] # 같은 결과
+```
+```
+#03번 기준 전체
+df_ori = df[df['03'].isnull()]
+df_nan = df[df['03'].notnull()]
+
+#03 번만
+df_ori = df[df['03'].isnull()][['03']]
+df_nan = df[df['03'].notnull()][['03']]
+```
+
+### 선언 뒤 조건 설명 + else
+mean_v = df['01'].mean()
+df['01'] = df['01'].appy(lambda x: mean_v if x <lower_bound or x > upper_bound else x)
+
+
 ### 하나의 열 선택
 single_column = df['content']  # Series 형태
 
@@ -21,6 +64,7 @@ df[df['sentiment_label'] == 'negative']['content_c'] #그 정의에서 content_c
 | 4  |        neutral    |  'Text E'  |
 | ...|        ...       |    ...     |
 +----+------------------+------------+
+
 행 선택 : df['sentiment_label'] == 'negative'
 +----+------------------+------------+
 |    |   sentiment_label | content_c  |
@@ -28,6 +72,7 @@ df[df['sentiment_label'] == 'negative']['content_c'] #그 정의에서 content_c
 | 1  |        negative   |  'Text B'  |
 | 3  |        negative   |  'Text D'  |
 +----+------------------+------------+
+
 열 선택 : 필터링된 데이터에서 ['content_c']를 선택
 +------------+
 | content_c  |
