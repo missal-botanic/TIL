@@ -1,16 +1,16 @@
 
-### 표 그리기
-plt.scatter(input,output)
-plt.plot(input,LR.coef_*input+LR.intercept,'r--')
 
 ### 1차원 배열 생성
 arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
+### 2차원 배열 합치기
+data = np.column_stack((A_x, A_y))
+
 ### 배열을 10x1 형태로 재구성
 ```
-reshaped_arr = arr.reshape(-1, 1) #Pandas
-.values.reshape(-1, 1) #NumPy
-print(reshaped_arr)
+reshaped_arr = arr.reshape(-1, 1) #Pandas 2차원화
+.values.reshape(-1, 1) #NumPy 2차원화
+
 
 ```
 

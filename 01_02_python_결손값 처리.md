@@ -1,7 +1,7 @@
 df.head()
 df.sample(n=5)
-
 df.describe()
+df.unique()
 
 
 
