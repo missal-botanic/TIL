@@ -75,3 +75,12 @@ df['processed_review'] = df['content'].apply(preprocess_text)
 df['alive'] = df['alive'].map({'no': 1, 'yes': 0})
 df['embarked'] = df['embarked'].map({'C': 0, 'Q': 1, 'S': 2,})
 
+### 기본값은 오름 차순 ascending = False 내림차순으로
+
+### 길이가 같아야 한다
+
+data = {
+    '이름': ['철수', '영희', '민수'],
+    '나이': [25, 30, 35],
+    '직업': ['학생', '회사원', '프리랜서']
+}

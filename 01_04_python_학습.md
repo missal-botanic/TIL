@@ -1,6 +1,10 @@
 
 #### 공통
 
+### model.fit(X,y)
+X는 여러 특성(2D 배열): 여러 샘플과 여러 특성을 고려해야 하기 때문에 2D 배열 형식이 필요합니다.
+y는 단일 결과(1D 배열): 각 샘플에 대해 하나의 목표 값만 필요하므로 1D 배열 형식이 필요합니다.
+
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 scaler = StandardScaler()

@@ -1,4 +1,11 @@
-
+결측값 처리 : 누락된 값
+이상값 처리 : 비상식적으로 큰 값이나 작은 값
+중복 데이터 제거 : 동일한 테이터 
+데이터 타입 변환 : 데이터 타입 변환
+데이터 정규화 : 범위를 일정하게
+인코딩 : 범주형을 수치형으로
+샘플링 : 데이터 셋의 크기를 줄이거나 늘리기
+특징 선택 및 추출 : 중요한 특징 선택 및 새로운 특징 추출
 
 ### 1차원 배열 생성
 arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
@@ -134,6 +141,11 @@ df['content'].apply(preprocess_text)
 scaler = StandardScaler() # or MinMaxScaler
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
+
+# 데이터 스케일링
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
 ### 데이터 표준화(학습 및 변환)
 scaler = StandardScaler()
