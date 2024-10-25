@@ -31,6 +31,7 @@ from sklean.linear_model import LinearRegression as LR
 ```
 % 대문자는 클래스
 
+------------
 
 ### pandas
 ```
@@ -46,12 +47,15 @@ df = pd.DataFrame(data)
 df = pd.read_csv('data.csv') # CSV 파일 불러오기
 df = pd.read_excel('data.xlsx', sheet_name='Sheet1') # 엑셀 파일 불러오기
 
-df.head() # 데이터 프레임의 첫 5행 출력
-df.shape # 데이터 프레임의 크기 확인
-df.columns # 데이터 프레임의 컬럼명 확인
-df.dtypes # 데이터 프레임의 데이터 타입 확인
-df.describe() # 데이터 프레임의 요약 통계량 확인
-df.info() # 데이터 프레임의 정보 확인 (null 값, 데이터 타입 등)
+df.head()  # 첫 5행을 확인
+df.shape  # (행의 수, 열의 수)
+df.columns  # 컬럼명 리스트
+df.dtypes  # 각 컬럼의 데이터 타입
+df.describe()  # 수치형 데이터의 요약 통계량
+df.info()  # 전체적인 데이터 프레임 정보
+df.sample(n=5)  # 랜덤으로 5행 선택
+df['컬럼명'].unique()  # 특정 컬럼의 고유 값 리스트
+
 
 df['Name'] # 특정 컬럼 선택
 df[df['Age'] > 30] # 조건에 맞는 행 선택
@@ -97,6 +101,7 @@ mse = mean_squared_error(y_test, y_pred) # 모델 평가
 print(f'Mean Squared Error: {mse}') # 모델 평가
 ```
 
+------------
 
 ### StandardScaler
 ```
