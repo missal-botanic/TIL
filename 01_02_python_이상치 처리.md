@@ -103,7 +103,7 @@ df['column_name'] = df['column_name'].astype(str)
 ### 특정 열의 데이터 타입을 부동 소수점으로 변환
 df['column_name'] = df['column_name'].astype(float)
 
-## 인코딩
+## 인코딩(원핫인코딩?)
 ```
 df_encoded = pd.get_dummies(df, columns=['category_column'])
 ```

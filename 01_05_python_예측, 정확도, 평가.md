@@ -39,3 +39,28 @@ print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
 ```
 f-string을 사용하면 중괄호 {} 안에 변수를 직접 넣을 수 있어, 문자열을 동적으로 생성할 수 있습니다
 f는 f-string을 사용하여 문자열 내에서 변수 값을 쉽게 포함하고, 표현식을 평가하여 결과를 문자열로 만드는 역할을 합니다.
+
+### 모델평가
+```
+from sklearn.metrics import silhouette_score
+
+# 실루엣 점수 계산
+silhouette_avg = silhouette_score(X_scaled, y_hc)
+print(f'Silhouette Score: {silhouette_avg}')
+```
+
+###  DBSCAN 다양한 eps와 min_samples 값 시도
+```
+eps_values = [3, 5, 7, 10]
+min_samples_values = [3, 5, 7, 10]
+
+for eps in eps_values:
+    for min_samples in min_samples_values:
+        dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+        df['Cluster'] = dbscan.fit_predict(X)
+        
+        plt.figure(figsize=(10, 7))
+        sns.scatterplot(x='Annual Income (k$)', y='Spending Score (1-100)', hue='Cluster', data=df, palette='viridis')
+        plt.title(f'DBSCAN Clustering (eps={eps}, min_samples={min_samples})')
+        plt.show()
+```

@@ -1,64 +1,14 @@
 라이브러리
 =============
-### as 까지 가능
+
+### 라이브러리 설치
 ```
-from sklean.linear_model import LinearRegression as LR
-```
-대문자는 클래스
-as 가능 
-
-### 각 최소 단위
-```
-import pandas as pd
-from pandas import DataFrame
-```
-
-
-### numpy
-```
-import numpy as np
-```
-
-### pandas
-```
-import pandas as pd
-
-
-df = pd.read_csv('data.csv') # CSV 파일 불러오기
-
-df = pd.read_excel('data.xlsx', sheet_name='Sheet1') # 엑셀 파일 불러오기
-
-print(df.head())
-
-df.shape # 데이터 프레임의 크기 (행, 열) 확인
-
-
-df.columns # 데이터 프레임의 컬럼명 확인
-
-
-df.dtypes # 데이터 프레임의 데이터 타입 확인
-
-
-df.describe() # 데이터 프레임의 요약 통계량 확인
-
-
-df.info() # 데이터 프레임의 정보 확인 (null 값, 데이터 타입 등)
-
-df = pd.DataFrame(data)
-df["이름"][0]
-
-```
-
-### kaggle
-```
+pip install numpy
+pip install pandas
+pip install scikit-learn
+pip install matplotlib
 pip install kaggle
-kaggle datasets download -d <dataset-identifier> #데이터셋 다운로드
-
-kaggle competitions download -c titanic # 타이타닉 데이터셋 다운로드
-
-unzip titanic.zip # 다운로드된 파일 압축 해제
 ```
-
 
 ### PyTorch 및 필요한 라이브러리 임포트
 ```
@@ -69,15 +19,83 @@ import numpy as np
 import matplotlib.pyplot as plt
 ```
 
-데이터 분석을 위해 사용되는 라이브러리로, 주로 데이터프레임(dataframe) 형식으로 데이터를 처리하고 분석하는 데 사용됩니다. CSV 파일, 엑셀 파일 등 다양한 형식의 데이터를 쉽게 다룰 수 있습니다.
-nltk (Natural Language Toolkit):
+### 각 최소 단위
+```
+import pandas as pd
+from pandas import DataFrame
+```
 
-### train_test_split
+### as  별칭 까지 가능
+```
+from sklean.linear_model import LinearRegression as LR
+```
+% 대문자는 클래스
+
+
+### pandas
+```
+import pandas as pd
+
+# 데이터 프레임 생성
+data = {'Name': ['Alice', 'Bob', 'Charlie'],
+        'Age': [25, 30, 35],
+        'City': ['New York', 'Los Angeles', 'Chicago']}
+
+
+df = pd.DataFrame(data)
+df = pd.read_csv('data.csv') # CSV 파일 불러오기
+df = pd.read_excel('data.xlsx', sheet_name='Sheet1') # 엑셀 파일 불러오기
+
+df.head() # 데이터 프레임의 첫 5행 출력
+df.shape # 데이터 프레임의 크기 확인
+df.columns # 데이터 프레임의 컬럼명 확인
+df.dtypes # 데이터 프레임의 데이터 타입 확인
+df.describe() # 데이터 프레임의 요약 통계량 확인
+df.info() # 데이터 프레임의 정보 확인 (null 값, 데이터 타입 등)
+
+df['Name'] # 특정 컬럼 선택
+df[df['Age'] > 30] # 조건에 맞는 행 선택
+df["이름"][0] # "이름" 열의 첫 번째 데이터 값을 의미
+
+```
+
+### numpy
+```
+import numpy as np
+
+arr1 = np.array([1, 2, 3, 4, 5]) # 1차원 배열 생성
+arr2 = np.array([[1, 2, 3], [4, 5, 6]]) # 2차원 배열 생성
+
+arr.shape # 배열의 크기를 반환합니다. (행의 수, 열의 수 등)
+arr.dtype # 배열의 데이터 타입을 확인합니다.
+arr.ndim # 배열의 차원 수를 확인합니다.
+arr.size # 배열의 총 요소 수를 반환합니다.
+
+arr_sum = arr1 + arr1 # 배열 간의 연산
+
+```
+
+### Scikit-learn
 ```
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 데이터 생성
+X = [[1], [2], [3], [4], [5]]
+y = [1, 4, 9, 16, 25]
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) # 데이터 분할 (훈련 데이터와 테스트 데이터)
+
+model = LinearRegression() # 회귀 모델 생성
+model.fit(X_train, y_train)  # 회귀 모델 학습
+
+y_pred = model.predict(X_test) # 예측
+
+mse = mean_squared_error(y_test, y_pred) # 모델 평가
+print(f'Mean Squared Error: {mse}') # 모델 평가
 ```
-기능: 데이터를 학습용(train)과 테스트용(test)으로 나누는 함수입니다.
-용도: 모델의 성능을 평가하기 위해 데이터를 두 개의 세트로 분리합니다. 일반적으로 test_size를 지정하여 테스트 세트의 비율을 설정합니다. 이를 통해 과적합(overfitting)을 방지할 수 있습니다.
 
 
 ### StandardScaler
@@ -174,3 +192,10 @@ stop_words = set(stopwords.words('english')) # NLTK에서 제공하는 영어 �
 stopwords: NLTK(Natural Language Toolkit) 라이브러리에서 제공하는 불용어 목록을 사용합니다.
 word_tokenize: 문장을 단어 단위로 분리(tokenize)하는 함수입니다.
 
+### kaggle
+```
+kaggle datasets download -d <dataset-identifier> #데이터셋 다운로드
+kaggle competitions download -c titanic # 타이타닉 데이터셋 다운로드
+
+unzip titanic.zip # 다운로드된 파일 압축 해제
+```

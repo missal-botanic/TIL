@@ -32,13 +32,25 @@ df_dropped_rows = df.dropna() # 결측값이 포함된 행 제거
 df_dropped_cols = df.dropna(axis=1) # 결측값이 포함된 열 제거
 ```
 
-## 결측값 대체 fillna()
+### 결측값 대체 fillna()
 ```
 df_filled = df.fillna(0) # 결측값을 0으로 대체
 df_filled_mean = df.fillna(df.mean()) # 결측값을 각 열의 평균값으로 대체
 df_filled_median = df.fillna(df.median()) # 결측값을 각 열의 중간값으로 대체
 df_filled_mode = df.fillna(df.mode().iloc[0]) # 결측값을 각 열의 최빈값으로 대체
 ```
+
+### 성별과 탑승한 곳 인코딩
+titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})
+titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2})
+
+### 특성과 타겟 분리
+X = titanic.drop('survived', axis=1)
+y = titanic['survived']
+
+### 필요한 열 선택 및 결측값 처리
+data = data[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']]
+
 
 ### 결측값 예측 LinearRegression() 
 ```
@@ -123,6 +135,9 @@ scaler = StandardScaler() # or MinMaxScaler
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
 
+### 데이터 표준화(학습 및 변환)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
 
 ###
 
