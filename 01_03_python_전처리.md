@@ -1,5 +1,7 @@
 
-
+### 표 그리기
+plt.scatter(input,output)
+plt.plot(input,LR.coef_*input+LR.intercept,'r--')
 
 ### 1차원 배열 생성
 arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
@@ -115,5 +117,8 @@ def preprocess_text(text):
 
 df['content'].apply(preprocess_text)
 ```
+### 데이터 스케일링
 
-
+scaler = StandardScaler() # or MinMaxScaler
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
