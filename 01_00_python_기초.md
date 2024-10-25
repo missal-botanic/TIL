@@ -89,3 +89,32 @@ for token in word_tokens:
     if token not in stop_words: 
         result.append(token) 
 ```
+
+### 비트 연산자 (Bitwise Operators)
+
+AND (&): 두 비트가 모두 1일 때 1, 그렇지 않으면 0.
+
+OR (|): 두 비트 중 하나라도 1이면 1, 둘 다 0일 때만 0.
+
+XOR (^): 두 비트가 다를 때 1, 같을 때 0.
+
+NOT (~): 비트를 반전시킴. 0은 1로, 1은 0으로.
+
+왼쪽 쉬프트 (<<): 비트를 왼쪽으로 이동. (곱하기 2)
+
+오른쪽 쉬프트 (>>): 비트를 오른쪽으로 이동. (나누기 2)
+
+### 이터레이터 (Iterator)
+
+__iter__(): 이터레이터 객체 자체를 반환합니다. 이 메서드를 호출하면 이터레이터가 반환됩니다.
+__next__(): 이터레이터의 다음 값을 반환합니다. 더 이상 반환할 값이 없으면 StopIteration 예외를 발생시켜야 합니다.
+
+```python
+my_list = [1, 2, 3]
+my_iterator = iter(my_list)
+
+print(next(my_iterator))  # 1
+print(next(my_iterator))  # 2
+print(next(my_iterator))  # 3
+# print(next(my_iterator))  # StopIteration 예외 발생
+```

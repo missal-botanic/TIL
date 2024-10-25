@@ -1,7 +1,10 @@
+python_이상치 처리
+=============
+
 ## 이상치
 
 ### IQR 이상치 감지
-```
+```python
 import pandas as pd
 
 def detect_outliers(df, column_name):
@@ -18,8 +21,11 @@ def detect_outliers(df, column_name):
     
     return outliers
 ```
-### IQR 이상치 감지 및 처리 클래스
-```
+
+## 이상치 제거
+
+### IQR 이상치 감지 및 처리 클래스 예시
+```python
 import pandas as pd
 
 class OutlierDetector:
@@ -65,7 +71,8 @@ class OutlierDetector:
         return self.df
 
 ```
-사용 예시
+
+### 사용 예시
 ```
 df = pd.DataFrame({'column_name': [your_data_here]})
 ```
@@ -82,15 +89,20 @@ df_no_outliers = detector.remove_outliers()
 df_with_mean_replaced = detector.replace_outliers_with_mean()
 ```
 
-mean_v = df['01'].mean()
-df['01'] = df['01'].appy(lambda x: mean_v if x <lower_bound or x > upper_bound else x)
+
+------------
 
 ### 이상치 제거
+```python
 df_no_outliers = df[(df['column_name'] >= lower_bound) & (df['column_name'] <= upper_bound)]
+```
+------------
 
 ### 이상치를 평균값으로 대체
+```python
 mean_value = df['column_name'].mean()
 df['column_name'] = df['column_name'].apply(lambda x: mean_value if x < lower_bound or x > upper_bound else x)
+```
 
 ## 데이터 변환
 
@@ -103,7 +115,7 @@ df['column_name'] = df['column_name'].astype(str)
 ### 특정 열의 데이터 타입을 부동 소수점으로 변환
 df['column_name'] = df['column_name'].astype(float)
 
-## 인코딩(원핫인코딩?)
+## 인코딩(원핫인코딩, 라벨인코딩)
 ```
 df_encoded = pd.get_dummies(df, columns=['category_column'])
 ```
