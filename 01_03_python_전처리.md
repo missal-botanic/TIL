@@ -1,3 +1,6 @@
+python_전처리
+=============
+
 결측값 처리 : 누락된 값
 이상값 처리 : 비상식적으로 큰 값이나 작은 값
 중복 데이터 제거 : 동일한 테이터 
@@ -18,8 +21,10 @@ data = np.column_stack((A_x, A_y))
 reshaped_arr = arr.reshape(-1, 1) #Pandas 2차원화
 .values.reshape(-1, 1) #NumPy 2차원화
 
-
 ```
+<details>
+<summary>접기/펼치기</summary>
+
 
 [[ 1]
  [ 2]
@@ -31,6 +36,7 @@ reshaped_arr = arr.reshape(-1, 1) #Pandas 2차원화
  [ 8]
  [ 9]
  [10]]
+ </details>
 
 ## 결측값 제거 dropna()
 
