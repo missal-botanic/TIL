@@ -122,3 +122,8 @@ df['content'].apply(preprocess_text)
 scaler = StandardScaler() # or MinMaxScaler
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
+
+
+###
+
+data = np.column_stack((X,y))
