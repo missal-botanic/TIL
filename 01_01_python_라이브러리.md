@@ -55,20 +55,6 @@ df.describe()  # 수치형 데이터의 요약 통계량
 df.info()  # 전체적인 데이터 프레임 정보
 df.sample(n=5)  # 랜덤으로 5행 선택
 df['컬럼명'].unique()  # 특정 컬럼의 고유 값 리스트
-
-
-df['Name'] # 특정 컬럼 선택
-df[df['Age'] > 30] # 조건에 맞는 행 선택
-df["이름"][0] # "이름" 열의 첫 번째 데이터 값을 의미
-df[df[]] # 데이터프레임을 필터링하는 방법 filtered_df = df[df['column_name'] > 10]
-
-df_ori = df[df['03'].isnull()]
-df_nan = df[df['03'].notnull()] #03번 기준 전체
-
-df_ori = df[df['03'].isnull()][['03']]
-df_nan = df[df['03'].notnull()][['03']] #03 번만
-
-
 ```
 
 ### numpy
