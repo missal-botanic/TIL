@@ -1,5 +1,8 @@
-### SVM( StandardScaler 표준편차, MinMaxScale 선택 )
+분류모델(super)
+=============
 
+### SVM( StandardScaler 표준편차, MinMaxScale 선택 )
+### 결정트리(%주요도가 높은 행을 알려준다)
 ```py
 import numpy as np
 import pandas as pd
@@ -67,5 +70,5 @@ degree: Polynomial 커널의 차수를 설정합니다. 기본값은 3입니다.
 
 
 
-### 결정트리(%주요도가 높은 행을 알려준다)
+
 
