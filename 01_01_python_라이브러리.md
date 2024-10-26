@@ -2,12 +2,17 @@
 =============
 
 ### 라이브러리 설치
+```bash
+!pip install numpy
+!pip install pandas
+!pip install scikit-learn
+!pip install matplotlib
+!pip install kaggle
 ```
-pip install numpy
-pip install pandas
-pip install scikit-learn
-pip install matplotlib
-pip install kaggle
+```bash
+!pip uninstall pandas
+!pip uninstall numpy
+!pip install numpy==1.26.4
 ```
 
 ### PyTorch 및 필요한 라이브러리 임포트
