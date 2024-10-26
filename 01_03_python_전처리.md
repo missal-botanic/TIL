@@ -10,30 +10,6 @@ python_전처리
 샘플링 : 데이터 셋의 크기를 줄이거나 늘리기
 특징 선택 및 추출 : 중요한 특징 선택 및 새로운 특징 추출
 
-### 1차원 배열 생성
-```py
-arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-```
-
-### 2차원 배열 합치기
-```py
-data = np.column_stack((A_x, A_y))
-```
-
-### 배열을 10x1 형태로 재구성
-```py
-reshaped_arr = np.array(arr).reshape(-1, 1) # Pandas 2차원화
-reshaped_arr = df['컬럼명'].values.reshape(-1, 1) # NumPy 2차원화
-
-```
-
-### 특성과 타겟 분리
-```py
-X = titanic.drop('survived', axis=1)
-y = titanic['survived']
-```
-
-
 ### 성별과 탑승한 곳 인코딩
 ```py
 titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})

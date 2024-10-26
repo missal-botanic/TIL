@@ -10,14 +10,14 @@ python_기초
 ### ~반대조건
 
 ### 일반 함수
-```
+```py
 def add_one(x):
     return x + 1 
 
 ```
 
 ### x += 10
-```
+```py
 x = 10
 x = x + 10
 x
@@ -25,23 +25,23 @@ x
 ```
 
 ### 기본값
-```
-기본은 행 axis=0 
+```py
+# 기본은 행 axis=0 
 X = df.drop('data') #는 열이기 떄문에 axis=1 자동 인식
 X = df.drop('sdata', axis=1) #가독성을 위해 명시적으로 표시
 ```
 
 ### range 활용
-```
+```py
 'id': range(1, 201)
 ```
 
 ### random number & for i range()
-```
+```py
 import random
 rn = random.random() # 괄호 안에는 아무것도 들어가지 못함
 ```
-```
+```py
 rn = random.random()
 df['01'] = [rn for _ in range(100)] # 한번 생성된 값만 저장
 
@@ -51,7 +51,7 @@ df['01'] = [random.random() for _ in range(100)] # _ 사용하지 않음 의미
 ```
 
 ### print 기법
-```
+```py
 print(r2_score(y_te, pre_v)) #작동
 r2 = r2_score(y_te, pre_v) #작동
 
@@ -59,7 +59,7 @@ print(r2 = r2_score(y_te, pre_v)) #미작동
 ```
 
 ### print(not a) 
-```
+```py
 a = True
 print(not a)  # 출력: False
 

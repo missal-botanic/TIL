@@ -73,19 +73,19 @@ class OutlierDetector:
 ```
 
 ### 사용 예시
-```
+```py
 df = pd.DataFrame({'column_name': [your_data_here]})
 ```
-```
+```py
 detector = OutlierDetector(df, 'column_name')
 ```
-```
+```py
 outliers = detector.detect_outliers()
 ```
-```
+```py
 df_no_outliers = detector.remove_outliers()
 ```
-```
+```py
 df_with_mean_replaced = detector.replace_outliers_with_mean()
 ```
 
@@ -107,16 +107,22 @@ df['column_name'] = df['column_name'].apply(lambda x: mean_value if x < lower_bo
 ## 데이터 변환
 
 ### 특정 열의 데이터 타입을 정수형으로 변환
+```py
 df['column_name'] = df['column_name'].astype(int)
+```
 
 ### 특정 열의 데이터 타입을 문자열로 변환
+```py
 df['column_name'] = df['column_name'].astype(str)
+```
 
 ### 특정 열의 데이터 타입을 부동 소수점으로 변환
+```py
 df['column_name'] = df['column_name'].astype(float)
+```
 
 ## 인코딩(원핫인코딩, 라벨인코딩)
-```
+```py
 df_encoded = pd.get_dummies(df, columns=['category_column'])
 ```
    id category_column  value
@@ -132,7 +138,7 @@ df_encoded = pd.get_dummies(df, columns=['category_column'])
 3  4     20                  0                  0                  1
 
 ## 샘플링
-```
+```py
 ### 데이터셋에서 50% 샘플 추출
 df_sampled = df.sample(frac=0.5)
 
@@ -143,7 +149,7 @@ frac=0.5를 사용하면 전체 데이터의 비율에 따라 샘플을 추출�
 
 ## 특징 선택 및 추출
 ### 선택
-```
+```py
 from sklearn.feature_selection import SelectKBest, f_classif
 
 # 특징 선택 (상위 5개의 특징 선택)
@@ -155,7 +161,7 @@ selected_features = selector.get_support(indices=True)
 print(selected_features)
 ```
 #### 추출
-```
+```py
 # 두 열의 곱을 새로운 특징으로 추가
 df['new_feature'] = df['feature1'] * df['feature2']
 
