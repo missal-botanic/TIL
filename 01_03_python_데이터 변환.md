@@ -15,7 +15,7 @@ df['column_name'] = df['column_name'].astype(float)
 ----------
 
 ## 인코딩(원핫인코딩, 라벨인코딩)
-```python
+```py
 df_encoded = pd.get_dummies(df, columns=['category_column'])
 ```
    id category_column  value
@@ -43,7 +43,7 @@ frac=0.5를 사용하면 전체 데이터의 비율에 따라 샘플을 추출�
 ## 특징 선택 및 추출
 
 ### 선택
-```python
+```py
 from sklearn.feature_selection import SelectKBest, f_classif
 
 # 특징 선택 (상위 5개의 특징 선택)
@@ -55,7 +55,7 @@ selected_features = selector.get_support(indices=True)
 print(selected_features)
 ```
 ### 추출
-```python
+```py
 
 df['new_feature'] = df['feature1'] * df['feature2'] # 두 열의 곱을 새로운 특징으로 추가
 df['new_feature_sum'] = df['feature1'] + df['feature2'] # 두 열의 합을 새로운 특징으로 추가

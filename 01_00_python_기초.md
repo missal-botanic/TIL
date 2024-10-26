@@ -83,7 +83,7 @@ join 메서드는 문자열을 결합하는 데 사용됩니다.
 
 
 ###  순환돌리기 예시
-```python
+```py
 result = []
 for token in word_tokens: 
     if token not in stop_words: 
@@ -109,7 +109,7 @@ NOT (~): 비트를 반전시킴. 0은 1로, 1은 0으로.
 __iter__(): 이터레이터 객체 자체를 반환합니다. 이 메서드를 호출하면 이터레이터가 반환됩니다.
 __next__(): 이터레이터의 다음 값을 반환합니다. 더 이상 반환할 값이 없으면 StopIteration 예외를 발생시켜야 합니다.
 
-```python
+```py
 my_list = [1, 2, 3]
 my_iterator = iter(my_list)
 

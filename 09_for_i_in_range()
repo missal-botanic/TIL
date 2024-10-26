@@ -2,7 +2,7 @@
 
 ### 1. 기본적인 `for` 루프와 `range` 사용
 
-```python
+```py
 for i in range(5):
     print(i)
 ```
@@ -18,7 +18,7 @@ for i in range(5):
 
 ### 2. 특정 범위의 숫자 출력
 
-```python
+```py
 for i in range(1, 6):  # 1부터 5까지
     print(i)
 ```
@@ -34,7 +34,7 @@ for i in range(1, 6):  # 1부터 5까지
 
 ### 3. 특정 간격으로 숫자 출력
 
-```python
+```py
 for i in range(0, 10, 2):  # 0부터 10까지 2 간격
     print(i)
 ```
@@ -50,7 +50,7 @@ for i in range(0, 10, 2):  # 0부터 10까지 2 간격
 
 ### 4. 리스트의 요소 출력하기
 
-```python
+```py
 fruits = ['apple', 'banana', 'cherry']
 for i in range(len(fruits)):
     print(f"{i}: {fruits[i]}")

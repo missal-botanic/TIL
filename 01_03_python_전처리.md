@@ -11,37 +11,37 @@ python_전처리
 특징 선택 및 추출 : 중요한 특징 선택 및 새로운 특징 추출
 
 ### 1차원 배열 생성
-```python
+```py
 arr = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 ```
 
 ### 2차원 배열 합치기
-```python
+```py
 data = np.column_stack((A_x, A_y))
 ```
 
 ### 배열을 10x1 형태로 재구성
-```python
+```py
 reshaped_arr = np.array(arr).reshape(-1, 1) # Pandas 2차원화
 reshaped_arr = df['컬럼명'].values.reshape(-1, 1) # NumPy 2차원화
 
 ```
 
 ### 특성과 타겟 분리
-```python
+```py
 X = titanic.drop('survived', axis=1)
 y = titanic['survived']
 ```
 
 
 ### 성별과 탑승한 곳 인코딩
-```python
+```py
 titanic['sex'] = titanic['sex'].map({'male': 0, 'female': 1})
 titanic['embarked'] = titanic['embarked'].map({'C': 0, 'Q': 1, 'S': 2})
 ```
 
 ### 결측값 예측 LinearRegression() 
-```python
+```py
 from sklearn.linear_model import LinearRegression
 
 # 결측값이 있는 열과 없는 열 분리
@@ -61,7 +61,7 @@ df.loc[df['column_with_na'].isnull(), 'column_with_na'] = predicted_values
 ```
 
 ### 전체 예제
-```python
+```py
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
@@ -105,7 +105,7 @@ print(df.head(15))  # 상위 15개 행 출력
 ```
 
 ### 텍스트 전처리 함수
-```python
+```py
 def preprocess_text(text):
     if isinstance(text, float):
         return ""
@@ -119,14 +119,14 @@ df['content'].apply(preprocess_text)
 ```
 
 # 데이터 스케일링 (학습 및 테스트 분리)
-```python
+```py
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 ```
 
 ### 데이터 표준화(학습 및 변환)(전체 데이터)
-```python
+```py
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 ```

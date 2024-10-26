@@ -23,7 +23,7 @@
 ### 6. **`np.random.shuffle(x)`**
 - **설명**: 배열 `x`의 원소들을 랜덤하게 섞습니다. 반환값은 없으며, 입력 배열이 변경됩니다.
 - **예시**: 
-  ```python
+  ```py
   arr = np.array([1, 2, 3, 4, 5])
   np.random.shuffle(arr)  # arr이 랜덤하게 섞임
   ```

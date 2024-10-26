@@ -4,7 +4,7 @@ python_이상치 처리
 ## 이상치
 
 ### IQR 이상치 감지
-```python
+```py
 import pandas as pd
 
 def detect_outliers(df, column_name):
@@ -25,7 +25,7 @@ def detect_outliers(df, column_name):
 ## 이상치 제거
 
 ### IQR 이상치 감지 및 처리 클래스 예시
-```python
+```py
 import pandas as pd
 
 class OutlierDetector:
@@ -93,13 +93,13 @@ df_with_mean_replaced = detector.replace_outliers_with_mean()
 ------------
 
 ### 이상치 제거
-```python
+```py
 df_no_outliers = df[(df['column_name'] >= lower_bound) & (df['column_name'] <= upper_bound)]
 ```
 ------------
 
 ### 이상치를 평균값으로 대체
-```python
+```py
 mean_value = df['column_name'].mean()
 df['column_name'] = df['column_name'].apply(lambda x: mean_value if x < lower_bound or x > upper_bound else x)
 ```
