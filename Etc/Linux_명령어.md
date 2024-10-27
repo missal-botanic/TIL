@@ -72,6 +72,77 @@ conda install anaconda-clean # 백업???
 anaconda-clean #--yes 스킵옵션
 rm -rf ~/anaconda3 # 폴더제거
 ```
+### 도커 공식
+```bash
+for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+
+
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+sudo docker run hello-world
+
+```
+
+docker ps
+
+sudo usermod -aG docker [user]
+sudo groups docker
+sudo groups pro
+
+
+
+sudo service docker restart
+docker ps
+
+docker images # 이미지 확인
+
+docker run hello-world
+
+docker search nginx
+
+docker pull nginx:latest
+
+docker rmi hello-world # 지우기
+
+docker rmi -f hello-world # 강제 지우기
+
+### 도커 설치
+```bash
+sudo wget -qO- http://get.docker.com/
+docker version
+```
+
+
+
+
+
+
+### ROCM 6.1 (Linux only)
+```bash
+pip3 install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/rocm6.1
+pip3 install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/rocm6.0
+pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/rocm5.7
+
+sudo apt install rocminfo
+
+```
+
+
 
 ### 기타
 ```bash
