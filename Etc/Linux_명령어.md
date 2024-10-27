@@ -38,43 +38,43 @@ zsh [파일명] #zsh 경우
 bash [파일명] # bash 경우
 ```
 
+### VS 코드 지우기
+```bash
+sudo apt remove code
+```
 
-$ sudo apt remove code
+### 한글 세팅
+```
+setting - language - language support - Install/Remove Languages - add korea # 기본 세팅 추가
 
-setting - language - language support - Install/Remove Languages - add korea -
+$ ibus-setup - 탭 input Method - add - "Hangul(korea)" # ibus 세팅
 
-터미널 - ibus-setup - 탭 input Method - add - "Hangul(korea)"
+setting - keyboaed - Input Sources "Korean(Hangul)"  # ibus 세팅
 
-setting - keyboaed - Input Sources "Korean(Hangul)" 
-
-... - Preference
+"..." - Preference # 단축어 설정
+```
 
 
 ### 콘다설치
+```bash
 bash Anaconda3-2024.10-1-Linux-x86_64.sh
 
+sudo apt update 
+sudo apt install gedit # gedit 설치
+gedit ~/.bashrc # 에디터로 열기
+export PATH=~/anaconda3/bin:~/anaconda3/condabin:$PATH
+source ~/.bashrc # 적용
+```
 
 ### 콘다 제거
-conda install anaconda-clean
+```bash
+conda install anaconda-clean # 백업???
 anaconda-clean #--yes 스킵옵션
-rm -rf ~/anaconda3
+rm -rf ~/anaconda3 # 폴더제거
+```
 
-.bash_profile
-export PATH="/Users/사용자/anaconda3/bin:$PATH"
-
-sudo apt update
-sudo apt install gedit
-
-gedit ~/.bashrc #에디터로 열기
-export PATH=~/anaconda3/bin:~/anaconda3/condabin:$PATH
-source ~/.bashrc #적용
-
-conda create --name Deep python=3.8
-
-
-
-
-
+### 기타
+```bash
 ls           # 현재 디렉토리의 파일과 폴더 목록을 표시
 ls -al      # 현재 디렉토리의 모든 파일(숨김 파일 포함)과 상세 정보를 표시
 cd ~/       # 사용자 홈 디렉토리로 이동
@@ -85,7 +85,6 @@ mkdir       # 새 디렉토리를 생성 (예: mkdir new_folder)
 touch       # 새 파일을 생성하거나 기존 파일의 타임스탬프를 업데이트
 rm          # 파일을 삭제 (예: rm filename.txt)
 rm -r       # 디렉토리와 그 안의 모든 파일을 재귀적으로 삭제 (예: rm -r folder_name)
-
 cp          # 파일이나 디렉토리를 복사 (예: cp source.txt destination.txt)
 mv          # 파일이나 디렉토리를 이동하거나 이름 변경 (예: mv oldname.txt newname.txt)
 cat         # 파일의 내용을 출력 (예: cat file.txt)
@@ -96,5 +95,4 @@ chmod       # 파일이나 디렉토리의 권한을 변경 (예: chmod 755 file
 ps          # 현재 실행 중인 프로세스 목록을 표시
 kill        # 프로세스를 종료 (예: kill PID)
 top         # 시스템의 현재 프로세스와 리소스 사용 상태를 실시간으로 표시
-
-.
+```
