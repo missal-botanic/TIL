@@ -74,22 +74,28 @@ rm -rf ~/anaconda3 # 폴더제거
 ```
 ### 도커 공식
 ```bash
+
+# 도커 설치 01
+```bash
 for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
-
-
-# Add Docker's official GPG key:
+```
+```bash
+# 도커 설치 02
 sudo apt-get update
 sudo apt-get install ca-certificates curl
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-# Add the repository to Apt sources:
+```
+```bash
+# 도커 설치 03
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
   $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
+```
+```bash
+# 도커 설치 04
 sudo apt-get update
 
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
@@ -98,28 +104,9 @@ sudo docker run hello-world
 
 ```
 
-docker ps
-
-sudo usermod -aG docker [user]
-sudo groups docker
-sudo groups pro
 
 
 
-sudo service docker restart
-docker ps
-
-docker images # 이미지 확인
-
-docker run hello-world
-
-docker search nginx
-
-docker pull nginx:latest
-
-docker rmi hello-world # 지우기
-
-docker rmi -f hello-world # 강제 지우기
 
 ### 도커 설치
 ```bash
@@ -142,6 +129,36 @@ sudo apt install rocminfo
 
 ```
 
+
+백업 
+
+1. 루트로 이동
+
+cd /
+
+2.전체 시스템을 백업
+
+sudo tar zcvpf backup.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/dev --exclude=/media --exclude=/backup.tgz /
+
+
+복구
+
+1. 루트로 이동
+
+#cd /
+
+2. 압축을 풀어 복구
+
+#tar zxvpf backup.tgz -C /
+
+마지막의 -C / 옵션때문에 백업파일이 루트가 아닌 다른 곳에 저장되어있는 상태라도 상관없다.
+
+ 백업에서 제외했던 디렉토리는 직접 만들어 주어라
+#mkdir proc
+#mkdir lost+found
+#mkdir mnt
+#mkdir sys
+재부팅을 하면 백업전과 똑같은 상태로 돌아 갈 것이다.
 
 
 ### 기타
