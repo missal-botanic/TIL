@@ -1,3 +1,80 @@
+
+### 원격 확성화 (필요 유무 확인 필요)
+```bash
+sudo apt update
+sudo apt install vino
+
+sudo apt update && sudo apt install -y vino
+
+ip addr # ip 확인
+
+```
+
+# 암호화 설정 해제를 위해 dconf-editor 설치
+```bash
+$ sudo apt install dconf-editor #editor 설치
+$ dconf-editor #editor 실행
+
+org - gnome - desktop - remote_access - require_encryption 해제
+```
+
+### 깃 세팅
+```bash
+sudo apt-get install git 
+
+git config --global user.name chad
+
+git config --global user.mail missal-botanic-0y@icloud.com
+
+git clone [url주소]
+```
+
+### 다운로드 파일 설치
+```bash
+sudo apt install ./ [파일명]
+
+echo $SHELL # 확인
+zsh [파일명] #zsh 경우
+bash [파일명] # bash 경우
+```
+
+
+$ sudo apt remove code
+
+setting - language - language support - Install/Remove Languages - add korea -
+
+터미널 - ibus-setup - 탭 input Method - add - "Hangul(korea)"
+
+setting - keyboaed - Input Sources "Korean(Hangul)" 
+
+... - Preference
+
+
+### 콘다설치
+bash Anaconda3-2024.10-1-Linux-x86_64.sh
+
+
+### 콘다 제거
+conda install anaconda-clean
+anaconda-clean #--yes 스킵옵션
+rm -rf ~/anaconda3
+
+.bash_profile
+export PATH="/Users/사용자/anaconda3/bin:$PATH"
+
+sudo apt update
+sudo apt install gedit
+
+gedit ~/.bashrc #에디터로 열기
+export PATH=~/anaconda3/bin:~/anaconda3/condabin:$PATH
+source ~/.bashrc #적용
+
+conda create --name Deep python=3.8
+
+
+
+
+
 ls           # 현재 디렉토리의 파일과 폴더 목록을 표시
 ls -al      # 현재 디렉토리의 모든 파일(숨김 파일 포함)과 상세 정보를 표시
 cd ~/       # 사용자 홈 디렉토리로 이동
