@@ -9,9 +9,6 @@ sudo chown root:docker /var/run/docker.sock
 
 
 
-
-
-
 ### 그룹 FM docker
 ```bash
 groups pro # 그룹 확인
@@ -168,6 +165,9 @@ sudo apt install rocminfo
 pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 torchtext==0.17.0 --index-url https://download.pytorch.org/whl/rocm5.7
 pip3 install 
 
+pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 torchtext==0.17.0 --extra-index-url=https://download.pytorch.org/whl/rocm5.7
+
+pip3 install torch==2.2.2 torchvision torchaudio torchtext --extra-index-url=https://download.pytorch.org/whl/rocm5.7
 
 ```
 
@@ -202,6 +202,13 @@ sudo tar zcvpf backup.tgz --exclude=/proc --exclude=/lost+found --exclude=/mnt -
 #mkdir sys
 재부팅을 하면 백업전과 똑같은 상태로 돌아 갈 것이다.
 
+
+### 권한으로 삭제
+```bash
+sudo su # 권한 부여
+
+rm backup.tgz # 삭제
+```
 
 ### 기타
 ```bash
