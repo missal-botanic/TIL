@@ -1,3 +1,48 @@
+### 도커 권한 저하
+sudo chmod 666 /var/run/docker.sock
+sudo chown root:docker /var/run/docker.sock
+
+##
+sudo /usr/sbin/groupadd -f docker
+sudo /usr/sbin/usermod -aG docker `user`
+sudo chown root:docker /var/run/docker.sock
+
+
+
+
+
+
+### 그룹 FM docker
+```bash
+groups pro # 그룹 확인
+sudo usermod -aG docker pro # 그룹 넣기
+newgrp docker # 그룹 적용
+docker ps
+
+```
+
+### 그룹 FM video
+```bash
+sudo usermod -aG docker video # 그룹 넣기
+newgrp video # 그룹 적용
+```
+
+### 그룹 확인 01
+```bash
+groups # 현재 사용자 그룹 확인 
+sudo usermod -aG docker [user] # 그룹 추가
+newgrp docker # 그룹 갱신
+```
+
+### 그룹 확인 02
+```bash
+
+sudo groups docker
+sudo groups pro
+cat /etc/group # 또는 grep '^docker:' /etc/group
+
+sudo groupadd docker # 그룹만들기
+```
 
 ### 원격 확성화 (필요 유무 확인 필요)
 ```bash
@@ -64,6 +109,9 @@ sudo apt install gedit # gedit 설치
 gedit ~/.bashrc # 에디터로 열기
 export PATH=~/anaconda3/bin:~/anaconda3/condabin:$PATH
 source ~/.bashrc # 적용
+
+$ conda config --set auto_activate_base false #base 기본값 해제
+$ conda config --set auto_activate_base true #base 기본값 적용
 ```
 
 ### 콘다 제거
@@ -104,20 +152,11 @@ sudo docker run hello-world
 
 ```
 
-
-
-
-
 ### 도커 설치
 ```bash
 sudo wget -qO- http://get.docker.com/
 docker version
 ```
-
-
-
-
-
 
 ### ROCM 6.1 (Linux only)
 ```bash
@@ -126,6 +165,9 @@ pip3 install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url http
 pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/rocm5.7
 
 sudo apt install rocminfo
+pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 torchtext==0.17.0 --index-url https://download.pytorch.org/whl/rocm5.7
+pip3 install 
+
 
 ```
 
