@@ -1,3 +1,9 @@
+Distributor ID:	Ubuntu
+Description:	Ubuntu 24.04.1 LTS
+Release:	24.04
+Codename:	noble
+=============
+
 ### RoCM설치
 ```bash
 docker pull rocm/rocm-terminal # ROCm Docker 이미지 다운로드

@@ -1,5 +1,8 @@
 
 
+rocm/rocm-terminal # RoCM 버전
+rocm/pytorch:latest #파이토치+ RoCM 버전
+
 ### pytorch 버전 호환 확인
 https://pytorch.org/get-started/locally/
 https://pytorch.org/get-started/previous-versions/
