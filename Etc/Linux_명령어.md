@@ -1,11 +1,3 @@
-### 도커 권한 저하
-sudo chmod 666 /var/run/docker.sock
-sudo chown root:docker /var/run/docker.sock
-
-##
-sudo /usr/sbin/groupadd -f docker
-sudo /usr/sbin/usermod -aG docker `user`
-sudo chown root:docker /var/run/docker.sock
 
 
 ./~.sh # sh 실행
@@ -121,56 +113,6 @@ rm -rf ~/anaconda3 # 폴더제거
 ### 도커 공식
 ```bash
 
-# 도커 설치 01
-```bash
-for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
-```
-```bash
-# 도커 설치 02
-sudo apt-get update
-sudo apt-get install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-```
-```bash
-# 도커 설치 03
-echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-```bash
-# 도커 설치 04
-sudo apt-get update
-
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-sudo docker run hello-world
-
-```
-
-### 도커 설치
-```bash
-sudo wget -qO- http://get.docker.com/
-docker version
-```
-
-### ROCM 6.1 (Linux only)
-```bash
-pip3 install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/rocm6.1
-pip3 install torch==2.3.1 torchvision==0.18.1 torchaudio==2.3.1 --index-url https://download.pytorch.org/whl/rocm6.0
-pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/rocm5.7
-
-sudo apt install rocminfo
-pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 torchtext==0.17.0 --index-url https://download.pytorch.org/whl/rocm5.7
-pip3 install 
-
-pip3 install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 torchtext==0.17.0 --extra-index-url=https://download.pytorch.org/whl/rocm5.7
-
-pip3 install torch==2.2.2 torchvision torchaudio torchtext --extra-index-url=https://download.pytorch.org/whl/rocm5.7
-
-```
 
 
 백업 

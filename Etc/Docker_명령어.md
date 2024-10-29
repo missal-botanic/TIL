@@ -1,6 +1,19 @@
 ### hub.docker 도커 이미지 검색 + tag 버전별 컨테이너 선택 다운로드 가능 
 https://hub.docker.com/r/rocm/pytorch/tags?page=3
 
+
+### 도커 권한 저하
+```bash
+sudo chmod 666 /var/run/docker.sock # 666은 모든 사용자(소유자, 그룹, 기타 사용자)가 해당 파일에 대해 읽기 및 쓰기 권한을 가지도록 설정합니다.
+sudo chown root:docker /var/run/docker.sock # 파일의 소유자를 "root"로, 그룹을 "docker"로 변경합니다. 
+```
+## 권한 제어 02
+```bash
+sudo /usr/sbin/groupadd -f docker #"docker"라는 이름의 그룹을 생성합니다.
+sudo /usr/sbin/usermod -aG docker `user` # 명령어는 사용자 계정의 속성을 수정합니다.
+sudo chown root:docker /var/run/docker.sock # 명령어는 파일 또는 디렉토리의 소유자와 그룹을 변경합니다.
+```
+
 ### 도커 만들기 예시
 ```bash
 # 예시 01
