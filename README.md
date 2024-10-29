@@ -63,7 +63,7 @@ Accuracy: 10.547658684423956%
 
 
 ```
-<span style="color:red"> 학습률 10% </span>
+<p>$\color{#DD6565} 학습률 10% </p>
 
 #### 요약
 
