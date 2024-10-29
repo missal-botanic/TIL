@@ -1,6 +1,15 @@
+Linux_명령어
+=============
 
+### 현재 리눅스 버전 확인
+```bash
+lsb_release -a 
+```
 
-./~.sh # sh 실행
+### sh 파일실행
+```bash
+./[파일명].sh # sh 실행
+```
 
 ### 그룹 FM docker
 ```bash
