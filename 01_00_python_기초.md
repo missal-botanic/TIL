@@ -9,6 +9,17 @@ python_기초
 
 ### ~반대조건
 
+### '{}'.format()
+```py
+name = "Alice"
+age = 30
+info = "{} is {} years old.".format(name, age)
+
+출력 : "Alice is 30 years old."
+
+```
+
+
 ### 일반 함수
 ```py
 def add_one(x):

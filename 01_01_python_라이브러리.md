@@ -61,40 +61,13 @@ from sklean.linear_model import LinearRegression as LR
 ### pandas
 ```py
 import pandas as pd
-
-# 데이터 프레임 생성
-data = {'Name': ['Alice', 'Bob', 'Charlie'],
-        'Age': [25, 30, 35],
-        'City': ['New York', 'Los Angeles', 'Chicago']}
-
-
-df = pd.DataFrame(data)
-df = pd.read_csv('data.csv') # CSV 파일 불러오기
-df = pd.read_excel('data.xlsx', sheet_name='Sheet1') # 엑셀 파일 불러오기
-
-df.head()  # 첫 5행을 확인
-df.shape  # (행의 수, 열의 수)
-df.columns  # 컬럼명 리스트
-df.dtypes  # 각 컬럼의 데이터 타입
-df.describe()  # 수치형 데이터의 요약 통계량
-df.info()  # 전체적인 데이터 프레임 정보
-df.sample(n=5)  # 랜덤으로 5행 선택
-df['컬럼명'].unique()  # 특정 컬럼의 고유 값 리스트
 ```
 
 ### numpy
+ 다차원 행렬 자료구조인 ndarray를 통해 벡터 및 행렬을 사용하는 선형 대수 계산에서 주로 사용
+
 ```py
 import numpy as np
-
-arr1 = np.array([1, 2, 3, 4, 5]) # 1차원 배열 생성
-arr2 = np.array([[1, 2, 3], [4, 5, 6]]) # 2차원 배열 생성
-
-arr.shape # 배열의 크기를 반환합니다. (행의 수, 열의 수 등)
-arr.dtype # 배열의 데이터 타입을 확인합니다.
-arr.ndim # 배열의 차원 수를 확인합니다.
-arr.size # 배열의 총 요소 수를 반환합니다.
-
-arr_sum = arr1 + arr1 # 배열 간의 연산
 
 ```
 
