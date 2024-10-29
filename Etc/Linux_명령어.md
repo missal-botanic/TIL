@@ -8,6 +8,7 @@ sudo /usr/sbin/usermod -aG docker `user`
 sudo chown root:docker /var/run/docker.sock
 
 
+./~.sh # sh 실행
 
 ### 그룹 FM docker
 ```bash

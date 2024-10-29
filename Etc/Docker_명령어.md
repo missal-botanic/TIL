@@ -1,4 +1,12 @@
 
+python3 -c "import torchtext; print(torchtext.__version__)"
+
+python3 -c "import torch; print(torch.__version__)"
+
+python --version
+
+
+
 1.13 -0.14
 2.0 - 0.15
 2.1 -0.16
