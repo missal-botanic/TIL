@@ -1,6 +1,25 @@
 Linux_명령어
 =============
 
+
+sudo apt-get remove --purge brightness-controller
+sudo apt-get autoremove
+
+- 활성창만 : [Alt] + [Print Screen]
+
+- 영역지정 : [윈도키] + 마우스 드래그
+
+
+작업공간 전환
+
+- 이전/다음 작업공간 : [Ctrl] + [Alt] + [←]/[→]
+
+- 작업공간 전체보기 : [Ctrl] + [Alt] + [↓]
+
+- 큐브 돌리기 : [Ctrl] + [Alt] + 마우스 드래그
+
+- 작업창 이동 : [Ctrl] + [Alt] + [Shift] + [←]/[→]
+
 ### 현재 리눅스 버전 확인
 ```bash
 lsb_release -a 
