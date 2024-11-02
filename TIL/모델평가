@@ -1,0 +1,44 @@
+### case별
+
+    True Positive(TP) : 실제 True인 정답을 True라고 예측 (정답)
+    False Positive(FP) : 실제 False인 정답을 True라고 예측 (오답)
+    False Negative(FN) : 실제 True인 정답을 False라고 예측 (오답)
+    True Negative(TN) : 실제 False인 정답을 False라고 예측 (정답)
+
+### Precision(정밀도)
+
+정밀도 : 모델이 True라고 분류한 것 중에서 실제 True인 것의 비율입니다.
+재현율 : 실제 True인 것 중에서 모델이 True라고 예측한 것의 비율입니다.
+
+-Precision은 모델의 입장에서, 그리고 Recall은 실제 정답(data)의 입장에서 정답을 정답이라고 맞춘 경우
+-Precision는 100% 확실한 내용만 예측해버릴 수 있음, 실제 입장에서 같이 고려
+-Rcall 은 Precision만큼 높은 결과 나오지 않음
+-두 지표가 모두 높을 수록 좋은 모델
+
+
+
+### Precision-Recall Trade-off( with Type 1, 2 error)
+가설 검정 시에 어떤 상황에서 어떤 가설을 받아들일지의 기준이 필요
+recision과 recall은 모두 높은 것이 좋지만, trade-off 관계에 있어서 함께 늘리기가 힘듬
+
+### Accuracy(정확도)
+
+False를 False라고 예측한 경우도 옳은 경우입니다. 이때, 해당 경우를 고려하는 지표가 바로 정확도(Accuracy)
+domain의 편중(bias)을 고려해야 한다(비오는 날이 흔치 않는 경우 불균형 데이터, 맑은 날 예측시 성능이 높음)
+
+### F1 score
+
+F1 score는 Precision과 Recall의 조화평균입니다. 
+F1 score는 데이터 label이 불균형 구조일 때, 모델의 성능을 정확하게 평가할 수 있으며, 성능을 하나의 숫자로 표현할 수 있습니다. 
+
+### Fall-out
+Fall-out은 FPR(False Positive Rate)으로도 불리며, 실제 False인 data 중에서 모델이 True라고 예측한 비율
+
+### ROC(Receiver Operating Characteristic) curve
+여러 임계값들을 기준으로 Recall-Fallout의 변화를 시각화한 것
+
+### AUC(Area Under Curve)
+
+ROC curve는 그래프이기 때문에 명확한 수치로써 비교하기가 어렵습니다. 
+그래프 아래의 면적값을 이용합니다. 
+최대값은 1이며 좋은 모델(즉, Fall-out에 비해 Recall 값이 클수록) 1에 가까운 값이 나옵니다.

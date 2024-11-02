@@ -55,15 +55,6 @@ df['column_name'] = df['column_name'].fillna(df['column_name'].mean()) # 평균�
 df_dropped_rows = df.dropna() # 결측값이 포함된 행 제거
 df_dropped_cols = df.dropna(axis=1) # 결측값이 포함된 열 제거
 ```
-
-### 결측값 대체 fillna()
-```py
-df_filled = df.fillna(0) # 결측값을 0으로 대체
-df_filled_mean = df.fillna(df.mean()) # 결측값을 각 열의 평균값으로 대체
-df_filled_median = df.fillna(df.median()) # 결측값을 각 열의 중간값으로 대체
-df_filled_mode = df.fillna(df.mode().iloc[0]) # 결측값을 각 열의 최빈값으로 대체
-```
-
 ------------
 
 ### 카테고리형 변수의 결손값 처리
