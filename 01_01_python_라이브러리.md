@@ -47,6 +47,7 @@ import matplotlib.pyplot as plt
 ### 각 최소 단위
 ```py
 import pandas as pd
+import numpy as np
 from pandas import DataFrame
 ```
 
