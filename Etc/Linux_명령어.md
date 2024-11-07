@@ -186,6 +186,17 @@ sudo su # 권한 부여
 rm backup.tgz # 삭제
 ```
 
+
+
+### Ubuntu나 Debian 계열의 리눅스에서
+sudo apt-get install fonts-nanum
+
+### 설치한 폰트 사용 (NanumGothic)
+mpl.rcParams['font.family'] = 'NanumGothic'
+mpl.rcParams['axes.unicode_minus'] = False
+
+
+
 ### 기타
 ```bash
 ls           # 현재 디렉토리의 파일과 폴더 목록을 표시
