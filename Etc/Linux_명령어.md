@@ -188,10 +188,26 @@ rm backup.tgz # 삭제
 
 
 
-### Ubuntu나 Debian 계열의 리눅스에서
+### gpu 확인
+```bash
+lspci | grep -i VGA # 추천 전체 확인
+lspci -v | grep -i nvidia # 엔비디아 확인
+nvidia-smi --query | fgrep 'Product Name' # 엔비디아 설치 이후 확인
+```
+01:00.1 Non-VGA unclassified device: Apple Inc. T2 Bridge Controller (rev 01)
+01:00.2 Non-VGA unclassified device: Apple Inc. T2 Secure Enclave Processor (rev 01)
+09:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Vega 20 [Radeon Pro Vega II/Radeon Pro Vega II Duo]
+ca:00.0 VGA compatible controller: NVIDIA Corporation AD106 [GeForce RTX 4060 Ti 16GB] (rev a1)
+
+
+
+
+### 폰트설치
+
+#### Ubuntu나 Debian 계열의 리눅스에서
 sudo apt-get install fonts-nanum
 
-### 설치한 폰트 사용 (NanumGothic)
+#### 설치한 폰트 사용 (NanumGothic)
 mpl.rcParams['font.family'] = 'NanumGothic'
 mpl.rcParams['axes.unicode_minus'] = False
 
