@@ -212,6 +212,10 @@ mpl.rcParams['font.family'] = 'NanumGothic'
 mpl.rcParams['axes.unicode_minus'] = False
 
 
+### usb 포트 작동 확인
+lsusb
+
+
 
 ### 기타
 ```bash
