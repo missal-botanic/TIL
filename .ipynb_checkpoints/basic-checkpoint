@@ -1,0 +1,76 @@
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import random
+
+# 랜덤 시드 설정
+random_seed = random.randint(0, 99999)
+np.random.seed(random_seed)
+
+# 데이터 생성
+data = {'fe1': np.random.rand(100), 'cwn': np.random.rand(100)}
+data['cwn'][::10] = np.nan  # NaN 값 추가
+df = pd.DataFrame(data)
+
+# NaN이 아닌 데이터 분리
+df_wnn = df[df['cwn'].notnull()]
+
+# 모델 학습
+model = LinearRegression()
+X = df_wnn['fe1'].values.reshape(-1, 1)  # 2D로 변형
+y = df_wnn['cwn'].values
+model.fit(X, y)
+
+# NaN인 데이터 예측
+df_wn = df[df['cwn'].isnull()]
+predictions = model.predict(df_wn['fe1'].values.reshape(-1, 1))
+
+# 결과 출력
+df_wn['cwn'] = predictions  # 예측 결과를 추가
+result = pd.concat([df_wnn, df_wn], ignore_index=True)  # 원본 데이터와 예측 결과 합치기
+
+# 원본 데이터와 예측 결과 비교
+print(result[['fe1', 'cwn']])
+
+
+
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
+# 랜덤 시드를 설정하여 결과를 재현 가능하게 함
+np.random.seed(42)
+
+# 샘플 데이터 생성
+data = {
+    'feature1': np.random.rand(100),
+    'feature2': np.random.rand(100),
+    'column_with_na': np.random.rand(100)
+}
+
+# 일부 결측값 생성
+data['column_with_na'][::10] = np.nan  # 10개마다 결측값 추가
+
+# 데이터프레임 생성
+df = pd.DataFrame(data)
+
+print("결측값 대체 전 데이터프레임:")
+print(df.head(15))  # 상위 15개 행 출력
+
+# 결측값이 있는 열과 없는 열 분리
+df_with_na = df[df['column_with_na'].isnull()]
+df_without_na = df[df['column_with_na'].notnull()]
+
+# 회귀 모델 학습
+model = LinearRegression()
+model.fit(df_without_na[['feature1', 'feature2']], df_without_na['column_with_na'])
+
+# 결측값 예측
+predicted_values = model.predict(df_with_na[['feature1', 'feature2']])
+
+# 예측된 값으로 결측값 대체
+df.loc[df['column_with_na'].isnull(), 'column_with_na'] = predicted_values
+
+# 결과 출력
+print("결측값 대체 후 데이터프레임:")
+print(df.head(15))  # 상위 15개 행 출력
