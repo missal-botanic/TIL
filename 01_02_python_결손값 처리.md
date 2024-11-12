@@ -90,3 +90,40 @@ df['column_name_is_null'] = df['column_name'].isnull().astype(int)  # 결손값�
 df['column_name'] = df['column_name'].interpolate() #선형 보간: 수치형 데이터의 결손값을 인접한 값들로 보간하여 대체합니다.
 ```
 
+------------
+
+### ML으로 결손값 채우기
+
+import pandas as pd
+import numpy as np
+from sklearn.linear_model import LinearRegression
+import random
+
+# 랜덤 시드 설정
+random_seed = random.randint(0, 99999)
+np.random.seed(random_seed)
+
+# 데이터 생성
+data = {'fe1': np.random.rand(100), 'cwn': np.random.rand(100)}
+data['cwn'][::10] = np.nan  # NaN 값 추가
+df = pd.DataFrame(data)
+
+# NaN이 아닌 데이터 분리
+df_wnn = df[df['cwn'].notnull()]
+
+# 모델 학습
+model = LinearRegression()
+X = df_wnn['fe1'].values.reshape(-1, 1)  # 2D로 변형
+y = df_wnn['cwn'].values
+model.fit(X, y)
+
+# NaN인 데이터 예측
+df_wn = df[df['cwn'].isnull()]
+predictions = model.predict(df_wn['fe1'].values.reshape(-1, 1))
+
+# 결과 출력
+df_wn['cwn'] = predictions  # 예측 결과를 추가
+result = pd.concat([df_wnn, df_wn], ignore_index=True)  # 원본 데이터와 예측 결과 합치기
+
+# 원본 데이터와 예측 결과 비교
+print(result[['fe1', 'cwn']])
