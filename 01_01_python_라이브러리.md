@@ -72,6 +72,11 @@ import numpy as np
 
 ```
 
+### 버전확인
+```py
+sklearn.__version__
+```
+
 ### Scikit-learn
 ```py
 from sklearn.model_selection import train_test_split
