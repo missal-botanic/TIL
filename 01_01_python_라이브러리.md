@@ -22,7 +22,10 @@
 
 !pip3 install tensorflow-gpu
 
+pip3 install -U langchain-community
+pip3 install pypdf
 
+pip3 install python-dotenv
 ```
 
 pip uninstall typing-extensions
