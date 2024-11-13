@@ -1,2 +1,3 @@
 .env
-01_Class/
+01_Class/ 
+#git rm --cached 01_Class/ -r
