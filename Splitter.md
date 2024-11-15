@@ -1,4 +1,4 @@
-
+### CharacterTextSplitter
 ```py
 # CharacterTextSplitter
 from langchain.text_splitter import CharacterTextSplitter
@@ -12,7 +12,10 @@ text_splitter = CharacterTextSplitter(
 )
 
 splits_CTS = text_splitter.split_documents(docs)
+```
 
+### RecursiveCharacterTextSplitter
+```py
 # RecursiveCharacterTextSplitter
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
@@ -24,8 +27,9 @@ recursive_text_splitter = RecursiveCharacterTextSplitter(
 )
 
 splits_RCTS = recursive_text_splitter.split_documents(docs)
-
-
+```
+### RecursiveCharacterTextSplitter + tiktoken
+```py
 # tiktoken 라이브러리와 langchain의 RecursiveCharacterTextSplitter 임포트
 import tiktoken
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -41,6 +45,23 @@ def tiktoken_len(text):
     return len(tokens)
 
 # 텍스트 분할기 설정
-text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 0, length_function = tiktoken_len)
+recursive_text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 0, length_function = tiktoken_len)
 # 페이지를 500자씩 분할하고, 중복되는 텍스트가 없도록 설정
-docs = text_splitter.split_documents(pages)  # 분할된 텍스트를 docs 변수에 저장
+splits_RCTS = recursive_text_splitter.split_documents(docs)  # 분할된 텍스트를 docs 변수에 저장
+```
+
+
+# Document 객체의 page_content 속성에서 텍스트의 길이를 측정
+char_list = []
+for i in range(len(splits_RCTS)):
+    char_list.append(len(splits_RCTS[i].page_content))
+print("chunk_size:")
+print(char_list[:20])
+print("="*100)
+
+# 상위 50개 청크 선택
+top_50_chunks_RCTS = splits_RCTS[:50]  # 순차적으로 상위 50개 청크 선택
+
+# 상위 50개 청크 출력
+for i, chunk in enumerate(top_50_chunks_RCTS):
+    print(f"Chunk {i + 1}: {chunk}")
