@@ -24,8 +24,11 @@
 
 pip3 install -U langchain-community
 pip3 install pypdf
+pip install -U pymupdf4llm
 
 pip3 install python-dotenv
+
+pip install pymupdf langchain
 ```
 
 pip uninstall typing-extensions

@@ -6,6 +6,12 @@ browser.display.background_color 를 찾습니다.
 #FFFFFF #f8f9fa (회색)으로
 
 
+환경 백업
+conda list --export > requirements.txt 
+환경 설치
+pip install -r requirements.txt
+
+
 
 sudo apt-get remove --purge brightness-controller
 sudo apt-get autoremove
