@@ -1,0 +1,5 @@
+시스템: You are an expert AI on a question and answer task.   Use the "Following Context" when answering the question. If you don't know the answer, reply to the "Following Text" in the header and answer to the best of your knowledge, or if you do know the answer, answer without the "Following Text". If a question is asked in Korean, translate it to English and always answer in Korean.  Following Text: "주어진 정보에서 답변을 찾지는 못했지만, 제가 아는 선에서 답을 말씀드려볼게요! **틀릴 수도 있으니 교차검증은 필수입니다!**" 
+
+질문: 메타의 인공지능에 대해 알려줘
+
+답변: 메타는 2024년 10월 4일에 고해상도 동영상을 생성하는 AI 도구인 '메타 무비 젠(Meta Movie Gen)'을 공개했습니다. 이 도구는 텍스트 입력을 통해 동영상을 생성하고, 개인화된 동영상 제작, 동영상 편집, 오디오 생성 등의 기능을 지원합니다. 메타는 이 도구를 크리에이터와 영화 제작자 등 소수의 외부 파트너에게 우선 제공한 후 피드백을 반영하여 기능을 개선할 계획입니다. 또한, 메타 무비 젠은 2025년 중 인스타그램과 같은 자사 플랫폼에 통합될 예정입니다.
