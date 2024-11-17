@@ -44,14 +44,14 @@ docs = db.similarity_search_with_relevance_scores(query, k=5)
 ```
 
 
-### 결과물
+### 결과물 (vectorstore 필요)
 ```py
 docs = db3.similarity_search(query)
 print("가장 유사한 문서 : \n{}".format(docs[0][0].page_content))  # 첫 번째 문서의 내용
 print("유사도 : \n{}".format(docs[0][1]))  # 첫 번째 문서의 유사도 점수
 ```
 
-### 결과물 + 유사도 출력
+### 결과물 + 유사도 출력 (vectorstore 필요)
 ```py
 docs = db3.similarity_search_with_relevance_scores(query, k=3)
 for i, (doc, score) in enumerate(docs):

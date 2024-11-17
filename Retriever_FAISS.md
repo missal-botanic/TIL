@@ -12,7 +12,7 @@ db.save_local("faiss_index")
 new_db = FAISS.load_local("faiss_index", hf)
 ```
 
-### 질문과 유사도 있는 서치
+### 질문과 유사도 있는 서치 (vectorstore 필요)
 ```py
 docs3 = db.similarity_search_with_relevance_scores(query, k=5)
 
@@ -27,8 +27,7 @@ for i in range(len(docs3)):
 ```
 
 
-
-### 질문에 대한 다양성 서치
+### 질문에 대한 다양성 서치 (vectorstore 필요)
 ```py
 docs4 = db.max_marginal_relevance_search(query, k=5)
 
@@ -42,7 +41,7 @@ for i in range(len(docs4)):
     print("-"*100)
 ```
 
-### 낮은수록 좋음
+### 낮은수록 좋음 (vectorstore 필요)
 ```py
 docs_and_scores = db.similarity_search_with_score(query)
 print(docs_and_scores)
