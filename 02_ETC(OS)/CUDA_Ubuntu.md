@@ -74,3 +74,15 @@ sudo ln -s /usr/bin/g++-12 /usr/local/cuda/bin/g++
 
 sudo apt-get purge nvidia*
 sudo apt-get autoremove
+
+
+
+
+
+8. 추가 설정 (선택 사항)
+CUDA를 수동으로 설치하는 경우, 환경 변수 설정이 필요할 수 있습니다. 예를 들어, CUDA Toolkit과 cuDNN이 올바르게 작동하도록 하기 위해 환경 변수를 설정합니다.
+Linux에서 환경 변수 설정 (예시):
+
+export PATH=/usr/local/cuda-12.1/bin${PATH:+:${PATH}}
+export CUDADIR=/usr/local/cuda-12.1
+export LD_LIBRARY_PATH=$CUDADIR/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
