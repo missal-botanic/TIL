@@ -1,6 +1,13 @@
 Git_Hub_명령어
 =============
 
+
+### vscode Bash
+```bash
+terminal.integrated.defaultprofile.windows
+```
+
+
 ### clone 이후 진행
 ```bash
 git clone https://github.com/missal-botanic/TIL
