@@ -1,4 +1,18 @@
 
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\bin
+
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\include
+
+C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.1\lib
+
+
+# CUDA 12.4와 호환되는 PyTorch 설치
+pip install torch==2.5.0 torchvision==0.20.0 torchaudio==2.5.0 --index-url https://download.pytorch.org/whl/cu121
+
+pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu124
+pip install torchtext==0.6.0
+
+https://pytorch.kr/get-started/previous-versions/
 ### CUDA 다운로드
 https://developer.nvidia.com/cuda-toolkit-archive
 https://anaconda.org/nvidia/cuda-nvcc_win-64
@@ -48,6 +62,7 @@ cat: '/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.1/include/cudnn.h':
 
 ### cuda_12.4.r12.4
 ### cudnn_9.1.0_windows
+
 
 
 90100
