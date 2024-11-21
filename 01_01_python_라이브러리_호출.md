@@ -1,77 +1,13 @@
-라이브러리
+라이브러리 호출
 =============
-
-
-
-
-### 라이브러리 설치
-```bash
-#pip install ipykernel
-
-* !pip3 install pandas
-#!pip3 install numpy 자동설치
-
-DEEP
-pip3 install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu124
-pip install torchtext==0.6.0
-
-RAG
-!pip3 install tiktoken
-!pip3 install langchain
-!pip3 install -U langchain-community
-!pip3 install -U langchain-huggingface
-!pip3 install pypdf
-!pip3 install sentence-transformers
-!pip3 install chromadb
-!pip3 install faiss-cpu  # CPU 버전
-!pip3 install rank_bm25
-#!pip3 install faiss-gpu  # GPU 버전
-
-!pip3 install -q -U bitsandbytes
-!pip3 install -q -U git+https://github.com/huggingface/transformers.git
-!pip3 install -q -U git+https://github.com/huggingface/peft.git
-!pip3 install -q -U git+https://github.com/huggingface/accelerate.git
-
-pip install ipywidgets --upgrade
-
-pip install transformers==4.38.2 sentencepiece==0.1.96 #확인필요
-pip install --upgrade transformers #확인필요 유력
-
-
-
-ML
-* !pip3 install scikit-learn
-* !pip3 install matplotlib
-!pip3 install seaborn
-!pip3 install kaggle
-
-
-
-
-!pip3 check
-
-
-
-!pip3 install keras
-!pip3 install tensorflow
-!pip3 uninstall tensorflow
-!pip3 install tensorflow-gpu
-
-
-pip3 install pypdf
-pip install -U pymupdf4llm
-pip3 install python-dotenv
-pip install pymupdf langchain
+% 대문자는 클래스
+```py
+from pprint import pprint
 ```
 
-pip uninstall typing-extensions
-pip install typing-extensions==4.5.0
-pip install fsspec
-
-```bash
-!pip uninstall pandas
-!pip uninstall numpy
-!pip install numpy==1.26.4
+### as  별칭 까지 가능
+```py
+from sklean.linear_model import LinearRegression as LR
 ```
 
 ### PyTorch 및 필요한 라이브러리 임포트
@@ -86,34 +22,8 @@ import matplotlib.pyplot as plt
 ### 각 최소 단위
 ```py
 import pandas as pd
-import numpy as np
+import numpy as np #다차원 행렬 자료구조인 ndarray를 통해 벡터 및 행렬을 사용하는 선형 대수 계산에서 주로 사용
 from pandas import DataFrame
-```
-
-### as  별칭 까지 가능
-```py
-from sklean.linear_model import LinearRegression as LR
-```
-% 대문자는 클래스
-
-------------
-
-### pandas
-```py
-import pandas as pd
-```
-
-### numpy
- 다차원 행렬 자료구조인 ndarray를 통해 벡터 및 행렬을 사용하는 선형 대수 계산에서 주로 사용
-
-```py
-import numpy as np
-
-```
-
-### 버전확인
-```py
-sklearn.__version__
 ```
 
 ### Scikit-learn
@@ -122,23 +32,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
-# 데이터 생성
-X = [[1], [2], [3], [4], [5]]
-y = [1, 4, 9, 16, 25]
-
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42) # 데이터 분할 (훈련 데이터와 테스트 데이터)
-
-model = LinearRegression() # 회귀 모델 생성
-model.fit(X_train, y_train)  # 회귀 모델 학습
-
-y_pred = model.predict(X_test) # 예측
-
-mse = mean_squared_error(y_test, y_pred) # 모델 평가
-print(f'Mean Squared Error: {mse}') # 모델 평가
 ```
-
-------------
 
 ### StandardScaler
 ```py
@@ -186,10 +80,8 @@ nltk.download('punkt')
 ```
 자연어 처리를 위한 라이브러리로, 다양한 텍스트 처리 작업을 지원합니다. 텍스트 토큰화, 품사 태깅, 구문 분석, 감정 분석 등 다양한 NLP 작업을 수행할 수 있도록 도와줍니다.
 
-
 print(sent_tokenize(text))  # 문장 단위로 분리
 print(word_tokenize(text))   # 단어 단위로 분리
-
 
 ### TextBlob:
 ```py
