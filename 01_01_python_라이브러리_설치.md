@@ -1,11 +1,6 @@
 라이브러리 설치
 =============
-### 키 관리
-```bash
-from dotenv import load_dotenv
 
-load_dotenv(r"C:\Users\241011\Documents\key.env")
-```
 
 ### jupyter notebook 설치
 ```bash
@@ -21,6 +16,7 @@ python -m ipykernel install --user --name pDeep --display-name "Deep"
 ### 라이브러리 설치
 ```bash
 #pip install ipykernel
+pip3 install fastapi uvicorn
 
 * !pip3 install pandas
 #!pip3 install numpy 자동설치
@@ -39,6 +35,8 @@ RAG
 !pip3 install chromadb
 !pip3 install faiss-cpu  # CPU 버전
 !pip3 install rank_bm25
+!pip3 install PyMuPDF # fitz
+
 #!pip3 install faiss-gpu  # GPU 버전
 
 !pip3 install -q -U bitsandbytes
@@ -48,9 +46,10 @@ RAG
 
 pip install ipywidgets --upgrade
 
-pip install transformers==4.38.2 sentencepiece==0.1.96 #확인필요
-pip install --upgrade transformers #확인필요 유력
+pip3 install transformers==4.38.2 sentencepiece==0.1.96 #확인필요
+pip3 install --upgrade transformers #확인필요 유력
 
+pip3 install -U --quiet langchain-google-genai #google ai
 
 ML
 * !pip3 install scikit-learn

@@ -1,5 +1,14 @@
 라이브러리 호출
 =============
+
+### 키 관리
+```py
+from dotenv import load_dotenv
+
+key = load_dotenv(r"C:\Users\241011\Documents\key.env")
+print(key)
+```
+
 % 대문자는 클래스
 ```py
 from pprint import pprint
