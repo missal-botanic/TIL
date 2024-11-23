@@ -26,6 +26,35 @@ curl -X POST "http://127.0.0.1:8000/query" -H "Content-Type: application/json" -
 }
 ```
 
+파이썬으로 호출하는 예시입니다.
+
+```py
+import requests
+import json
+
+# 요청 URL
+url = "http://127.0.0.1:8000/query"
+
+# 요청에 보낼 데이터
+data = {
+    "query": "한글로 인공지능에 대해 설명해줘"
+}
+
+# POST 요청을 보내기 위한 헤더 설정
+headers = {
+    "Content-Type": "application/json"
+}
+
+# POST 요청 보내기
+response = requests.post(url, json=data, headers=headers)
+
+# 응답 출력
+if response.status_code == 200:
+    print("Response:", response.json())
+else:
+    print(f"Error: {response.status_code}, {response.text}")
+```
+
 ### 5. FastAPI 문서화
 
 FastAPI는 자동으로 Swagger UI를 생성하여 API 문서를 제공합니다. `http://127.0.0.1:8000/docs`에서 이 문서와 인터페이스를 확인할 수 있습니다.

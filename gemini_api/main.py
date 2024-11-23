@@ -1,8 +1,6 @@
-# main.py
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-import gemini  # GEMINI.py를 불러옵니다
+import gemini  # gemini.py를 불러옵니다
 
 app = FastAPI()
 
