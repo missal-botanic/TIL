@@ -16,7 +16,7 @@
 ```
 
 ```
-객체 = 데이터 덩어리 = 타입, 값, 고유ID, 참조횟수 
+객체(데이터 덩어리) = 타입, 값, 고유ID, 참조횟수 
 
 강타입 언어 = 값은 볼수도  변경 가능하지만 객체의 '타입'은 변경 할 수 없다.
 
@@ -142,4 +142,63 @@ int('10.1') = error
 1_000_000 으로 표현 하기도 함
 1.0_0_1
 ```
+
+
+코드 한줄 80자 이하 추천
+
+sum = \
+1 + 2 + \
+3 
+
+sum = (1
++ 1
++ 2
+)
+
+disaster = True
+if disaster :
+    print('Woe!')
+else:
+    print("Whee!")
+
+disaster = True
+if disaster :
+    print('Woe!')
+else:
+    print("Whee!")
+
+furry = True
+large = True
+
+if furry:
+    if large: # furry == True 생략
+        print("It's a yeti")
+    else: # 양자택일의 경우
+        print("It's a cat")
+else:
+    if large:
+        print("It's a whale!")
+    else:
+        print("It's human")
+
+color = "mauve"
+
+if color == 'red': # == 실제 의미는 = 단지 사용 빈도수에 의해 밀림
+    print('Its tomato') # 문자열을은 "" 추천
+elif color == 'green':
+    print('Its a pepper')
+elif color == 'bee purple':
+    print('What is this?')
+else: # 무조건 필요
+    print('no color')
+
+5 < x and x <10
+
+(5 < x) and (x > 10)
+
+5<x<10<999
+
+
+null(none), 정수 0, 부동소수점 0.0, 빈문자열' ' [ ] ( ) { } set() = false
+
 
