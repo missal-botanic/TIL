@@ -69,7 +69,7 @@ print(sys.getrefcount(a))  # a에 대한 참조 횟수를 출력
 
 ```
 = 오른쪽 계산뒤에 왼쪽 적용
-2 * 1.2 = 2.4 # floats 가 우선
+2 * 1.2 >>> 2.4 # floats 가 우선
 ```
 
 ```
@@ -102,8 +102,8 @@ a **= 3 # 제곱 계산
 ```
 
 ```py
--5 ** 2 = -25
-(-5) ** 2 = 25
+-5 ** 2 >>> -25
+(-5) ** 2 >>> 25
 ```
 
 ```
@@ -111,7 +111,7 @@ a **= 3 # 제곱 계산
 0o는 팔진수 (Octal)
 0b는 이진수 (Binary)
 
-0b10 = 0b를 10진수로 출력
+0b10 >>> 0b를 10진수로 출력
 bin()oct()hex()
 
 이진수: int('101', 2)는 10진수 5입니다.
@@ -121,23 +121,23 @@ bin()oct()hex()
 ```
 
 ```py
-chr(65) = 'A'
-ord('A') = 65
+chr(65) >>> 'A'
+ord('A') >>> 65
 ```
 
 ```py
-int('-99') = -99
-int('9_9') = 99
+int('-99') >>> -99
+int('9_9') >>> 99
 
-int(10.1) = 10
-int('10.1') = error
+int(10.1) >>> 10
+int('10.1') >>> error
 ```
 
 ```py
-5e0 = 5.0
-5e1 = 50.0
-5.0e1 = 50.0
-5.0 * (10 ** 1) = 50.0
+5e0 >>> 5.0
+5e1 >>> 50.0
+5.0e1 >>> 50.0
+5.0 * (10 ** 1) >>> 50.0
 ```
 
 ```py
@@ -173,7 +173,7 @@ furry = True
 large = True
 
 if furry:
-    if large: # furry == True 생략
+    if large: # furry == True 생략 or is True 생략
         print("It's a yeti")
     else: # 양자택일의 경우
         print("It's a cat")
@@ -270,18 +270,18 @@ print() 출력은 인터프리터와 아이들과 출력방식이 다르다
 "\"hi\""
 \\ 는 실제 \ 표시
 
-r'원시 문자열\n" 은 내용 그대로 전부 출력 하지만 print() 구문은 이스케이프 적용되어 출력
+r"" 원시 문자열\n 은 내용 그대로 전부 출력 하지만 print() 구문은 이스케이프 적용되어 출력
 
-"hello"+"baby" = 'hellobaby'
-"hello""baby" = 'hellobaby'
-('a' + "e" + '''i''' + """u""") = 'aeiu'
-print('a' + "e" + '''i''' + """u""") = 'aeiu'
+"hello"+"baby" >>> 'hellobaby'
+"hello""baby" >>> 'hellobaby'
+('a' + "e" + '''i''' + """u""") >>> 'aeiu'
+print('a' + "e" + '''i''' + """u""") >>> 'aeiu'
 
 a = 'a'
 b = "e"
 c = '''i'''
 d = """u"""
-print(a + b + c + d) = 'aeiu'
+print(a + b + c + d) >>> 'aeiu'
 
 start = 'Na' * 4 + '\n'
 middle = 'hey' * 3 + '\n'
@@ -294,7 +294,7 @@ Goodbye # 줄바꿈보다 *이 더 높은 우선순위
 
 letter[0] # 첫문자 선택
 
-letter[0] = 'p' # 오류 발생
+letter[0] = 'p' >>> # 오류 발생
 
 letter.replace('H', 'P') # 함수 방식
 'P' + letter[1:] # 슬라이스 방식
@@ -305,11 +305,11 @@ letter.replace('H', 'P') # 함수 방식
 
 [:] 전체 [s:] s부터 끝까지 [:e] 시작부터 e-1 까지 [s:e:st] st만큼 건너 뛰면서
 
-letters[-3:0] = 'xyz'
-letters[-6:-2] = 'uvwx'
-letters[::7] = 'ahov'
-letters[::-1] = letters[-1::-1] = zyx...cba
-letters[70:71] = ''
+letters[-3:0] >>> 'xyz'
+letters[-6:-2] >>> 'uvwx'
+letters[::7] >>> 'ahov'
+letters[::-1] = letters[-1::-1] >>> zyx...cba
+letters[70:71] >>> ''
 
 len(letters)
 
@@ -323,7 +323,8 @@ letters.split(",") >>> ['abc', 'def', 'hij']
 .join()
 
 letters = ['abc', 'def', 'hij']
-new_letters = ','.join(letters)
+new_letters = ','.join(letters) 
+>>>'abc,def,hij'
 
 .replace()
 
@@ -366,6 +367,63 @@ letters.count('the') >>> 3
 
 .isalnum()
 letters.isalnum() >>> True # 알파벳과 숫자로만 있는가? (특수문자 있을시 False)
+
+
+.capitalize()
+letters.capitalize() >>> 첫 번째 단어 대문자
+letters.title() >>> 모든 첫 글자 대문자
+letters.upper() >>> 모든 글자 대문자
+letters.lower() >>> 모든 글자 소문자
+letters.swapcase() >>> 대문자는 소문자로 소문자는 대문자로
+
+.center(30) >>> '   duck   '
+.ljust(30) >>> 'duck   '
+.rjust(30) >>> '   duck'
+
+포매팅(보간)
+
+옛 스타일
+format_string % data
+"Our cat %s weighs %s pounds" % ('cat', 'weight')#변수 가능 >>> 'Our cat cat weighs weight pounds' 
+
+%s >>> 그대로
+%12s >>> 12만큼 앞 여백
+%+12s >>>> 12만큼 옆여백 숫자면 앞에 +
+%-12s >>>> 12만큼 뒷여백 
+%.3s >>> 앞에서 3글자만
+%12.3 >>> 앞에서 3글자 + 앞에서 12여백
+
+a = 'my %s'
+arg = 'clam'
+print(a % arg) >>> my clam
+
+새 스타일
+format_string.format(data) >>> '{}'.format(letters)
+
+things = 'woodchunk'
+place = 'lake'
+'The {} is in the {}.'.format(thing, place) >>> 'The woodchuck is in the lake.'
+
+'The {1} is in the {0}.'.format(place, thing) >>> 'The woodchuck is in the lake.' #순서 조절 가능
+
+'The {thing} is in the {place}'.format(things = 'woodchunk', place = 'lake')
+
+d = {'thing' : 'duck', 'place' : 'bathtub'}
+'The {0[thing]} is in the {0[place]}.'.format(d) >>> 'The duck is in the bathtub.'
+'The {d[thing]} is in the {d[place]}.'.format(d) >>> 미작동
+'The {d[1]} is in the {d[0]}.'.format(d) >>> 미작동
+
+{:10s} >>> 뒤에 여백
+{:<10s} >>> 뒤에 여백
+{:>10s} >>> 앞에 여백
+{:^10s} >>> 좌우 여백
+{:!^10s} >>> 여백대신 !로 채우기
+
+최신 스타일 f- 문자열
+
+f'The {thins} is in the {place}
+f'The {thins.capitalize()} is in the {place.rjust(20)}
+f'{thing =}, {place =}' >>> thin = 'wereduck', place = 'werepond'
 
 
 
