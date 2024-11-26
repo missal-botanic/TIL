@@ -8,14 +8,16 @@
 ```py
 empty_tuple = ()
 
-one_marx = "Groucho", # ,생략하면 문자열, 함수에 인자로 넣으면 문자열로 인식 괄호 꼭 필요
+one_marx = "Groucho", # ','생략하면 문자열, 함수에 인자로 넣으면 문자열로 인식 괄호 꼭 필요
 marx_tuple =  "Groucho", "Chico", "Harpo"
 
-one_marx = ("Groucho",) #,생략하면 문자열 one_marx = ("Groucho") 다름
+one_marx = ("Groucho",) # ','생략하면 문자열 one_marx = ("Groucho") 다름
 marx_tuple =  ("Groucho", "Chico", "Harpo")
+```
 
+```py
 marx_tuple =  ("Groucho", "Chico", "Harpo")
-a,b,c = marx_tuple # 각각 할당
+a,b,c = marx_tuple # 1:1 각각 할당
 print(a)
 >>>'Groucho'
 ```
@@ -56,14 +58,15 @@ t1 += t2
 marxes[0] >>> 리스트의 특정 값을 추출
 ```
 
-```
-split() >>> 결과물이 리스트로 나옴
-```
 
 ### 리스트
 
 ```
 list() # 리스트함수 생성
+```
+
+```
+split() >>> 결과물이 리스트로 나옴
 ```
 
 ```py
@@ -136,12 +139,13 @@ marxes.remove('a') #이름으로 삭제
 .clear() # 모든 항목 삭제
 
 .index('a') >>> 1 # 값으로 오프셋 찾기, 값이 2개 이상이면 처음 값만 반환
+
+.count('a') >>> 2 # 몇개의 특정 항목이 있는지 카운트
 ```
 
 ```py
 'a' in marxes >>> True # 존재 여부 확인
 
-.count('a') >>> 2 # 몇개의 특정 항목이 있는지 카운트
 ```
 
 ```py
@@ -210,7 +214,12 @@ for number in range(1,6):
 ```
 
 ```py
-number_list = [number for number in range(1,6)] #for 의 number와 앞선 number는 다름
+number_list = [number for number in range(1,6)] #for 문 한줄 연결 샘플
+
+numbers = []  # 긴버전
+for number in range(1, 6): 
+    numbers.append(number)  
+
 ```
 
 ```py
