@@ -333,6 +333,13 @@ letters[70:71] >>> ''
 
 ```py
 len(letters)
+sortedletters)
+reverse(letters)
+
+.join(letters)
+re.sub()
+print(letters)
+add()#?
 ```
 
 ```
@@ -491,6 +498,115 @@ f'The {thins.capitalize()} is in the {place.rjust(20)}
 f'{thing =}, {place =}' >>> thin = 'wereduck', place = 'werepond'
 ```
 
+```py
+count = 1
+while count <=5:
+    print(count)
+    count += 1
+>>>
+1
+2
+3
+4
+5
+```
 
+```py
+while True:
+    stuff = input("String to capitalize [type q to quit]: ")
+    if stuff == "q":
+        break
+    print(stuff.capitalize())
+>>>
+String to capitalize [type q to quit]:  google
+Google
+String to capitalize [type q to quit]:  q
+```
 
+```py
+while True:
+    value = input("Integer ,please [q to quit]: ")
+    if value == 'q':
+        break
+    number = int(value)
+    if number % 2 == 0:
+        continue # 아래꺼 실행하지 말고 다시 돌아가
+    print(number, "squared is", number * number)
+>>>
+Integer ,please [q to quit]:  3
+3 squared is 9
+Integer ,please [q to quit]:  2
+```
 
+```py
+word = 'thud'
+offset = 0
+while offset < len(word):
+    print(word[offset])
+    offset += 1
+>>>
+t
+h
+u
+d
+```
+
+```py
+for letter in word:
+    print(letter)
+```
+
+```py
+numbers = [1,3,5]
+position = 0
+while position < len(numbers):
+    number = numbers[position]
+    if number % 2 == 0:
+        print('Found even number', numbers)
+        break
+    position += 1
+else:
+    print('No even number found')
+>>>
+No even number found
+```
+
+```py
+word = [1,3,5]
+for letter in word:
+    if letter % 2 == 0:
+        print("Found even number", letter)
+        break
+else:
+    print("No even number found")
+>>>
+No even number found
+```
+
+```py
+word = 'thud'
+for letter in word:
+    if letter == 'u':
+        break
+    print(letter)
+>>>
+t
+h
+```
+
+```py
+word = 'thud'
+for letter in word:
+    if letter == 'x':
+        print("Eek! An 'x'!")
+        break
+    print(letter)
+else:
+    print("No 'x' in there.")
+>>>
+t
+h
+u
+d
+No 'x' in there.
+```
