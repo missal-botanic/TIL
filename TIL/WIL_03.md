@@ -7,7 +7,9 @@
 
 ```py
 empty_tuple = ()
+```
 
+```py
 one_marx = "Groucho", # ','생략하면 문자열, 함수에 인자로 넣으면 문자열로 인식 괄호 꼭 필요
 marx_tuple =  "Groucho", "Chico", "Harpo"
 
@@ -34,48 +36,44 @@ print(b)
 >>> 1
 ```
 
+
 ```py
 marx_list = [1, 2, 3]
 tuple(marx_list)
 print(marx_list)
->>> (1, 2, 3) # 리스트를 튜플로
+>>> (1, 2, 3) # 리스트 -> 튜플
 ```
 
 ```py
-(1,) + (2,3)
->>> (1, 2, 3)
+marxes[0] >>> 듀플의 특정 값을 추출
+```
+
+```py
+(1,) + (2,3) 
+>>> (1, 2, 3) # 튜플 합치기
 
 ('1',) * 3
->>> ('1','1','1')
+>>> ('1','1','1') # 튜플 연산
 
 t1 = (2, 3, 4)
 t2 = (1,)
 t1 += t2
->>> (2, 3, 4, 1) # 새로운       t1이 만들어 지는 것이다.
+>>> (2, 3, 4, 1) # 새로운 변수가 만들어 지는 것이다.
 ```
 
-```
-marxes[0] >>> 리스트의 특정 값을 추출
-```
+
 
 
 ### 리스트
 
-```
+```py
 list() # 리스트함수 생성
-```
 
-```
-split() >>> 결과물이 리스트로 나옴
+#split() >>> 결과물이 리스트로 나옴
 ```
 
 ```py
-["a"] * 3 
->>> ['a', 'a', 'a']
-```
-
-```py
-list('cat')
+list('cat') # 리스트 기본 함수
 >>> ['c', 'a', 't']
 list('한')
 >>> ['한']
@@ -88,11 +86,16 @@ list(a_tuple)
 ```
 
 ```py
-marxes = marxes[::-1] # 원본에는 변함 없음 (원본은 주소를 잃음)
+b = a.copy() # 새로운 카피본 단 리스트는 여전히 연결되어 있다.
+c = list(a)
+d = a[:]
+```
 
-.reverse() # 원본이 변함
-marxes.reverse()
+```py
+b = copy.deepcopy(a) # 변수 안에 속한 리스트 모두 개별 카피
+```
 
+```py
 .append() # 끝에 항목 추가
 marxes.append('4')
 >>> [1, 2, 3, 4]
@@ -100,7 +103,9 @@ marxes.append('4')
 other = [4, 5]
 marxes.append(other)
 >>> [1, 2, 3,[4, 5]]
+```
 
+```py
 .insert
 marxes.insert(2, 'Gummo') # 2번 인덱스에 추가
 
@@ -108,19 +113,22 @@ marxes.insert(2, 'Gummo') # 2번 인덱스에 추가
 marxes.extend(others) #리스트 병합
 ```
 
-```
-marxes += others
-```
-
-```
-marxes[2], marxes[1:3]
+```py
+marxes += others #리스트 끼리 더하기
 ```
 
 ```py
-numbers = [1, 2, 3, 4]
-numbers[1:3] = [] # 해당 부분을 빈 리스트로 전환
-numbers
+["a"] * 3 # 리스트 연산
+>>> ['a', 'a', 'a']
+```
+
+```py
+marxes = ['a', 'b', 'c']
+separator = '*'
+joined = separator.join(marxes) # joined.split(seperator) joind은 문자열 메서드 이다.
+joined
 >>>
+'a*b*c'
 ```
 
 ```py
@@ -137,7 +145,26 @@ marxes.remove('a') #이름으로 삭제
 .append() -> .pop(0) >>> 선입 선출 큐(queue)
 
 .clear() # 모든 항목 삭제
+```
 
+```py
+numbers = [1, 2, 3, 4]
+numbers[1:3] = [] # 해당 부분을 빈 리스트로 전환
+numbers
+>>>
+```
+
+```py
+marxes[2], marxes[1:3]
+
+marxes = marxes[::-1] # 원본에는 변함 없음 (원본은 주소를 잃음)
+
+.reverse() # 원본이 변함
+marxes.reverse()
+```
+
+
+```py
 .index('a') >>> 1 # 값으로 오프셋 찾기, 값이 2개 이상이면 처음 값만 반환
 
 .count('a') >>> 2 # 몇개의 특정 항목이 있는지 카운트
@@ -149,31 +176,12 @@ marxes.remove('a') #이름으로 삭제
 ```
 
 ```py
-marxes = ['a', 'b', 'c']
-separator = '*'
-joined = separator.join(marxes) # joined.split(seperator) joind은 문자열 메서드 이다.
-joined
->>>
-'a*b*c'
-```
-
-```py
 marxes.sort() # 원본
 marxes.sort(reverse = True) # 원본 역순
 
 sorted_marxes = sorted(marxes) # 복사본
 
 len()
-```
-
-```py
-b = a.copy() # 새로운 카피본 단 리스트는 여전히 연결되어 있다.
-c = list(a)
-d = a[:]
-```
-
-```py
-b = copy.deepcopy(a) # 변수 안에 속한 리스트 모두 개별 카피
 ```
 
 ```py
@@ -276,8 +284,8 @@ all_birds[1][0] # 다중 리스트일 때 선택하는 방법
 ```
 
 ```py
-things[1].capitalize()
-things[1] = things[1].capitalize()
+things[1].capitalize() # 할당전
+things[1] = things[1].capitalize() # 실제 할당
 ```
 
 ```py
