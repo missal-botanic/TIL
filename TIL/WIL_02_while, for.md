@@ -1,4 +1,6 @@
 
+### while
+
 ```py
 count = 1
 while count <=5:
@@ -51,6 +53,8 @@ h
 u
 d
 ```
+
+### for
 
 ```py
 for letter in word: # for문은 in을 항상 포함한다.
