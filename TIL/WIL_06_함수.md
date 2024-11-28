@@ -10,18 +10,20 @@ def PassThrough():
     pass # 패스문 
 
 PassThrough() # 함수 호출
+>>> None
+```
 
-
+```py
 def MakeSound():
-    print('quack')
+    print('quack') # 리턴 없이 출력만 있는 함수
 
 MakeSound()
 >>> quack
 ```
 
 ```py
-def agree():
-    return True
+def agree(): 
+    return True # 리턴 함수
 >>> True
 
 if agree(): # if while 문에 함수 붙여서 사용
@@ -31,13 +33,6 @@ else:
 >>> let's do this
 ```
 
-```py
-def echo(anything):
-    return anything + ' ' + anything
-
-echo('Rumplestiltskin')
->>> 'Rumplestiltskin Rumplestiltskin'
-```
 ```
 함수로 전달하는 값은 **인수** 인수의 값이 함수 내에서 **매개변수**에 복사
 
@@ -47,7 +42,16 @@ print(do_noting())
 ```
 
 ```py
-def commentary(color):
+def echo(anything): # 인수 -> 매개변수
+    return anything + ' ' + anything
+
+echo('Rumplestiltskin')
+>>> 'Rumplestiltskin Rumplestiltskin'
+```
+
+
+```py
+def commentary(color): # 함수 내 if 문
     if color == 'red':
         return "It's tomatos"
     if color == 'green':
@@ -67,7 +71,8 @@ print(commentary('red'))
 >>> It's tomatos
 ```
 
-thing = None
+```py
+thing = None # None 확인
 if thing:
     print("It's some thing")
 else:
@@ -75,11 +80,13 @@ else:
 >>> It's no thing
 
 thing = None
-if thing is None: # is Nones
+if thing is None: # is Nones 조건
     print("It's noting")
 else:
     print("It's something")
 >>> It's noting
+```
+
 
 ```
 is: 객체가 동일한지 비교. (is not)
@@ -90,7 +97,7 @@ in: 값이 시퀀스에 포함되어 있는지 확인.
 not in: 값이 시퀀스에 포함되지 않았는지 확인.
 and, or, not: 논리 연산자를 사용하여 복합 조건을 작성.
 ```
-
+```
 None
 False
 0 (정수 0, 실수 0.0 등)
@@ -101,7 +108,10 @@ False
 빈 자료구조는 False로 나오지만 None과는 같지 않다. 즉 None True False 형이 존재한다.
 
 [''] or ('') 는 True 모든 자료형 동일
+```
 
+
+```py
 def whatis(thing):
     if thing is None:
         print(thing, "is None")
@@ -112,4 +122,5 @@ def whatis(thing):
 
 whatis(None)
 >>> None is None
+```
 

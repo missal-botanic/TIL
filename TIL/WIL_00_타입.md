@@ -8,11 +8,17 @@
 del 
 in
 len()
-join()
-sorted() reverse()
+.join()
+sorted() 
+reverse()
 copy.deeocopy()
-
+print()
+re.sub()
+add() #?
 marxes[::-1] 듀플 리스트 동일
+type()
+
+
 ```
 
 ### 1) 타입

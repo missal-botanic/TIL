@@ -16,9 +16,7 @@ print() 출력은 인터프리터와 아이들과 출력방식이 다르다
 \\ 는 실제 \ 표시
 ```
 
-```
-r"" 원시 문자열\n 은 내용 그대로 전부 출력 하지만 print() 구문은 이스케이프 적용되어 출력
-```
+
 
 ```py
 "hello"+"baby" >>> 'hellobaby'
@@ -51,7 +49,7 @@ letter[0] # 첫문자 선택
 
 letter[0] = 'p' >>> # 오류 발생
 
-letter.replace('H', 'P') # 함수 방식
+letter.replace('H', 'P') # 함수 방식, 새롭게 값이 만들어진다. 원본 불변
 'P' + letter[1:] # 슬라이스 방식
 ```
 
@@ -73,19 +71,18 @@ letters[::-1] = letters[-1::-1] >>> zyx...cba
 letters[70:71] >>> ''
 ```
 
-```py
-len(letters)
-sortedletters)
-reverse(letters)
 
-.join(letters)
-re.sub()
-print(letters)
-add()#?
-```
 
 ```
 string.function(arguments) 메서드 기본 구조 ()안에서는 인수가 들어간다. 인수가 없을 시에도 ()는 들어간다.
+```
+
+```py
+''.join()
+
+letters = ['abc', 'def', 'hij']
+new_letters = ','.join(letters) 
+>>>'abc,def,hij'
 ```
 
 ```py
@@ -96,18 +93,10 @@ letters.split(",") >>> ['abc', 'def', 'hij']
 ```
 
 ```py
-.join()
-
-letters = ['abc', 'def', 'hij']
-new_letters = ','.join(letters) 
->>>'abc,def,hij'
-```
-
-```py
 .replace()
 
-letters.replace('a', 'b') a를 b로 바꾼다.
-letters.replace('a', 'b', 100) 100회 까지 바꾼다.
+letters.replace('a', 'b') # a를 b로 바꾼다.
+letters.replace('a', 'b', 100) # 100회 까지 바꾼다.
 ```
 
 ```py
@@ -115,7 +104,7 @@ letters.replace('a', 'b', 100) 100회 까지 바꾼다.
 .lstrip() # 왼쪽(시작)만 제거
 .rstrip() # 오른쪽(끝)만 제거
 
-letter('!') # !가 없으면 아무 일도 일어나지 않는다.
+letter('!') # !가 없으면 아무 일도 일어나지 않는다 #?? 확인필요.
 
 "hello....!!!?" .strip('.!?') >>> "hello"
 ```
@@ -238,4 +227,8 @@ f'The {thins} is in the {place}
 f'The {thins.capitalize()} is in the {place.rjust(20)}
 
 f'{thing =}, {place =}' >>> thin = 'wereduck', place = 'werepond'
+```
+
+```
+r"" 원시 문자열\n 은 내용 그대로 전부 출력 하지만 print() 구문은 이스케이프 적용되어 출력
 ```
