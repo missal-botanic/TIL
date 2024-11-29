@@ -163,13 +163,14 @@ buddy('b')
 buddy('c')  
 >>> ['a', 'b', 'c']
 ```
-
+```
 arg라는 인수의 명칭은 "argument"(인수)의 약어로, 주로 함수나 메서드에서 전달되는 값
 
 *args: 가변 위치 인수를 받을 때 사용합니다. 여러 개의 인수를 튜플로 전달받을 수 있습니다.
 **kwargs: 가변 키워드 인수를 받을 때 사용합니다. 여러 개의 인수를 딕셔너리 형태로 전달받을 수 있습니다.
+```
 
-
+```py
 def works(arg):
     result = []
     result.append(arg)
@@ -203,6 +204,8 @@ nonbuggy('f', shared_result)
 >>> ['c', 'e', 'f']
 
 ```
+
+```py
 def print_args(*args):
     print('Positional tuple:', args)
 
@@ -212,9 +215,7 @@ print_args()
 # 결과물은 듀플로 출력
 # *params 라고도 쓴다.
 # 함수 호출 정의에서만 사용가능하다
-```
 
-```
 def print_args(a, b, *args):
     print('a:', a)
     print('b:', b)
@@ -225,14 +226,12 @@ print_args(1, 2, 3, 4, 5)
 >>>a: 1
 b: 2
 Remaining positional arguments: (3, 4, 5)
-```
 
 • 위치 인수를 함수에 전달하면, 함수 내 위치 매개변수와 일치한다.
 • 튜플 인수를 함수에 전달하면, 함수 내 튜플 매개변수가 있다.
 
-
 • 위치 인수를 함수에 전달하고, 매개변수 *args로 수집하여 튜플 인수로 해석할 수 있다.
-args = (2,5,7,'x)
+args = (2,5,7,'x')
 print args (args)
 >>> ((2, 5, 7,'×'),)
 
@@ -242,6 +241,228 @@ print_args(*args)
 
 
 • 함수 외부에서 *args는 튜플 인수를 쉼표로 구분된 위치 매개변수로 분해한다.
-• 함수 내부에서 *args는 모든 위치의 인수를 단일 인수 튜플로 수집한다. *params와 param라는 이름을 사용할 수 있지만, 외부 인수와 내부 인수 모두에 *args를 사용하는 것이 일반적이다.
+def example(a, b, c):
+    print(a, b, c)
+
+# 튜플을 사용하여 함수 호출
+args = (1, 2, 3)
+example(*args)  # *args는 튜플을 개별 인수로 분해
+
+• 함수 내부에서 *args는 모든 위치의 인수를 단일 인수 튜플로 수집한다. 
+1 2
+(3, 4, 5) # 단일 인수 튜플
+*params와 param라는 이름을 사용할 수 있지만, 외부 인수와 내부 인수 모두에 *args를 사용하는 것이 일반적이다.
 *args는 함수 외부에서 분해된 값을 함수 내부에 모은다.
+*args는 항상 맨 마지막에 위치해야 합니다.
+```
+
+```py
+def print_kwargs(**kwargs): #
+    print('Keyword arguments: ', kwargs)
+
+print_kwargs()
+>>> Keyword arguments:  {}
+
+print_kwargs(wine='merlot', entree='mutton', dessert='macaroon')
+>>> Keyword arguments:  {'wine': 'merlot', 'entree': 'mutton', 'dessert': 'macaroon'}
+```
+
+```py
+def print_data(data, *, start=0, end=100):
+    for value in (data[start:end]):
+        print(value)
+
+data = ['a', 'b', 'c', 'd', 'e', 'f']
+print_data(data)
+
+```
+
+
+키워드 인수 분해/모으기 *
+
+```py
+def print_data(data, *, start=0, end=100):
+    for value in (data[start:end]):
+        print(value)
+
+data = ['a', 'b', 'c', 'd', 'e', 'f']
+print_data(data) # 1개 리스트 단일 데이터 인풋
+>>>
+a
+b
+c
+d
+e
+f
+print_data(data, start=4)
+>>>
+e
+f
+print_data(data, end=2)
+>>>
+a
+b
+print_data(data, data)
+>>> 오류
+#*는 Python에서 매개변수 이름 뒤에 사용되며, 이후의 모든 매개변수는 위치 인자가 아니라 키워드 인자로만 받을 수 있음을 나타냅니다. 즉, start와 end는 반드시 명시적으로 이름을 지정해 주어야 합니다. 이 구문은 위치 인자와 키워드 인자를 구분하는 데 사용됩니다
+```
+
+가변/불변 인수
+
+```py
+outside = ['one', 'fine', 'day']
+def mangle(arg):
+    arg[1] = 'terrible'
+
+outside
+>>> ['one', 'fine', 'day']
+
+mangle(outside)
+outside
+>>> ['one', 'terrible', 'day'] #  가변 객체(mutable objects)는 함수 내부에서 수정될 수 있다
+#불변 객체는 함수에 전달할 때 객체의 복사본이 전달되는 것처럼 보이며, 함수 내부에서 객체를 수정하려고 해도 새로운 객체를 생성하는 효과가 있습니다
+```
+
+독스트링
+```py
+def echo(anything):
+    'ehco return its input argument' # 짧은 독스트링
+    return anything
+
+help(echo.__doc__)
+>>> No Python documentation found for 'ehco return its input argument'.
+Use help() to get the interactive help utility.
+Use help(str) for help on the str class.
+
+
+def print_if_true(thing, check):
+    '''
+    Prints the first argument if a second argument is true.
+    The operation is:
+        1. Check whether the *second* argument is true.
+        2. If it is, print the *first* 
+    ''' # 긴 독스트링
+    if check:
+        print(thing)
+
+
+
+
+help(print_if_true)
+>>> Help on function print_if_true in module __main__:
+
+print_if_true(thing, check)
+    Prints the first argument if a second argument is true.
+    The operation is:
+        1. Check whether the *second* argument is true.
+        2. If it is, print the *first*
+```
+
+```
+모든 것은 객체다.
+객체 : 숫자, 문자열, 튜플, 리스트, 딕셔너리
+일등시민 : 함수
+함수를 변수에 할당, 다른 핫무에서 이를 인수로 사용, 함수에서 이를 반환
+```
+
+```py
+def answer():
+    print(42)
+
+def run_something(func):
+    func()
+
+run_something(answer)
+>>> 42
+```
+
+```
+()가 없으면 객체로 전달된다. answer는 객체로 전달 된 것이다.
+type(run_something)
+>>> function
+```
+
+```py
+def add_args(arg1, arg2):
+    print(arg1 + arg2)
+
+def run_something_with_args(func, arg1, arg2):
+    func(arg1, arg2)
+
+run_something_with_args(add_args, 5, 9)
+>>> 14
+```
+
+```py
+def sum_args(*args):
+    return sum(args)
+
+def run_with_positional_args(func, *args):
+    return func(*args)
+
+run_with_positional_args(sum_args, 1, 2, 3, 4)
+
+>>> 10
+```
+내부함수
+
+```py
+def outer(a, b):
+    def inner(c, d): # 1차 정의 2차 호출
+        return c + d
+    return inner(a, b) # a->c, b->d
+
+outer(4,7)
+>>> 11
+
+
+def knights(saying):
+    def inner(quote):
+        return "We are the knights who say: '{}'".format(quote)
+    return inner(saying)
+
+knights('Ni!')
+>>> "We are the knights who say: 'Ni!'"
+```
+
+크로저
+```py
+def knight2(saying):
+    def inner2():
+        return "We are the knights who say: %s" % saying
+    return inner2 # 내부 함수를 반환하겠다.(실행x + saying 값도 기억)
+
+a = knight2('Duck')
+b = knight2('Hapsenpfeffer')
+
+type(a)
+>>> function
+type(b)
+>>> function
+
+a
+>>> <function __main__.knight2.<locals>.inner2()>
+b
+>>> <function __main__.knight2.<locals>.inner2()>
+
+a()
+>>> 'We are the knights who say: Duck'
+b()
+>>> 'We are the knights who say: Hapsenpfeffer'
+```
+
+```py
+def outer():
+    x = 10
+    def inner():
+        return x  # x는 outer 함수 내의 지역 변수
+    return inner # 내부 함수를 변수로 지정하겠다는 의미(함수 실행이 아니라 함수 전달 + outer 입력값 x = 10 도 같이 기억)
+
+f = outer()
+print(f())  # 출력: 10
+
+# 외부 함수는 사라지지만 외부함수의 인수 값은 기억하고 있다.
+# 두번째 호출되면 내부 클로저 함수만 실행되고 이전에 기억한 함수가 쓰인다.
+```
+
 

@@ -367,3 +367,16 @@ else:
 | **None 타입**       | 값이 없음을 나타내는 타입                                 | None                                         |
 | **NoneType**        | None (값이 없음)                                          | None                                         |
 
+```py
+a, b = 10, 20
+
+temp = a
+a = b
+b = temp
+
+a, b = b, a
+
+
+
+
+```

@@ -51,6 +51,8 @@ pip3 install --upgrade transformers #확인필요 유력
 
 pip3 install -U --quiet langchain-google-genai #google ai
 
+pip3 install -qU langchain-community unstructured openpyxl #엑셀 불러오기
+
 ML
 * !pip3 install scikit-learn
 * !pip3 install matplotlib

@@ -64,7 +64,7 @@ for letter in word: # for문은 in을 항상 포함한다.
 ```py
 numbers = [1,3,5]
 position = 0
-while position < len(numbers):
+while position < len(numbers): # 개념적 접근
     number = numbers[position]
     if number % 2 == 0:
         print('Found even number', numbers)
@@ -78,7 +78,7 @@ No even number found
 
 ```py
 word = [1,3,5]
-for letter in word:
+for letter in word: # 파이써닉 방법
     if letter % 2 == 0:
         print("Found even number", letter)
         break
@@ -120,22 +120,21 @@ No 'x' in there.
 range(start = 0, stop = 꼭 입력, step = 1) # default
 range(3) = range(0, 3) = range(0, 3, 1)
 list(range(0,11,2))
-zip()
 ```
 
-```
-a = [range(0,11,2)]
+```py
+a = [range(0,11,2)] # 괄호에 바로 넣지 못한다. 함수는 함수로 정해줘야 한다.
 >>> [range(0, 11, 2)]
 
-a = list(range(0, 11, 2))
+a = list(range(0, 11, 2)) # 자료 구조 함수는 각자 괄호를 자동으로 가져온다. 
 >>> [0, 2, 4, 6, 8, 10]
 
-a = [list(range(0, 11, 2))]
+a = [list(range(0, 11, 2))] # 이중 호출 경우(구조안에 다른 구조가 필요할때)
 >>> [[0, 2, 4, 6, 8, 10]]
 ```
 ```py
 numbers = [3, 2, 1, 0]
-for number in numbers:
+for number in numbers: # 앞 number(단수), 뒤 numbers(복수)는 다르다. 
     print(number)
 >>>
 3
@@ -150,7 +149,7 @@ number = 1
 while number < guess_me:
     print("too low")
     number += 1
-if number == guess_me:
+if number == guess_me: # if문 루프 밖에 위치
     print("found it")
 else:
     print("oops")
@@ -167,8 +166,8 @@ found it
 ```py
 guess_me = 7
 number = 1
-while True: 
-    if number < guess_me:
+while True: # while 뒤에는 항상 조건 필요, True 상태에는 무한 반복
+    if number < guess_me: # if문 푸르 안에 위치
         print("too low")
     elif number == guess_me:
         print("found it")
