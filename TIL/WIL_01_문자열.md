@@ -232,3 +232,68 @@ f'{thing =}, {place =}' >>> thin = 'wereduck', place = 'werepond'
 ```
 r"" 원시 문자열\n 은 내용 그대로 전부 출력 하지만 print() 구문은 이스케이프 적용되어 출력
 ```
+
+```py
+print(name, "님의 나이는", age, "살입니다.") # 띄어 쓰기 문제
+print("%s님의 나이는 %s살입니다" % (name, age)) # "" 안에 구별 없이
+print("{0}님의 나이는 {1}살입니다.".format(name, age)) # "" 안게 구별 없이, + {} 0 부터 시작
+print(f"{name}님의 나이는 {age}살입니다.") #안에 구별 없이, + {}
+>>>'우왁굳 님의 나이는 30 살입니다.'
+'우왁굳님의 나이는 30살입니다.'
+'우왁굳님의 나이는 30살입니다.'
+'우왁굳님의 나이는 30살입니다.'
+
+```
+
+```py
+a = 10
+b = 5
+print(f"a + b = {a + b}") # 연산자 가능
+>>>
+a + b = 15
+```
+
+```py
+print("파이썬", "프로그래밍", end=" 끝!\n")
+>>>
+파이썬★프로그래밍 끝!
+```
+
+```py
+r = int(input("원의 반지름을 입력하세요"))
+
+print(f"원의 넓이는 { r * 3.14 * 2}입니다.")
+>>> '원의 반지름을 입력하세요 30'
+'원의 넓이는 188.4입니다.'
+
+```
+
+```py
+map(function, iterable)
+
+def f(x):
+    return x + 5
+
+numlist = [1, 2, 3, 4, 5]
+
+f(numlist)
+>>> 오류
+
+templist = []
+
+for i in numlist:
+    templist.append(f(i))
+
+print(templist)
+>>>
+[6, 7, 8, 9, 10]
+
+print(map(f, numlist))
+>>>
+<map object at 0x000002080820C310> # 
+
+print(list(map(f, numlist)))
+>>>
+[6, 7, 8, 9, 10]
+
+```
