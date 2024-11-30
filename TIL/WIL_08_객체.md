@@ -52,7 +52,7 @@ a_cat.nemesis
 
 ```py
 class Cat:
-    def __init__(self):
+    def __init__(self): # self는 다른 객체를 만들기 위해서 필요함
         pass
 
 
@@ -200,10 +200,80 @@ print(doctor.name)
 print(lawyer.name)
 >>> 'Fudd, Esquire'
 ```
+메서드 추가
+```py
+class Car():
+    def exclaim(self):
+        print("I'm a Car!")
 
+class Yugo(Car):
+    def exclaim(self):
+        print("I'm a Yugo! Much like a Car, but more Yugo-ish")
+    def need_a_push(self):
+        print("A little help here?")
 
+give_me_a_car = Car()
+give_me_a_yugo = Yugo()
 
+give_me_a_yugo.need_a_push() # 새 메서드 존재
+>>> 'A little help here?'
 
+give_me_a_car.need_a_push() # 부모는 새 메서드가 없다
+>>> '오류'
+```
 
+부모에게 도움 받기
 
+```py
+class Person():
+    def __init__(self, name):
+        self.name = name
 
+class EmailPerson(Person):
+    def __init__(self, name, email): 
+        super().__init__(name) # 부모 클래스 정의를 얻는다.
+        self.email = email
+
+bob = EmailPerson('Bob Frapples', 'bob@frapple.com')
+
+bob.name
+>>> 'Bob Frapples'
+
+bob.email
+>>> 'bob@frapple.com'
+```
+다중 상속
+```py
+class Animal:
+    def says(self): # 하위에 says가 없다면 작동
+        return 'I speak!'
+
+class Horse(Animal):
+    def says(self): # 먼저 호출된 쪽을 출력
+        return 'Neigh!'
+
+class Donkey(Animal):
+    def says(self): # 먼저 호출된 쪽을 출력
+        return 'Hee-haw!'
+
+class Mule(Donkey, Horse): # 엄마, 아빠 중 엄마를 호출 없을시 아빠
+    pass
+
+class Hinny(Horse, Donkey): # 엄마, 아빠 중 엄마를 호출 없을시 아빠
+    pass
+
+Mule.mro()
+>>> '[__main__.Mule, __main__.Donkey, __main__.Horse, __main__.Animal, object]'
+
+Hinny.mro()
+>>> '[__main__.Hinny, __main__.Horse, __main__.Donkey, __main__.Animal, object]'
+
+mule = Mule()
+hinny = Hinny()
+
+mule.says()
+>>> 'Hee-haw!'
+
+hinny.says()
+>>> 'Neigh!'
+```
