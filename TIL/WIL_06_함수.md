@@ -1022,3 +1022,24 @@ while True:
     except Exception as other: # 시스템 클래스 예외
         print('Something else broke:', other)
 ```
+예외 만들기
+```py
+value = '아'
+try:
+    if value not in ['가', '나', '다']:
+        raise ValueError("가 나 다 중 하나 필요합니다.")
+except ValueError:
+    print("에러 발생")
+```
+
+```py
+class UnexpectedRSPValue(Exception): #예외 클래스 만들기
+ '''에러 상속'''
+
+value = '아'
+try:
+    if value not in ['가', '나', '다']:
+        raise UnexpectedRSPValue
+except UnexpectedRSPValue:
+    print("에러 발생")
+```
