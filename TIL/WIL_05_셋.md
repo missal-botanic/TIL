@@ -183,27 +183,6 @@ f2e
 ```
 
 ```py
-life = {
-    'animals': {
-        'cats': ['Heri', 'Grumpy', 'Lucy'],
-        'octopi': {},
-        'emus': {}
-    },
-    'plants': {},
-    'other': {}
-}
-```
-
-```py
-life['animals']['cats'] #  딕셔너리 내 값 출력
->>> ['Heri', 'Grumpy', 'Lucy']
-```
-
-```py
-squares = {key: key*key for key in range(10)} # 딕셔너리 안에서 컨프리핸션
-```
-
-```py
 odd = {number for number in range(10) if number % 2 == 1} # 짝수 만들기
 >>> {1, 3, 5, 7, 9}
 ```
