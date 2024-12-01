@@ -164,8 +164,14 @@ frozenset((2, 3, 1))
 ```py
 data_list[2]
 data_tuple[2]
-data_dict[2]
-if 'apple' in data_set: # 셋은 그 특징상 다른 방식으로 호출한다.
+
+first_item = list(my_dict.items())[0] # 딕셔너리 호출
+>>> ('a', 1)
+
+first_item = list(my_set)[0] # 셋 호출 01
+>>> 1
+
+if 'apple' in data_set: # 셋 호출 02 그 특징상 다른 방식으로 호출한다.
 ```
 
 ```py
@@ -177,13 +183,6 @@ f2e
 ```
 
 ```py
-#life = {
-#    'animals' : ['cats', 'octopi', 'emus'],
-#    'plants' : ['Henri', 'Grumpy', 'Lucy'],
-#    'other' : []
-#}
-
-
 life = {
     'animals': {
         'cats': ['Heri', 'Grumpy', 'Lucy'],
