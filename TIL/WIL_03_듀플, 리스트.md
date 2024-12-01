@@ -7,7 +7,7 @@
 ```
 
 ### 튜플
-
+듀플이 적은공간 차지
 ```py
 empty_tuple = ()
 ```
@@ -69,10 +69,17 @@ t1 += t2
 
 ### 리스트
 ```py
-#리스트에 1개를넣어서 가변용으로도 쓴다
-x = [10]
+#리스트에 1개를넣어서 가변용으로 쓴다
 
-x[0] = 5
+x = [] # 빈리스트
+x = [10] # 10을 가진 리스트를 변수에 지정
+x = list(a) # 변수 리스트화
+
+x[0] = 5 # 리스트의 첫번째 인덱스 호출
+x = a[:] # 리스트 슬라이싱
+x = marxes[2]
+x = marxes[1:3]
+
 
 print(x[0])
 ```
@@ -87,8 +94,12 @@ list() # 리스트함수 생성
 ```py
 list('cat') # 리스트 기본 함수
 >>> ['c', 'a', 't']
+
 list('한')
 >>> ['한']
+
+list('한글자')
+>>> ['한', '글', '자']
 ```
 
 ```py
@@ -98,21 +109,18 @@ list(a_tuple)
 ```
 
 ```py
-b = a.copy() # 새로운 카피본 단 리스트는 여전히 연결되어 있다.
-c = list(a)
-d = a[:]
+b = a.copy() # 새로운 카피본 단 리스트안의 리스트는 여전히 연결되어 있다.
+b = copy.deepcopy(a) # 리스트 안 리스트 모두 개별 카피
 ```
 
-```py
-b = copy.deepcopy(a) # 변수 안에 속한 리스트 모두 개별 카피
-```
+
 
 ```py
 .append() # 끝에 항목 추가
 marxes.append('4')
 >>> [1, 2, 3, 4]
 
-other = [4, 5]
+other = [4, 5] # 리스트 안에 리스트 형식
 marxes.append(other)
 >>> [1, 2, 3,[4, 5]]
 ```
@@ -163,12 +171,10 @@ marxes.remove('a') #이름으로 삭제
 numbers = [1, 2, 3, 4]
 numbers[1:3] = [] # 해당 부분을 빈 리스트로 전환
 numbers
->>>
+>>> [1, 4]
 ```
 
 ```py
-marxes[2], marxes[1:3]
-
 marxes = marxes[::-1] # 원본에는 변함 없음 (원본은 주소를 잃음)
 
 .reverse() # 원본이 변함
@@ -213,18 +219,21 @@ a = '1', '2', '3'
 b = 'A', 'B', 'C'
 
 list(zip(a, b))
+>>> [('1', 'A'), ('2', 'B'), ('3', 'C')] # 리스트 안에 튜플
+
 dict(zip(a, b))
->>> [('1', 'A'), ('2', 'B'), ('3', 'C')]
+>>> {'1': 'A', '2': 'B', '3': 'C'} # 딕셔너리안 언팩
 ```
 
 ```py
 number_list[]
 number_list.append(1)
-number_list.append(2)
+number_list.append(2) # 수동으로 리스트 내용 추가
 ```
 
 ```py
-number_list = list(range(1,6))
+number_list = list(range(1,6)) # range 방식
+>>> [1, 2, 3, 4, 5]
 ```
 
 ```py
@@ -309,8 +318,6 @@ things[-1].capitalize()
 ```py
 things[-1] = things[-1].lower()[::-1].capitalize() #최소화
 ```
-
-듀플이 적은공간 차지
 
 ```py
 even = range(10) # 객체 저장
