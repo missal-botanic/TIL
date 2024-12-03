@@ -131,6 +131,25 @@ print(list1 + list2 * 2)
 
 ```
 numbers.sort()
-numbers.reverse()
+numbers.reverse() # 문자열은 안됨
 numbers.sorted() 
 sorted(numbers, reverse=True)
+# reversed() 함수도 같은 개념으로 한번만 사용
+```
+
+```
+map(fn, numbers)
+filter(fn, numbers)
+
+result = reduce(lambda x, y: x + y, numbers)
+
+# any: 하나라도 짝수인 수가 있으면 True
+print(any(x % 2 == 0 for x in numbers))  # True
+
+# all: 모두 짝수라면 True
+print(all(x % 2 == 0 for x in numbers))  # False
+```
+
+```
+sum(range(1,101))
+```
