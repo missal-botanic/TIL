@@ -153,3 +153,6 @@ print(all(x % 2 == 0 for x in numbers))  # False
 ```
 sum(range(1,101))
 ```
+```
+ isinstance(item, list)
+ ```
