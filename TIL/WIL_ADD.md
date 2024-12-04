@@ -15,6 +15,14 @@ print(s[0:1]) # 마지막은 포함 안되기 때문에 결과가 같다.
 a
 a
 ```
+슬라이싱 역순
+```py
+words[len(words)-1] # =< > 이기 떄문에 =< >-1 이다.
+
+my_list = [0, 1, 2, 3, 4, 5]
+print(my_list[5:1:-1]) # end 부분 -1이다.
+>>> [5, 4, 3, 2]
+```
 슬라이싱 역의 역순
 ```py
 s = 1234567890
@@ -56,120 +64,105 @@ s[1].strip().upper() # 공백 포함 2번째
 ```
 이메일 자르기
 ```py
-email = input('이메일 주소를 입력하세요: ')
-email = email.strip().split('@')
-email_id = email[0] # 전자
-email_domain = email[-1] # 후자
-
-print(email_id)
-print(email_domain)
-```
-
-```py
 # 01
 email = input('이메일 주소를 입력하세요: ')
 email = email.strip().split('@')
 email_id = email[0]
 email_domain = email[-1]
 # 02
-email_id, email_domain = email.strip().split('@') #객쳇가 같으면 '언패킹' 된다.
+email_id, email_domain = email.strip().split('@') # 객체가 같으면 '언패킹' 된다.
 
 print(email_id)
 print(email_domain)
 ```
+컨프리헨서
 ```py
-s = "dfskofg"
-
+words = "dfskofg"
+# 01
 result = []
-for a in range(len(s)):
+for a in range(len(words)):
     if a % 2 == 0:
-        result.append(s[a])
+        result.append(words[a])
 print(result)
->>> ['d', 's', 'o', 'g']v
+>>> ['d', 's', 'o', 'g']
 
-result = [s[a] for a in range(len(s)) if a % 2 == 0]
+# 02
+result = [words[a] for a in range(len(s)) if a % 2 == 0]
 print(result)
 >>> ['d', 's', 'o', 'g']
 ```
 ```py
-join # 리스트에 해당
+.join # 리스트에 해당
 ```
+.append
 ```py
-words[len(words)-1] # =< > 이기 떄문에 =< >-1 이다.
-
-my_list = [0, 1, 2, 3, 4, 5]
-print(my_list[5:1:-1]) # end 부분 -1이다.
->>> [5, 4, 3, 2]
-```
-
-```
-
 fruits = ['apple', 'banana', 'cherry']
-fruits.append(['data','blueberry'])
+fruits.append(['data','blueberry']) # 리스트 통으로 들어감
 print(fruits)
 >>>
 ['apple', 'banana', 'cherry', ['data', 'blueberry']]
-
+```
+.extend
+```py
 fruits = ['apple', 'banana', 'cherry', 'watermelon', 'date']
-new_fruits = ['melon', 'blueberry']
-fruits.extend(new_fruits)
+fruits.extend(['melon', 'blueberry']) # 자동 언팩
 print(fruits)
 >>>
 ['apple', 'banana', 'cherry', 'watermelon', 'date', 'melon', 'blueberry']
-
+```
+[list] + [list]
+```py
 fruits = ['apple', 'banana', 'cherry', 'watermelon', 'date']
 new_fruits = ['melon', 'blueberry']
 
 print(fruits + new_fruits)
 >>> ['apple', 'banana', 'cherry', 'watermelon', 'date', 'melon', 'blueberry']
 ```
-
-```
+'*' 연산 우선
+```py
 list1 = [1, 2, 3]
 list2 = [4, 5]
 print(list1 + list2 * 2)
 >>> [1, 2, 3, 4, 5, 4, 5]
 ```
-
-
-```
+순서 정렬, 역순 정렬
+```py
 numbers.sort()
-numbers.reverse() # 문자열은 안됨
+numbers.reverse() # 반전 문자열은 안됨, 함수도 같은 개념으로 한번만 사용
 numbers.sorted() 
-sorted(numbers, reverse=True)
-# reversed() 함수도 같은 개념으로 한번만 사용
+sorted(numbers, reverse=True) # 반전
 ```
-
-```
+map, filter, reduce + 람다
+```py
 map(fn, numbers)
 filter(fn, numbers)
 
 result = reduce(lambda x, y: x + y, numbers)
-
+```
+any, all
+```py
 # any: 하나라도 짝수인 수가 있으면 True
 print(any(x % 2 == 0 for x in numbers))  # True
 
 # all: 모두 짝수라면 True
 print(all(x % 2 == 0 for x in numbers))  # False
 ```
-
-```
+isinstance
+```py
 sum(range(1,101))
-```
-```
- isinstance(item, list)
- ```
 
- ```
- print('naver','kakao','sk','samsung', sep=";")
- ```
-
+isinstance(item, list) # 타입 확인
+```
+;
 ```py
 print("first");print("second") # ';' 여러 명령어 쓸때
 >>>
 first
 second
-
+```
+sep="", end="" 
+```py
+print('naver','kakao','sk','samsung', sep=";")
 print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
 >>>
 firstsecond
