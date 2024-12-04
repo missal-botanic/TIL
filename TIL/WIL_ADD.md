@@ -1,67 +1,70 @@
+
+슬라이싱 원본
+```py
+print(s[0:len(s):1])
+# print(s[::-1])
+print(s[len(s)-1::-1]) # 마지막은 미포함이라 -1 필요
+```
+
+슬라이싱
 ```py
 s = "abcdefghij"
 
 print(s[0])
-print(s[0:1])
+print(s[0:1]) # 마지막은 포함 안되기 때문에 결과가 같다.
 a
 a
 ```
+슬라이싱 역의 역순
 ```py
-s = "I love apples"
-
-print(s.replace("apples", "bananas"))
-
-result = s.replace("apples", "bananas")
-print(result)
-
-I love bananas
-I love bananas
-```
-
-```py
-s = "Find the index of the first 'e' character"
-s.find('e') #index() 없을 시 오류 find()는 -1
-try:
-    print(index('fja'))
-except:
-    print('error')
-
-# list는 find 없음
-# count 는 둘다
-```
-
-```py
+s = 1234567890
 s[-7:-3]
 >>> 4567
-
 ```
-```py
-split() 참고 문자는 사라짐
-```
-```py
-s = " OpenAI "
-s.strip().upper() #strip은 양쪽 공백제거가 기본 값
-s.strip()[1].upper() # 리스트일 경우 바로 선택
-
-```
-```py
-print(s[0:len(s):1])
-# print(s[::-1])
-print(s[len(s)-1::-1])
-```
-```py
-email = input('이메일 주소를 입력하세요: ')
-email = email.strip().split('@')
-email_id = email[0]
-email_domain = email[-1]
-
-print(email_id)
-print(email_domain)
-```
+짝수, 홀수
 ```py
 s[::2] #홀수
 s[1::2] #짝수
 ```
+문자열 교체
+```py
+s = "I love apples"
+
+result = s.replace("apples", "bananas") # 문자열 교체
+print(result)
+>>> 'I love bananas'
+```
+문자열 찾기
+```py
+s = "Find the index of the first 'e' character"
+s.find('e') # index() 없을 시 오류 find()는 -1
+try:
+    print(index('fja')) # 오류시 우회
+except:
+    print('error')
+
+# list는 find 없음
+# count 는 둘 다 있음
+```
+공백제거 + 대문자화
+```py
+s = " OpenAI "
+s.strip().upper() #strip은 양쪽 공백제거가 기본 값
+#리스트일 경우 바로
+s.strip()[1].upper() # 공백 제외 2번째  선택
+s[1].strip().upper() # 공백 포함 2번째
+```
+이메일 자르기
+```py
+email = input('이메일 주소를 입력하세요: ')
+email = email.strip().split('@')
+email_id = email[0] # 전자
+email_domain = email[-1] # 후자
+
+print(email_id)
+print(email_domain)
+```
+
 ```py
 # 01
 email = input('이메일 주소를 입력하세요: ')
@@ -156,3 +159,18 @@ sum(range(1,101))
 ```
  isinstance(item, list)
  ```
+
+ ```
+ print('naver','kakao','sk','samsung', sep=";")
+ ```
+
+```py
+print("first");print("second") # ';' 여러 명령어 쓸때
+>>>
+first
+second
+
+print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
+>>>
+firstsecond
+```

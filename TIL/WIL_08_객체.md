@@ -33,7 +33,52 @@ a_cat = Cat # a_cat이 Cat 클래스 자체로, type(a_cat)은 type을 출력합
 # 클래스 = 틀 , 재료 = 속성, 멤버 변수(함수 내 변수), 재료의 양 = 값(함 수내 변수에 할당된 값), 만드는 작업 = 메서드(클래스 내 함수)
 
 # 클래스 변수는 클래스에 저장
+class Person:
+    a = 0
+    def __init__(self):
+        Person.a += 1
+    def disp(self):
+        print(Person.a)
+p1 = Person()
+print(p1.a)
+>>>1
+p2 = person()
+print(p2.a)
+>>>2
+#클래스 변수에 저정되어 값이 누적된다.
+
+class Person:
+    li = [] # 클래스 변수
+    def __init__(self, a):
+        Person.li.append(a) # 인스턴스 변수
+    def disp(self):
+        print(Person.li)
+>>> 대상 누적
+
+
 # 인스턴스 변수는 각 객체마다 저장
+class Person:
+    def __init__(self):
+        self.a = 0 # 인스턴스 변수
+        self.a += 1
+    def disp(self):
+        print(self.a)
+
+p1 = Person()
+print(p1.a)
+>>>1
+p2 = person()
+print(p2.a)
+>>>1
+# self는 누적되지 않는다.
+
+class Person:
+    def __init__(self, a):
+        self.li = [] # 인스턴스 변수
+        self.li.append(a)
+    def disp(self):
+        print(self.li)
+
 
 a_cat.age = 3
 a_cat.name = "Mr. Fuzzybuttons"
