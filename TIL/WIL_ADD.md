@@ -167,3 +167,61 @@ print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
 >>>
 firstsecond
 ```
+```py
+
+a, b = map(int, input().split())
+
+fruits.insert(2, "watermelon")
+fruits.remove('grape')
+fruits.pop(1)
+
+
+fruits = [['apple', 'banana', 'cherry', 'watermelon', 'date']]
+new_fruits = ['melon', 'blueberry']
+fruits.extend(new_fruits)
+print(fruits)
+>>>
+[['apple', 'banana', 'cherry', 'watermelon', 'date'], 'melon', 'blueberry']
+
+
+numbers = [1, 2, 3, 4, 5]
+numbers[1:4] = [9, 9, 9]
+print(numbers)
+>>>
+[1, 9, 9, 9, 5]
+
+sort(reverse=True)
+sorted(numbers, reverse=True)
+
+
+b = a # 연계됨
+b = a[:] # 연계되지 않음
+b = a.copy.copy
+b = copy.deepcopy(a) # 연계되지 않음
+```
+```
+
+numbers = [1, 2, 3, 4, 5]
+result = []
+for i in numbers:
+    num = 0
+    num = i ** 2
+    result.append(num)
+result 
+
+numbers = [1, 2, 3, 4, 5]
+result = []
+for i in numbers:
+    num = i ** 2
+    result.append(num)
+result 
+
+numbers = [1, 2, 3, 4, 5]
+result = []
+for i in numbers:
+    result.append(i ** 2)
+result
+
+squared_numbers = list(map(lambda x: x**2, numbers))
+squared_numbers = [x**2 for x in numbers]
+```
