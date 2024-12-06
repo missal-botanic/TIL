@@ -162,7 +162,10 @@ second
 ```
 sep="", end="" 
 ```py
-print('naver','kakao','sk','samsung', sep=";")
+print('naver','kakao','sk','samsung', sep=";") # sep=";" 나누는 기준
+>>>
+naver;kakao;sk;samsung
+
 print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
 >>>
 firstsecond
@@ -170,49 +173,67 @@ firstsecond
 ```py
 
 a, b = map(int, input().split())
+# 추가
+fruits.insert(2, "watermelon") # .insert 인덱스 + 내용
+# 제거
+fruits.remove('grape') # .remove 내용으로 삭제
+fruits.pop(1) # .pop index로 삭제
 
-fruits.insert(2, "watermelon")
-fruits.remove('grape')
-fruits.pop(1)
 
+
+marxes = [1, 2, 3]
+other = [4, 5]
+marxes.append(other) # '리스트의 끝에 하나의 요소를 추가', '리스트일 경우에도 하나의 리스트'
+print(marxes)
+>>>
+[1, 2, 3, [4, 5]]
+
+fruits = ['apple', 'banana', 'cherry']
+fruits.extend(['melon', 'blueberry']) # 리스트의 끝에 리스트의 다수의 요소를 하나씩
+print(fruits)
+>>>
+['apple', 'banana', 'cherry', 'melon', 'blueberry']
 
 fruits = [['apple', 'banana', 'cherry', 'watermelon', 'date']]
 new_fruits = ['melon', 'blueberry']
-fruits.extend(new_fruits)
+fruits.extend(new_fruits) # .extend 리스트 안에 리스트의 경우 1번 언팩한다.
 print(fruits)
 >>>
 [['apple', 'banana', 'cherry', 'watermelon', 'date'], 'melon', 'blueberry']
-
-
+```
+```py
 numbers = [1, 2, 3, 4, 5]
-numbers[1:4] = [9, 9, 9]
+numbers[1:4] = [9, 9, 9] # 특정 부분을 교체
 print(numbers)
 >>>
 [1, 9, 9, 9, 5]
+```
 
-sort(reverse=True)
+```py
+.sort(reverse=True)
 sorted(numbers, reverse=True)
-
-
+```
+```py
 b = a # 연계됨
+b = a.copy # 연계됨
+
 b = a[:] # 연계되지 않음
-b = a.copy.copy
 b = copy.deepcopy(a) # 연계되지 않음
 ```
-```
+```py
 
 numbers = [1, 2, 3, 4, 5]
 result = []
 for i in numbers:
-    num = 0
-    num = i ** 2
+    num = 0 # 불필요 01
+    num = i ** 2 # 불필요 02
     result.append(num)
 result 
 
 numbers = [1, 2, 3, 4, 5]
 result = []
 for i in numbers:
-    num = i ** 2
+    num = i ** 2 # 불필요 01
     result.append(num)
 result 
 
@@ -223,5 +244,57 @@ for i in numbers:
 result
 
 squared_numbers = list(map(lambda x: x**2, numbers))
+
 squared_numbers = [x**2 for x in numbers]
+```
+```py
+matrix = [[1, 2], [3, 4], [5, 6]]
+result = 0
+for row in matrix:
+    for element in row: 
+        result += element # 는 result = result + element 변수 정의 이전에 호출되기 때문에 사전 정의가 필요하다.
+result
+>>>
+21
+
+
+matrix = [[1, 2], [3, 4], [5, 6]]
+result = 0
+for row in matrix:
+    result += sum(row) # sum() 리스트를 다루는 함수
+result
+>>>
+21
+
+
+result = sum([item for row in matrix for item in row]) # 리스트 않에 넣기
+result
+>>>
+21
+
+
+total_sum = sum(sum(row) for row in matrix) # 속 리스트 sum 후 더블 sum
+total_sum
+>>>
+21
+```
+
+```py
+matrix = [[1, 2], [3, 4], [5, 6]]
+result = 0
+for row in matrix:
+    result = sum(row) # 누적되지 않음 잘못된 등호
+
+result
+>>>
+11
+
+matrix = [[1, 2], [3, 4], [5, 6]]
+result = 0
+for row in matrix:
+    result += sum(row)
+
+result
+>>>
+21
 ```

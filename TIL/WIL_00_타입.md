@@ -84,6 +84,7 @@ bin()oct()hex()
 팔진수: int('12', 8)는 10진수 10입니다.
 십육진수: int('A', 16)는 10진수 10입니다.
 ```
+바인딩
 ```py
 x = 10
 x = 20
@@ -211,17 +212,21 @@ e4 = x 10000
 ```
 
 ```py
-1_000_000 # 가독성을 위한 표현법
+1_000_000 # 가독성을 위한 선택적 표현법
 1.0_0_1
 ```
 
 ```py
+다른줄 함수 연결
+# 01
+print(a);print(b)
+
+# 02
 sum = \
 1 + 2 + \
 3   # \으로 이어서 가능 
-```
 
-```py
+# 03
 sum = (1
 + 1
 + 2
@@ -243,7 +248,7 @@ large = True
 if furry:
     if large: # furry == True 생략 or is True 생략
         print("It's a yeti")
-    else: # 양자택일의 경우
+    else: # 양자택일의 경우 별도 등식 없음
         print("It's a cat")
 else:
     if large:
@@ -280,7 +285,7 @@ null(none)
 ```
 
 ```py
-some_list = [] # 비어있을 경우 False or 내용 지울때 or 초기에 선언용으로 만들 때
+some_list = [] # 1) 비어있을 경우 False or 2) 내용 지울때 or 3) 초기에 선언용으로 만들 때
 if some_list:
     print("There's something in here")
 else:
@@ -288,18 +293,19 @@ else:
 ```
 
 ```py
-letter = 'o' # 하드 코딩
+# 하드 코딩
+vowels = 'aeiou'
+letter = 'o'
+
 if letter == 'a' or letter == 'e' or letter == 'i' \
     or letter == 'o' or letter == 'u':
     print(letter, 'is a vowel')
 else:
     print(letter, 'is not a vowel')
-```
 
-```py 
-vowels = 'aeiou'
-letter = 'o'
-letter in vowels # 파이써닉
+# 파이써닉
+letter in vowels
+>>> True
 
 if letter in vowels:
     print("it is a vowel")
@@ -307,22 +313,23 @@ if letter in vowels:
 
 ```py
 vowel_dic = {'a':'apple', 'e':'elephant', 'i': 'impala', 'o': 'ocelot', 'u': 'unicorn'}
-print(letter in vowel_dic) # 키 값을 기준으로 한다.
+print(letter in vowel_dic) # 키 값을 기준으로 실행 된다.
 ```
 
 ```py
+# 01
 tweet_limit = 280
 tweet_string = "Blah" * 50 # := 사용하지 않을 시 
+
 diff = tweet_limit - len(tweet_string)
 if diff >= 0:
     print('fitting')
 else:
     print("over")
-```
-
-```py
+    
+# 02
 tweet_limit = 280
-tweet_string = "Blah" 
+
 if diff := tweet_limit - len(tweet_string) >= 0: # := 비교 연산 내에 정의 넣기
     print('fitting')
 else:
