@@ -160,7 +160,7 @@ print("first");print("second") # ';' 여러 명령어 쓸때
 first
 second
 ```
-sep="", end="" 
+print 함수 sep="", end="" 
 ```py
 print('naver','kakao','sk','samsung', sep=";") # sep=";" 나누는 기준
 >>>
@@ -297,4 +297,96 @@ for row in matrix:
 result
 >>>
 21
+```
+```
+s[:-1] # 마지막은 포함되지 않음
+
+print(type(tuple()))
+
+my_tuple += (4,)
+
+
+letters = 'hello'
+letters2 = 'world'
+
+letters += letters2
+
+print(letters)
+
+a = (1, 2)
+b = (3, 4)
+print(a * 2 + b)
+'1, 2, 1, 2, 3, 
+
+my_tuple = (1, [2, 3], {'name' : 'jeyeon'})
+my_tuple[1][0] = 'a'
+my_tuple
+>>>
+(1, ['a', 3], {'name': 'jeyeon'}) # 튜플안 리스트는 변경 가능
+
+
+x, y, z = m_tuble # 언패킹
+
+def func():
+    return 1, 2, 3
+# 함수가 여러 값을 리턴할 때 튜플로 묶어서 나온다
+    return [1, 2, 3]
+# 명시적으로 해야함
+```
+
+```py
+my_tuple = [1, 2, 3, 4]
+
+result = '' 
+for item in my_tuple:
+    result += str(item) + ' '  # 각 항목을 문자열로 변환하고 공백을 추가
+
+# 결과 문자열에서 마지막 공백 제거
+result = result.strip()
+
+print(result)
+
+
+result = ' '.join(map(str, my_tuple))
+
+print(result)
+```
+
+```
+
+my_tuple = [1, 2, 3, 4]
+
+result = [] 
+for item in my_tuple:
+    ", ".join(result.append(str(item))) # 작동 하지 않음
+print(result)
+
+
+my_tuple = [1, 2, 3, 4]
+
+result = [] 
+for item in my_tuple:
+    result.append(str(item))
+print(", ".join(result))
+```
+
+```
+my_tuple = (1, [2, 3], {'name' : 'jeyeon'})
+my_tuple[1][0] = 'a'
+my_tuple
+
+my_tuple[2]['full_name'] = my_tuple[2].pop('name')
+
+print(my_tuple)
+
+# my_tuple[2] 는 호출
+# my_tuple[2] = 는 해당 부분에 넣기
+my_tuple[2]['full_name'] = 1 딕셔너리의 경우 없는것을 만들 수 있다.
+```
+```
+my_dict = {'name': 'John', 'age': 25}
+my_dict.update({'city': 'New York', 'country': 'USA'})
+>>>
+{'name': 'John', 'age': 25, 'city': 'New York', 'country': 'USA'}
+
 ```
