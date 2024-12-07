@@ -352,25 +352,23 @@ result = ' '.join(map(str, my_tuple))
 print(result)
 ```
 
-```
-
+```py
 my_tuple = [1, 2, 3, 4]
 
+# 01
 result = [] 
 for item in my_tuple:
     ", ".join(result.append(str(item))) # 작동 하지 않음
 print(result)
 
-
-my_tuple = [1, 2, 3, 4]
-
+# 02
 result = [] 
 for item in my_tuple:
     result.append(str(item))
 print(", ".join(result))
 ```
 
-```
+```py
 my_tuple = (1, [2, 3], {'name' : 'jeyeon'})
 my_tuple[1][0] = 'a'
 my_tuple
@@ -383,10 +381,9 @@ print(my_tuple)
 # my_tuple[2] = 는 해당 부분에 넣기
 my_tuple[2]['full_name'] = 1 딕셔너리의 경우 없는것을 만들 수 있다.
 ```
-```
+```py
 my_dict = {'name': 'John', 'age': 25}
 my_dict.update({'city': 'New York', 'country': 'USA'})
 >>>
 {'name': 'John', 'age': 25, 'city': 'New York', 'country': 'USA'}
-
 ```

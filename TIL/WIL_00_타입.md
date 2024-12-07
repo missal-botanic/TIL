@@ -326,7 +326,7 @@ if diff >= 0:
     print('fitting')
 else:
     print("over")
-    
+
 # 02
 tweet_limit = 280
 
@@ -406,8 +406,5 @@ a = b
 b = temp
 
 a, b = b, a
-
-
-
 
 ```

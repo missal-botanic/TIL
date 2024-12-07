@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from articles import views # from(폴더),import(파일)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('index/', views.index), # 파일.함수
+    path('users/',  views.users), 
+    path('logins/', views.logins),
+    path('hello/', views.hello),
 ]

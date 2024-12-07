@@ -55,8 +55,8 @@ ROOT_URLCONF = 'my_first_pjt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR / "templates"],
+        'APP_DIRS': True,# 장고에게 앱 안쪽 경로 찾으라 지시
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
