@@ -238,3 +238,89 @@ TEMPLATES = [
 ]
 ```
 
+```
+action
+action 데이터 전송 될 url
+미지정시 현제 페이지 url
+method
+html form 은 GET, POST 방식 전송
+
+import view # view 클릭시 바로 이동
+```
+
+```html
+<h1>hello</h1>
+
+<form action="#" method="#">
+    <label for = "my-data">데이터 입력 : </label>
+    <input type = "text" id = "my-data" > # for과 id 일치
+
+    <button type = "submit">전송</button>
+```
+
+```html
+<h1>hello</h1>
+
+<form action="#" method="#"> # 기본 값은 get
+    <label for = "message">데이터 입력 : </label>
+    <input type = "text" id = "message" name="message"> # 대다수 모두 일치
+
+    <button type = "submit">전송</button>
+```
+name 의 data를 지정하지 않아서 url로 보내짐
+http://127.0.0.1:8000/data-throw/?message=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94#
+
+프로토콜 : 약속
+request, response
+쿼리(쿼리스트링)
+?key=value&key2=value2
+```py
+# 01
+<form action="http://127.0.0.1:8000/data-catch/" method="GET">
+# 02
+<form action="/data-catch/" method="GET">
+
+```
+```py
+# 입력페이지
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>hello</h1>
+
+<form action="/data-catch/" method="GET">
+    <label for = "message">데이터 입력 : </label>
+    <input type = "text" id = "message" name="message">
+
+    <button type = "submit">전송</button>
+{% endblock content %}
+
+>>>
+http://127.0.0.1:8000/data-catch/?message=asaas 
+# view 와 입력 페이지에서 수정하지 않으면 catch url 에서 머무름
+
+```
+```py
+
+# view 페이지
+def data_catch(request):
+    message = request.GET.get("message") # "message" html name 부분
+    context = {"message" : message} # 변수
+    return render(request, "data_catch.html", context)# 마지막 context 추가
+
+
+# 출력 페이지
+<h1>Data Catch</h1>
+
+<h3>Current Data</h3>
+<p>Curent data is : {{ message2 }} </p>
+```
+```py
+변수.get("message") # 파이썬 문법
+변수.get("message", 2) # 없을시 2를 반환
+```
+
+```py
+print(request) <WSGIRequest: GET '/data-catch/?message=sacs'> 
+print(request.GET) <QueryDict: {'message': ['sacs']}> #  QuertDict 타입 장고의 class
+```

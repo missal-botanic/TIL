@@ -25,3 +25,11 @@ def hello(request):
        
     }
     return render(request, "hello.html", context)
+
+def data_throw(request):
+    return render(request, "data-throw.html")
+
+def data_catch(request): # 객체를 view 함수의 첫번째 인자로 받음(HttpResquest)
+    message = request.GET.get("message") # "message" html name 부분
+    context = {"message_v" : message}
+    return render(request, "data-catch.html", context) # HttpResponse 전달

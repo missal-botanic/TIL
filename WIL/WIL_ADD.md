@@ -387,3 +387,12 @@ my_dict.update({'city': 'New York', 'country': 'USA'})
 >>>
 {'name': 'John', 'age': 25, 'city': 'New York', 'country': 'USA'}
 ```
+
+```
+s = "hello"
+t = "python"
+
+print(s+"! "+t)
+print(f'{s}! {t}')
+print("{}! {}".format(s,t))
+```
