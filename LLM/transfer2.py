@@ -12,7 +12,7 @@ sentence = "The quick brown fox jumps over the lazy dog"
 inputs = tokenizer(sentence, return_tensors="pt")
 
 # 입력 문장에 대한 번역 수행 (영어 -> 한국어)
-generated_tokens = model.generate(inputs.input_ids, forced_bos_token_id=tokenizer.get_lang_id("kor"))
+generated_tokens = model.generate(inputs.input_ids, forced_bos_token_id = tokenizer.convert_tokens_to_ids('kor_Hang'), max_length=200)
 
 # 번역 결과 디코딩
 translated_text = tokenizer.decode(generated_tokens[0], skip_special_tokens=True)
