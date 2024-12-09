@@ -302,3 +302,54 @@ in: 값이 시퀀스에 포함되어 있는지 확인.
 not in: 값이 시퀀스에 포함되지 않았는지 확인.
 and, or, not: 논리 연산자를 사용하여 복합 조건을 작성.
 ```
+```py
+
+# 예시: 학생 성적
+person = {
+    "student1": 85,
+    "student2": 92,
+    "student3": 78,
+    "student4": 95,
+    "student5": 88,
+}
+
+result = {}
+for key, value in person.items():
+    if value >= 90:
+        grade = "A"
+    elif value >= 80:
+        grade = "B"
+    else:
+        grade = "C"
+
+    if grade in result:
+        result[grade] += 1  # 성적 구간에 해당하는 학생 수 증가
+    else:
+        result[grade] = 1  # 성적 구간에 첫 학생이 들어왔을 때
+
+print(result)
+```
+```py
+text = "apple banana apple cherry banana apple"
+text = text.split()
+
+
+result = {}
+for i in range(len(text)):
+    if text[i] in result:
+        result[text[i]] += 1
+    else:
+        result[text[i]] = 1
+result
+```
+```py
+text = "apple banana apple cherry banana apple"
+words = text.split()
+result = {}
+for word in words: # 이미 len 포함 + index 대신 값으로 찾음
+    if word in result:
+        result[word] += 1
+    else:
+        result[word] = 1
+result
+```

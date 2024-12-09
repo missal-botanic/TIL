@@ -379,11 +379,55 @@ my_dict.update({'city': 'New York', 'country': 'USA'})
 {'name': 'John', 'age': 25, 'city': 'New York', 'country': 'USA'}
 ```
 
-```
+```py
 s = "hello"
 t = "python"
 
 print(s+"! "+t)
 print(f'{s}! {t}')
 print("{}! {}".format(s,t))
+```
+```py
+person.get("city", "seoul")
+person['city']
+```
+```py
+car = {'brand': 'Ford', 'model': 'Mustang'}
+car['year'] = 1964 # 추가
+car['model'] = 'Thunderbird' # 변경
+car
+```
+```
+생성 확인 추가 삭제
+```
+car = {'brand':['ford','sansung','lg'],'model':'Mustang'}
+car['brand'].append('SK')
+>>>
+{'brand': ['ford', 'sansung', 'lg', 'SK'], 'model': 'Mustang'}
+```
+```
+d = {'a': 1, 'b': 2}
+d2 = {'b': 3, 'c': 4} 
+d.update(d2)
+>>>
+{'a': 1, 'b': 3, 'c': 4} # 마지막 데이터를 기준으로 덮음
+
+```
+for key, value in person.items():
+    print(key, value)
+>>>
+name Alice
+age 25
+city New York
+
+for item in person:
+    print(item, person[item])
+>>>
+name Alice
+age 25
+city New York
+```
+```
+dic = {zip(keys, values)} # 미작동
+perosn = dict(zip(keys, values)) # 작동
 ```

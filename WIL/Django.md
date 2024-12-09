@@ -9,14 +9,14 @@ pip install django==4.2 # 장고 설치
 ```
 
 ```bash
-django-admin startproject my_first_pjt jg
+django-admin startproject my_first_pjt jg # 프로젝트 시작
 
 django-admin startproject my_first_pjt jg . # 바닥에 파일 생성
 
-cd my_first_pjt 
+cd my_first_pjt # 생성한 프로젝트 폴더로 이동
 ```
 ```bash
-python manage.py runserver
+python manage.py runserver # 서버 실행
 ```
 ```
 1. 앱 생성
@@ -350,12 +350,13 @@ def profile(request, username):  # url 의 /내용 받음
     }
     return render(request, "profile.html", context) # context 반환 
 ```
-```
+
+```py
 users/<username>/ 기본 값은 str
 users/<str:username>/ 문자열
 users/<int:username>/ 0또는 양의 정수
 ```
-```
+```py
 python manage.py startapp users
 
 setting.py -> INSTALLED_APPS = [] 에 추가
@@ -377,10 +378,54 @@ from django.urls import path
 from . import views # . 같은 폴더에 위치
 
 urlpatterns = [
-    path('<str:username>/', views.profile), # path('users/<str:username>/', views.profile) 이전버전
-    path('',  views.users), # path('users/',  views.users) 이전버전
+    path('users/<str:username>/', views.profile)# 이전버전
+    path('<str:username>/', views.profile), # 수정 후 
+     
+    path('users/',  views.users), #이전버전
+    path('',  views.users), # 수정 후
 ]
 ```
-```
+```py
 from articles import views # from(폴더),import(파일)
 ```
+```py
+path('data-throw/', views.data_throw, name="data-throw"),
+path("data-catch/", views.data_catch, name="data-catch"), # 루트 name화
+
+<form action="/articles/data-catch/" method="GET"> # html 파일 수정 전
+
+<form action="{% url 'data-catch' %}" method="GET"> # html 파일 수정 후 
+```
+models
+```
+데이터 (데이터가 모인 곳)
+쿼리(조작 언어)
+스키마(관계의 정의)
+
+테이블
+Priamay key = 테이블 인덱스 (장고는 자동 생성)
+행
+열
+```
+```bash
+마이그레이션 : 파이썬 모델을 DB에 반영
+
+python manage.py makemigrations  # 생성
+
+
+sqlite 익스텐션 설치
+
+python manage.py migrate # 동기화 + 최초 한번은 마이그레이션 필요
+
+control + shift + p -> sqlite 검색->sqlite OPEN DATABASE -> db.sqlite3 선택
+
+왼쪽 하단에 SQLITE EXPLORER 생김
+
+```
+
+```
+새로운 열 생성시 빈공간 채우는 메시지 1선택후 그냥 엔터 ->자동 채움
+ 단, `__init__.py` 파일은 삭제하지 않도록 주의하세요.
+```
+
+
