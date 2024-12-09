@@ -2,8 +2,10 @@
 ### while
 
 ```py
+# while문
+
 count = 1
-while count <=5:
+while count <=5: # while 뒤에는 항상 조건 필요
     print(count)
     count += 1
 >>>
@@ -15,6 +17,8 @@ while count <=5:
 ```
 
 ```py
+# while + True + break
+
 while True:
     stuff = input("String to capitalize [type q to quit]: ")
     if stuff == "q":
@@ -27,6 +31,8 @@ String to capitalize [type q to quit]:  q
 ```
 
 ```py
+# while + continue 
+
 while True:
     value = input("Integer ,please [q to quit]: ")
     if value == 'q':
@@ -42,6 +48,8 @@ Integer ,please [q to quit]:  2
 ```
 
 ```py
+# for문 긴버전
+
 word = 'thud'
 offset = 0
 while offset < len(word):
@@ -55,13 +63,14 @@ d
 ```
 
 ### for
-
+파이서닉
 ```py
 for letter in word: # for문은 in을 항상 포함한다.
-    print(letter)
+    print(letter) # for, if 다음 명령어는 들여쓰기
 ```
 
 ```py
+# while <-> for
 numbers = [1,3,5]
 position = 0
 while position < len(numbers): # 개념적 접근
@@ -77,6 +86,7 @@ No even number found
 ```
 
 ```py
+# for <-> while
 word = [1,3,5]
 for letter in word: # 파이써닉 방법
     if letter % 2 == 0:
@@ -106,7 +116,7 @@ for letter in word:
         print("Eek! An 'x'!")
         break
     print(letter)
-else: # 중단 되지 않고 모든 항목이 순환되었는지 확인 + 찾지 못함
+else: # for에 대한 else. 중단 되지 않고 모든 항목이 순환되었는지 확인 + 찾지 못함
     print("No 'x' in there.")
 >>>
 t
@@ -123,13 +133,15 @@ list(range(0,11,2))
 ```
 
 ```py
-a = [range(0,11,2)] # 괄호에 바로 넣지 못한다. 함수는 함수로 정해줘야 한다.
+a = [range(0,11,2)] # 자료 형태를 정해주어야 한다.
+print(a)
 >>> [range(0, 11, 2)]
 
-a = list(range(0, 11, 2)) # 자료 구조 함수는 각자 괄호를 자동으로 가져온다. 
+a = list(range(0, 11, 2)) # 일반적인 모습
+print(a)
 >>> [0, 2, 4, 6, 8, 10]
 
-a = [list(range(0, 11, 2))] # 이중 호출 경우(구조안에 다른 구조가 필요할때)
+a = [list(range(0, 11, 2))] # 이중 구조화
 >>> [[0, 2, 4, 6, 8, 10]]
 ```
 ```py
@@ -144,29 +156,55 @@ for number in numbers: # 앞 number(단수), 뒤 numbers(복수)는 다르다.
 ```
 
 ```py
+
 guess_me = 7
 number = 1
 while number < guess_me:
-    print("too low")
+    print(number, "too low")
+    number += 1
+    if number == guess_me: # if문 루프 안에 위치
+        print("found it")
+    else: # 반복 실행
+        print("oops")
+>>>
+
+1 too low
+oops
+2 too low
+oops
+3 too low
+oops
+4 too low
+oops
+5 too low
+oops
+6 too low
+found it
+
+guess_me = 7
+number = 1
+while number < guess_me:
+    print(number, "too low")
     number += 1
 if number == guess_me: # if문 루프 밖에 위치
     print("found it")
 else:
-    print("oops")
+    print("oops") # while 모두 실행 이후 넘어옴
 >>>
-too low
-too low
-too low
-too low
-too low
-too low
+1 too low
+2 too low
+3 too low
+4 too low
+5 too low
+6 too low
 found it
+
 ```
 
 ```py
 guess_me = 7
 number = 1
-while True: # while 뒤에는 항상 조건 필요, True 상태에는 무한 반복
+while True: # True 상태에는 무한 반복
     if number < guess_me: # if문 푸르 안에 위치
         print("too low")
     elif number == guess_me:
@@ -186,6 +224,8 @@ found it
 ```
 
 ```py
+# 01
+ 
 guess_me = 7
 for number in range(10):
     if number < guess_me:
@@ -194,7 +234,7 @@ for number in range(10):
     elif number == guess_me:
         print("Fit it!")
         break
-    elif number > guess_me:
+    elif number > guess_me: # elif로 마무리
         print("too much")
         break
 >>>
@@ -207,6 +247,8 @@ too low
 too low
 Fit it!
 
+# 02
+
 guess_me = 7
 for number in range(10):
     if number < guess_me:
@@ -215,7 +257,7 @@ for number in range(10):
     elif number == guess_me:
         print("Fit it!")
         break
-    else: # else는 뒤에 올 수 없음
+    else: # else로 마무리
         print("too much")
 >>>
 too low
@@ -233,7 +275,7 @@ for number in range(10):
     if number < guess_me:
         print("too low")
         number += 1
-    elif number == guess_me:
+    elif number == guess_me: # break문 없음
         print("Fit it!")
     elif number > guess_me:
         print("too much")
@@ -249,7 +291,9 @@ too low
 Fit it!
 too much
 ```
-```
+```py
+# if 문 연산자
+
 is: 객체가 동일한지 비교. (is not)
 ==: 값이 같은지 비교.
 !=: 값이 다른지 비교.

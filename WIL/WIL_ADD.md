@@ -160,16 +160,7 @@ print("first");print("second") # ';' 여러 명령어 쓸때
 first
 second
 ```
-print 함수 sep="", end="" 
-```py
-print('naver','kakao','sk','samsung', sep=";") # sep=";" 나누는 기준
->>>
-naver;kakao;sk;samsung
 
-print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
->>>
-firstsecond
-```
 ```py
 
 a, b = map(int, input().split())
