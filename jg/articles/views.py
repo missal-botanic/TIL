@@ -33,3 +33,11 @@ def data_catch(request): # 객체를 view 함수의 첫번째 인자로 받음(H
     message = request.GET.get("message") # "message" html name 부분
     context = {"message_v" : message}
     return render(request, "data-catch.html", context) # HttpResponse 전달
+
+def profile(request, username):  # url 의 /내용 받음
+    print(request)
+    print(username)
+    context = {
+        "username" : username,
+    }
+    return render(request, "profile.html", context)

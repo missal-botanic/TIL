@@ -324,3 +324,63 @@ def data_catch(request):
 print(request) <WSGIRequest: GET '/data-catch/?message=sacs'> 
 print(request.GET) <QueryDict: {'message': ['sacs']}> #  QuertDict 타입 장고의 class
 ```
+
+```
+dispatcher : 데이터를 목적지로 보내는 주체
+URL : 들어온 요청을 어디로 보내서 처리할지 결정하는것
+```
+```
+트레일링 슬래시 : URL 뒤에 붙는 슬래시
+www.web.com : 파일
+www.web.com/ : 디렉토리
+
+원래 url은 path 가 반듯이 있어야 한다.
+/ 자동 붙이고, 자동 index.html 파일 
+```
+
+Variable Routing
+
+```py
+
+path('users/<username>/', views.profile)
+
+def profile(request, username):  # url 의 /내용 받음
+    context = {
+        "username" : username,
+    }
+    return render(request, "profile.html", context) # context 반환 
+```
+```
+users/<username>/ 기본 값은 str
+users/<str:username>/ 문자열
+users/<int:username>/ 0또는 양의 정수
+```
+```
+python manage.py startapp users
+
+setting.py -> INSTALLED_APPS = [] 에 추가
+```
+
+```py
+from django.contrib import admin
+from django.urls import path, include
+from articles import views # from(폴더),import(파일)
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('index/', views.index), # 파일.함수
+    path('articles/', include("articles.urls")), #폴더.파일
+    path('user/', include("users.urls"))
+]
+
+from django.urls import path
+from . import views # . 같은 폴더에 위치
+
+urlpatterns = [
+    path('<str:username>/', views.profile), # path('users/<str:username>/', views.profile) 이전버전
+    path('',  views.users), # path('users/',  views.users) 이전버전
+]
+```
+```
+from articles import views # from(폴더),import(파일)
+```
