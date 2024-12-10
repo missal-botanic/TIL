@@ -1,5 +1,57 @@
+#### 생성
+words = "letters"
 
-### 3)텍스트 문자열
+#### 확인
+print(, sep=";")
+print(, end="")
+letter = "pppp"
+letter[0]
+
+.find()
+.rfind()
+
+.index()
+.rindex()
+
+len()
+.startswith('ALL')
+.endswith('ALL')
+.isalnum()
+
+.count('the')
+
+#### 수정
+''.join()
+.split('')
+
+.replace()
+
+.strip()
+.lstrip()
+.rstrip()
+
+a + b + c + d
+"hello""baby"
+'a' + "e" + '''i''' + """u"""
+
+.capitalize()
+.title()
+.upper()
+.lower()
+.swapcase()
+
+.center(30)
+.ljust(30)
+.rjust(30)
+
+name, "님의 ", age, "입니다." 
+"%s님의 %s살입니다" % (name, age) 
+"{0}님의 {1}살입니다.".format(name, age) 
+f"{name}님의 나이는 {age}살입니다."
+
+sep="", end="" 
+
+### 텍스트 문자열
 
 ```
 시퀀스 시스템
@@ -19,25 +71,7 @@ string.function(arguments) 메서드 기본 구조 ()안에서는 인수가 들�
 "\"hi\""
 \\ 는 실제 \ 표시
 ```
-```py
-a = 'a'
-b = "e"
-c = '''i'''
-d = """u"""
-
-print(a + b + c + d) 
->>> 'aeiu'
-```
-```py
-print("hello"+"baby") 
->>> 'hellobaby'
-
-print("hello""baby") 
->>> 'hellobaby'
-
-print('a' + "e" + '''i''' + """u""") 
->>> 'aeiu'
-```
+### 생성
 
 
 ```py
@@ -52,17 +86,7 @@ heyheyhey
 Goodbye # 줄바꿈보다 *이 더 높은 우선순위
 ```
 
-print 함수 sep="", end="" 
-```py
-print('naver','kakao','sk','samsung', sep=";") # sep=";" 나누는 기준
->>>
-naver;kakao;sk;samsung
-
-print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
->>>
-firstsecond
-```
-선택
+### 확인(선택)
 ```py
 letter = "pppp"
 
@@ -133,8 +157,29 @@ letter.rindex(word) # 끝에서 부터
 
 # 없을 시 오류 출력
 ```
+```py
+len(letters) # 문자열 길이 출력
+```
+```py
+.startswith
 
-수정
+letters.startswith('ALL') >>> True # ALL로 시작하는가?
+
+.endswith
+
+letters.endswith('ALL') >>> False # ALL로 끝나는가?
+
+.isalnum()
+letters.isalnum() >>> True # 알파벳과 숫자로만 있는가? (특수문자 있을시 False)
+```
+
+```py
+.count()
+letters.count('the') >>> 3 # 몇번 나오는지
+
+```
+
+### 수정
 ```py
 ''.join() # 리스트를 합치는 함수 (문자열 -> 리스트)
 
@@ -165,6 +210,25 @@ letters.replace('a', 'b', 100) # 100회 까지 바꾼다.
 
 "hello....!!!?" .strip('.!?') >>> "hello" # 선택 제거
 ```
+```py
+a = 'a'
+b = "e"
+c = '''i'''
+d = """u"""
+
+print(a + b + c + d) 
+>>> 'aeiu'
+```
+```py
+print("hello"+"baby") 
+>>> 'hellobaby'
+
+print("hello""baby") 
+>>> 'hellobaby'
+
+print('a' + "e" + '''i''' + """u""") 
+>>> 'aeiu'
+```
 
 ```py
 # 라이브리러 사용
@@ -174,26 +238,6 @@ string.whitespace >>> ' \t\n\r\x0b\x0c'
 string.punctuation >>> '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
 
 letters.strip(string.whitespace + string.punctuation) # letters에 적용
-```
-```py
-len(letters) # 문자열 길이 출력
-```
-```py
-.startswith
-
-letters.startswith('ALL') >>> True # ALL로 시작하는가?
-
-.endswith
-
-letters.endswith('ALL') >>> False # ALL로 끝나는가?
-```
-
-```py
-.count()
-letters.count('the') >>> 3 # 몇번 나오는지
-
-.isalnum()
-letters.isalnum() >>> True # 알파벳과 숫자로만 있는가? (특수문자 있을시 False)
 ```
 
 ```py
@@ -205,13 +249,13 @@ letters.capitalize()
 letters.title() 
 >>> 모든 첫 글자 대문자
 
-letters.upper() 
+letters.upper()
 >>> 모든 글자 대문자
 
-letters.lower() 
+letters.lower()
 >>> 모든 글자 소문자
 
-letters.swapcase() 
+letters.swapcase()
 >>> 대문자는 소문자로 소문자는 대문자로
 ```
 
@@ -391,4 +435,36 @@ print(list(map(f, numlist))) # map 함수
 >>>
 [6, 7, 8, 9, 10]
 
+```
+```py
+phone_number = "010-1111-2222"
+
+phone_number_splited = phone_number.split('-')
+" ".join(phone_number_splited)
+>>>
+'010 1111 2222'
+
+phone_number1 = phone_number.replace("-", " ")
+>>>
+'010 1111 2222'
+
+phone_number[3] = 2
+>>> 오류 replace로 해야함
+```
+```py
+url = "http://sharebook.kr"
+url[-2:]
+>>>
+'kr'
+```
+
+print 함수 sep="", end="" 
+```py
+print('naver','kakao','sk','samsung', sep=";") # sep=";" 나누는 기준
+>>>
+naver;kakao;sk;samsung
+
+print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
+>>>
+firstsecond
 ```
