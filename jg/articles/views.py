@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Article # 모델 연결
 #from django.http import HttpResponse
 
 # Create your views here.
@@ -10,21 +11,6 @@ def users(request):
 
 def logins(request):
     return render(request, "logins.html")
-
-def hello(request):
-    name = "희경",
-    tags = ["python", "django", "html", "css"]
-    books = ["해변의 카프카", "코스모스", "백설공주", "어린왕자"]
-
-
-    context = {
-        "name" : name,
-        "tags" : tags,
-        "books" : books,
-
-       
-    }
-    return render(request, "hello.html", context)
 
 def data_throw(request):
     return render(request, "data-throw.html")
@@ -41,3 +27,23 @@ def profile(request, username):  # url 의 /내용 받음
         "username" : username,
     }
     return render(request, "profile.html", context)
+
+def articles(request): # 처음 페이지 로딩시
+    articles = Article.objects.all().order_by("-created_at")
+    context = {
+        "articles": articles,
+    }
+    return render(request, "articles.html", context)
+
+def new(request):# 화면 연출 효과만 존재
+    return render(request, "new.html")
+
+def create(request):
+    title = request.POST.get("title")
+    content = request.POST.get("content")
+
+    # 새로운 article 저장
+    Article.objects.create(title=title, content=content)
+    return render(request, "create.html")
+
+

@@ -277,6 +277,38 @@ def data_catch(request):
     return render(request, "data_catch.html", context)# 마지막 context 추가
 ```
 ```py
+class QueryDict:
+    def __init__(self, data):
+        # 데이터는 딕셔너리 형태로 저장
+        self.data = data
+    
+    def get(self, key, default=None):
+        # key가 존재하면 해당 값을 반환하고, 없으면 default 값을 반환
+        return self.data.get(key, default)
+
+
+class HttpRequest:
+    def __init__(self, get_data):
+        # GET 데이터를 QueryDict 객체로 저장
+        self.GET = QueryDict(get_data)
+
+# 가상의 GET 데이터 (쿼리 스트링)
+get_data = {
+    'name': 'Alice',
+    'age': '25'
+}
+
+# HttpRequest 객체 생성
+request = HttpRequest(get_data)
+
+# request.GET.get을 사용하여 쿼리 데이터를 안전하게 가져오기
+print(request.GET.get('name'))  # 'Alice'
+print(request.GET.get('age'))   # '25'
+print(request.GET.get('city', 'Unknown'))  # 'Unknown' (기본값 사용)
+
+```
+
+```py
 # 출력 페이지
 <h1>Data Catch</h1>
 <h3>Current Data</h3>
@@ -397,3 +429,211 @@ control + shift + p -> sqlite 검색->sqlite OPEN DATABASE -> db.sqlite3 # 선�
 SQLITE EXPLORER # 왼쪽 하단에  생김
 
 ```
+---- 
+
+```
+Queryset == ORM를 사용해서 데이터베이스로 부터 전달 받은 객체
+
+manage의 기본 이름 object
+
+ex) MyModel.objects.all()
+```
+
+pip install django-extensions # 장고 익스텐션 설치 shell +
+pip install ipython 
+```
+```
+python manage.py shell
+python manage.py shell_plus # 기본 라이브러리 all load
+```
+CRUD
+Create
+Read
+Updata
+Delete
+```
+```py
+article = Article()
+article.title = 'first_title'
+article.content = 'my_content'
+
+# 여기에서 전체 Article을 조회해보면
+Article.objects.all() # 비어있다
+>>>
+<QuerySet []>
+# save()하기전에는 저장되지 않음
+article.save()
+
+# 다시 전체 Article을 조회해보면 하나의 아티클이 있음
+Article.objects.all()
+>>>
+<QuerySet [<Article: Article object (1)>]>
+
+Article.objects.get(id=2) # 하나만 조회 없을시, 여러개일 시 멈춤
+>>>
+<Article: 두번째 제목> # 오브젝트를 바로 가지고옴
+
+Article.objects.filter(content='my_content') # 여러개 리턴 look up
+Article.objects.filter(id__gt=2) # 2보다 큰 id
+Article.objects.filter(id__in=[1,2,3]) # 1,2,3에 속하는 id
+Article.objects.filter(content__contains='my') # content에 'my'가 포함된
+...
+
+
+# 속성 하나씩 접근하기
+# 제목 
+article.title
+
+# 내용
+article.content
+
+# 생성일시
+article.create_at
+
+# pk(id)
+article.id
+```
+```py
+article = Article(title='두번째 제목', content='두번째 내용')
+
+Article.objects.create(title='third title', content='마지막 방법임')
+# save()가 필요하지 않음
+```
+
+```py
+class Article(models.Model):
+    title = models.CharField(max_length=50) 
+    content = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self): # 추가된 내용
+        return self.title
+
+ <QuerySet [<Article: Article object (1)>, <Article: Article object (2)>]> # 전
+ <QuerySet [<Article: 첫번째 제목>, <Article: 두번째 제목>, <Article: 세번째 내용>]> # 후
+```
+```py
+article = Article.objects.get(id=1) # 실제 데이터를 수정하기 위해 변수에 연결시키는 작업
+article.title = 'updated title'
+article.save()
+
+first_article = Article.objects.get(id=1) # 실제 데이터를 수정하기 위해 변수에 연결시키는 작업
+first_article.content = "안녕하세요"
+first_article.save()
+new_article = Article.objects.get(id=1) # 실제 데이터를 수정하기 위해 변수에 연결시키는 작업
+new_article.content
+>>> 
+'안녕하세요'
+
+first_article.content
+>>>
+'안녕하세요'
+
+```
+```py
+article = Article.objects.get(id=2)
+article.delete()
+>>>
+(1, {'articles.Article': 1})
+
+```
+```
+1. view 에서 model에 접근해 모든 아티클을 가지고 온다
+2. view 에서 가져온 아티클을 template으로 넘긴다
+3. tempate에서 넘어온 context를 보여준다
+4. view에서 템플릿을 렌더링해서 리턴한다
+
+model -> view -> template -> context 
+```
+## R
+```py
+# view
+from .models import Article # 모델 연결
+
+def articles(request): # 처음 페이지 로딩시
+    articles = Article.objects.all().order_by("-created_at")  # 모든데이터 호출 제목, 내용, 수정날짜.... / .order_by("-created_at") 역순 정렬 .order_by("-pk")
+    context = {
+        "articles": articles,
+    }
+    return render(request, "articles.html", context)
+
+# template
+{% for article in articles %}
+    <li>
+        <div>번호 : {{ article.id }}</div>
+        <div>제목 : {{ article.title }}</div>
+        <div>내용 : {{ article.content}}</div>
+        <br>
+    </li>
+{% endfor %}
+
+```
+## C
+```py
+# template
+
+<form action="" method="GET">
+# 입력 내용들
+</form>
+
+<form action="{% url 'create' %}" method="GET">
+    <label for="title">제목</label>
+    <input type="text" name="title" id="title"><br><br>
+
+    <label for="content">내용</label>
+    <textarea name="content" id="content" cols="30" rows="10"></textarea><br><br>
+
+    <button type="submit">저장</button>
+</form>
+
+# views
+def new(request):# 화면 연출 효과만 존재
+    return render(request, "new.html")
+
+def create(request):
+    title = request.GET.get("title")
+    content = request.GET.get("content")
+
+    # 새로운 article 저장
+    Article.objects.create(title=title, content=content)
+    return render(request, "create.html")
+```
+```py
+# id = pk
+{{article.id}}
+{{article.pk}}
+```
+```py
+# get 방식은 DB에 영향을 주지 않는것
+
+# 서버에서 유저 기억하는 방식 세션
+
+# template
+<form action="{% url 'create' %}" method="POST"> 
+    {% csrf_token %}
+
+# views
+def create(request):
+    title = request.POST.get("title")
+    content = request.POST.get("content")
+```
+
+```py
+# settings
+request와 respone 두번 반복
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware', # csrf 미드웨어
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+```
+
+```
+GET 은 data 를 url로 보낸다
+POST 는 body에 담아 보낸다

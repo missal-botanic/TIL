@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form action="{% url 'create' %}" method="POST"> <!-- views.create로 보냄 -->
+    {% csrf_token %}
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="title" />
+    </div>
+
+    <div class="input-group mb-3">
+      <span class="input-group-text">With textarea</span>
+      <textarea class="form-control" aria-label="With textarea2" name="content"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Primary</button>
+  </form>
+{% endblock %}

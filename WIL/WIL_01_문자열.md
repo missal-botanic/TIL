@@ -1,10 +1,9 @@
 #### 생성
+```
 words = "letters"
-
+```
 #### 확인
-print(, sep=";")
-print(, end="")
-letter = "pppp"
+```
 letter[0]
 
 .find()
@@ -19,8 +18,9 @@ len()
 .isalnum()
 
 .count('the')
-
+```
 #### 수정
+```
 ''.join()
 .split('')
 
@@ -50,7 +50,18 @@ name, "님의 ", age, "입니다."
 f"{name}님의 나이는 {age}살입니다."
 
 sep="", end="" 
+```
+복합 수정
+```
+result = original[:5] + "Beautiful" + original[5:]
 
+result = "".join([original[:5], "Beautiful", original[5:]])
+
+리스트화 + original_list[5:5] = ['Beautiful']
+
+리스트화 + insert(5, "Beautiful")+ ''.join(original_list)
+
+```
 ### 텍스트 문자열
 
 ```
@@ -467,4 +478,7 @@ naver;kakao;sk;samsung
 print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
 >>>
 firstsecond
+```
+```
+a, b, c = map(int, input().split())
 ```
