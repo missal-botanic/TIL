@@ -431,31 +431,30 @@ SQLITE EXPLORER # 왼쪽 하단에  생김
 ```
 ---- 
 
+```py
+Queryset == ORM를 사용해서 # 데이터베이스로 부터 전달 받은 객체
+
+objects # manage의 기본 이름
+
+# MyModel.objects.all()
 ```
-Queryset == ORM를 사용해서 데이터베이스로 부터 전달 받은 객체
-
-manage의 기본 이름 object
-
-ex) MyModel.objects.all()
-```
-
+```bash
 pip install django-extensions # 장고 익스텐션 설치 shell +
 pip install ipython 
 ```
-```
+```bash
 python manage.py shell
 python manage.py shell_plus # 기본 라이브러리 all load
 ```
-CRUD
+**CRUD** Create Read Updata Delete 
+
+```bash
 Create
-Read
-Updata
-Delete
-```
-```py
-article = Article()
-article.title = 'first_title'
-article.content = 'my_content'
+# shell에서 사용
+
+article = Article() # 클래스로 객체 생성
+article.title = 'first_title'  # 생성된 객체의 title 필드에 'first_title'을 할당
+article.content = 'my_content' # 생성된 객체의 content 필드에 'my_content'를 할당
 
 # 여기에서 전체 Article을 조회해보면
 Article.objects.all() # 비어있다
@@ -464,10 +463,18 @@ Article.objects.all() # 비어있다
 # save()하기전에는 저장되지 않음
 article.save()
 
-# 다시 전체 Article을 조회해보면 하나의 아티클이 있음
+article = Article(title='두번째 제목', content='두번째 내용')
+
+Article.objects.create(title='third title', content='마지막 방법임')
+# save()가 필요하지 않음
+```
+
+```bash
+Read
+# 다시 전체 Article을 조회해보면 하나의 article 확인 가능
 Article.objects.all()
 >>>
-<QuerySet [<Article: Article object (1)>]>
+<QuerySet [<Article: Article object (1)>]> # 1은 객체의 ID
 
 Article.objects.get(id=2) # 하나만 조회 없을시, 여러개일 시 멈춤
 >>>
@@ -478,29 +485,22 @@ Article.objects.filter(id__gt=2) # 2보다 큰 id
 Article.objects.filter(id__in=[1,2,3]) # 1,2,3에 속하는 id
 Article.objects.filter(content__contains='my') # content에 'my'가 포함된
 ...
-
-
+```
+```py
 # 속성 하나씩 접근하기
-# 제목 
-article.title
 
-# 내용
-article.content
+article.title # 제목 
 
-# 생성일시
-article.create_at
+article.content # 내용
 
-# pk(id)
-article.id
-```
-```py
-article = Article(title='두번째 제목', content='두번째 내용')
+article.create_at # 생성일시
 
-Article.objects.create(title='third title', content='마지막 방법임')
-# save()가 필요하지 않음
+article.id # pk(id)
 ```
 
 ```py
+.all() # 조회시 내용 추가
+
 class Article(models.Model):
     title = models.CharField(max_length=50) 
     content = models.TextField(default='')
@@ -510,7 +510,7 @@ class Article(models.Model):
     def __str__(self): # 추가된 내용
         return self.title
 
- <QuerySet [<Article: Article object (1)>, <Article: Article object (2)>]> # 전
+ <QuerySet [<Article: Article object (1)>, <Article: Article object (2)>]> # 전 
  <QuerySet [<Article: 첫번째 제목>, <Article: 두번째 제목>, <Article: 세번째 내용>]> # 후
 ```
 ```py
@@ -537,6 +537,9 @@ article.delete()
 >>>
 (1, {'articles.Article': 1})
 
+```
+```py
+# Article() 와 Article. 다르다
 ```
 ```
 1. view 에서 model에 접근해 모든 아티클을 가지고 온다
@@ -571,13 +574,13 @@ def articles(request): # 처음 페이지 로딩시
 ```
 ## C
 ```py
-# template
+# template 파일
 
-<form action="" method="GET">
+<form action="" method="GET"> # form으로 묶음
 # 입력 내용들
 </form>
 
-<form action="{% url 'create' %}" method="GET">
+<form action="{% url 'create' %}" method="GET"> # 바람직하지 못한 GET 하지만 작동
     <label for="title">제목</label>
     <input type="text" name="title" id="title"><br><br>
 
@@ -587,7 +590,7 @@ def articles(request): # 처음 페이지 로딩시
     <button type="submit">저장</button>
 </form>
 
-# views
+# views 파일
 def new(request):# 화면 연출 효과만 존재
     return render(request, "new.html")
 
@@ -597,7 +600,7 @@ def create(request):
 
     # 새로운 article 저장
     Article.objects.create(title=title, content=content)
-    return render(request, "create.html")
+    return render(request, "create.html") # 리턴 내용 없음
 ```
 ```py
 # id = pk
@@ -609,13 +612,15 @@ def create(request):
 
 # 서버에서 유저 기억하는 방식 세션
 
-# template
-<form action="{% url 'create' %}" method="POST"> 
-    {% csrf_token %}
+POST 와 GET 차이
 
-# views
+# template 파일
+<form action="{% url 'create' %}" method="POST"> # 1) POST 
+    {% csrf_token %} # csrf token 3) 추가
+
+# views 파일
 def create(request):
-    title = request.POST.get("title")
+    title = request.POST.get("title") # 2) POST
     content = request.POST.get("content")
 ```
 
