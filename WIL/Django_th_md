@@ -459,3 +459,51 @@ article.delete()
 
 model -> view -> template -> context 
 ```
+```
+# template 파일
+
+<form action="" method="GET"> # form으로 묶음
+# 입력 내용들
+</form>
+```
+```py
+# id = pk
+{{article.id}}
+{{article.pk}}
+```
+
+```py
+# get 방식은 DB에 영향을 주지 않는것
+
+# 서버에서 유저 기억하는 방식 세션
+
+POST 와 GET 차이
+
+# template 파일
+<form action="{% url 'create' %}" method="POST"> # 1) POST 
+    {% csrf_token %} # csrf token 3) 추가
+
+# views 파일
+def create(request):
+    title = request.POST.get("title") # 2) POST
+    content = request.POST.get("content")
+```
+
+```py
+# settings
+request와 respone 두번 반복
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware', # csrf 미드웨어
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+```
+
+```
+GET 은 data 를 url로 보낸다
+POST 는 body에 담아 보낸다
+```

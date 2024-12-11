@@ -175,7 +175,9 @@ db.sqlite3 파일 선택 -> control + shift + p -> sqlite 검색->sqlite OPEN DA
 
 SQLITE EXPLORER # 왼쪽 하단에  생김
 ```
-
+```
+from django.shortcuts import render, redirect # redirect
+```
 ## R
 ```py
 # view
@@ -201,11 +203,6 @@ def articles(request): # 처음 페이지 로딩시
 ```
 ## C
 ```py
-# template 파일
-
-<form action="" method="GET"> # form으로 묶음
-# 입력 내용들
-</form>
 
 <form action="{% url 'create' %}" method="GET"> # 바람직하지 못한 GET 하지만 작동
     <label for="title">제목</label>
@@ -229,47 +226,7 @@ def create(request):
     Article.objects.create(title=title, content=content)
     return render(request, "create.html") # 리턴 내용 없음
 ```
-```py
-# id = pk
-{{article.id}}
-{{article.pk}}
-```
-```py
-# get 방식은 DB에 영향을 주지 않는것
 
-# 서버에서 유저 기억하는 방식 세션
-
-POST 와 GET 차이
-
-# template 파일
-<form action="{% url 'create' %}" method="POST"> # 1) POST 
-    {% csrf_token %} # csrf token 3) 추가
-
-# views 파일
-def create(request):
-    title = request.POST.get("title") # 2) POST
-    content = request.POST.get("content")
-```
-
-```py
-# settings
-request와 respone 두번 반복
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware', # csrf 미드웨어
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-```
-
-```
-GET 은 data 를 url로 보낸다
-POST 는 body에 담아 보낸다
-```
 ```py
 # view file
 from django.shortcuts import render, redirect # redirect
