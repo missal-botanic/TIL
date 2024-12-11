@@ -277,6 +277,8 @@ def data_catch(request):
     return render(request, "data_catch.html", context)# 마지막 context 추가
 ```
 ```py
+# class 파일 예시
+
 class QueryDict:
     def __init__(self, data):
         # 데이터는 딕셔너리 형태로 저장
@@ -642,3 +644,122 @@ MIDDLEWARE = [
 ```
 GET 은 data 를 url로 보낸다
 POST 는 body에 담아 보낸다
+```
+```py
+# view file
+from django.shortcuts import render, redirect # redirect
+
+return render(request, "articles.html") # 전 페이지 creat는 Template action POST 위치와 연결되어 있음?
+
+def create(request):
+    title = request.POST.get("title")
+    content = request.POST.get("content")
+
+    # 새로운 article 저장
+    Article.objects.create(title=title, content=content)
+    return render(request, "create.html") # 전
+
+def create(request):
+    title = request.POST.get("title")
+    content = request.POST.get("content")
+    Article.objects.create(title=title, content=content)
+    return redirect("articles") # 후
+
+# create.html 삭제
+```
+```py
+# articles - urls 파일
+path("<int:pk>/", views.article_detail, name="article_detail")
+
+# articles - views 파일
+def article_detail(request, pk):
+    article = Article.objects.get(id=pk) # s가 아님
+    context = {
+        "article": article,
+    }
+    return render(request, "article_detail.html", context)
+
+# articles - template 파일
+
+<h2>article detail</h2>
+
+<h3> {{ article.title }} </h3>
+<p> {{ article.content }} </p>
+<p> {{ article.created_at}} </p>
+```
+
+
+NoReverseMatch at
+```py
+# articles - views 파일
+def create(request):
+    title = request.POST.get("title")
+    content = request.POST.get("content")
+    Article.objects.create(title=title, content=content)
+    return redirect("article_detail") # 오류 발생
+
+def create(request):
+    title = request.POST.get("title")
+    content = request.POST.get("content")
+    article = Article.objects.create(title=title, content=content) # 실행 + 변수 지정
+    return redirect("article_detail", article.pk)  # 실행된 내용이 담긴 변수에서 pk 사용
+```
+```py
+path("delete/", views.delete, name="delete"), # 잘못됨
+path("<int:pk>/delete/", views.delete, name="delete"),
+
+Article.objects.delete(id=pk) # 잘못됨
+article = Article.objects.get(id=pk)
+article.delete()
+
+<a href="{% url 'delete' %}">지우기</a> # 잘못됨
+<form action="{% url 'delete' article.pk %}" method = "POST" >
+    {% csrf_token %}
+    <input type='submit' value='삭제'>
+</form>
+```
+```py
+<input ...  value="{{ article.title }}"/> # value 값에
+<textarea ...> # value 값 없음,
+```
+
+```py
+# articles - urls 파일
+path("<int:pk>/edit/", views.edit, name="edit"),
+path("<int:pk>/update/", views.update, name="update"),
+
+# articles - views 파일
+def update(request, pk):
+  article = Article.objects.get(pk=pk)
+  article.title = request.POST.get("title")
+  article.content = request.POST.get("content")
+  article.save()
+  return redirect("article_detail", article.pk)
+
+
+def update(request, pk):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        article = Article.objects.get(id = pk)
+        article = Article.objects.create(title = title, content = content)
+        return redirect("article_detail", article.pk) # request 없음
+    return redirect("article_detail", article.pk)
+
+# article -templates 파일
+  <form action="{% url 'update' article.pk %}" method="POST">  # update 변경
+    {% csrf_token %}
+    <div class="input-group input-group-sm mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
+      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="title" value="{{ article.title }}"/> # value="{{ article.title }}"
+    </div>
+
+    <div class="input-group mb-3">
+      <span class="input-group-text">With textarea</span>
+      <textarea class="form-control" aria-label="With textarea2" name="content">{{ article.content }}</textarea> # {{ article.content }}
+    </div>
+    <button type="submit" class="btn btn-primary">수정</button> # 텍스트 변경
+  </form>
+
+  <a href = {% url "article_detail" article.pk %}>뒤로</a>
+```

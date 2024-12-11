@@ -2,13 +2,15 @@
 
 {% block content %}
 <h1>hello</h1>
+<a href = "{% url 'new'%}">글쓰기</a>
 <ul>
     {% for article in articles %}
+    <a href ="{% url 'article_detail' article.pk %}">
         <li>
             <div> [ {{article.id}} ] 제목 : {{ article.title }}</div>
-            <div>내용 : {{ article.content}}</div>
             <br>
         </li>
+    </a>
     {% endfor %}
 </ul>
 {% endblock content %}

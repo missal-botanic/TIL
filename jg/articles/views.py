@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Article # 모델 연결
 #from django.http import HttpResponse
 
@@ -35,15 +35,55 @@ def articles(request): # 처음 페이지 로딩시
     }
     return render(request, "articles.html", context)
 
+def article_detail(request, pk):
+    article = Article.objects.get(id=pk)
+    context = {
+        "article": article,
+    }
+    return render(request, "article_detail.html", context)
+
+
 def new(request):# 화면 연출 효과만 존재
     return render(request, "new.html")
 
 def create(request):
-    title = request.POST.get("title")
-    content = request.POST.get("content")
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        article = Article.objects.create(title=title, content=content)
+        return redirect("article_detail", article.pk)
+    return redirect("new")
 
-    # 새로운 article 저장
-    Article.objects.create(title=title, content=content)
-    return render(request, "create.html")
+def delete(request, pk):
+    if request.method == "POST":
+        article = Article.objects.get(id=pk)
+        article.delete()
+        return redirect("articles")
+    return redirect("article_detail", pk)
+
+def edit(request, pk):
+    article = Article.objects.get(id=pk)
+    context = {
+        "article" : article
+    }
+    return render(request, "edit.html", context)
+
+def update(request, pk):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        article = Article.objects.get(id = pk)
+        article = Article.objects.create(title = title, content = content)
+        return redirect("article_detail", article.pk) # request 없음
+    return redirect("article_detail", article.pk)
 
 
+# def update(request, pk):
+#   article = Article.objects.get(pk=pk)
+#   article.title = request.POST.get("title")
+#   article.content = request.POST.get("content")
+#   article.save()
+#   return redirect("article_detail", article.pk)
+
+
+    

@@ -1,10 +1,12 @@
 #### 생성
 ```
 words = "letters"
+str_num = str()
 ```
 #### 확인
 ```
 letter[0]
+letter[::]
 
 .find()
 .rfind()
@@ -15,7 +17,10 @@ letter[0]
 len()
 .startswith('ALL')
 .endswith('ALL')
+
 .isalnum()
+.isdigit()
+.isalpha()
 
 .count('the')
 ```
@@ -24,11 +29,11 @@ len()
 ''.join()
 .split('')
 
-.replace()
-
 .strip()
 .lstrip()
 .rstrip()
+
+.replace()
 
 a + b + c + d
 "hello""baby"
@@ -37,7 +42,9 @@ a + b + c + d
 .capitalize()
 .title()
 .upper()
+.isupper()
 .lower()
+.islower
 .swapcase()
 
 .center(30)
@@ -200,7 +207,7 @@ new_letters = ','.join(letters)
 ```
 
 ```py
-.split() # 리스트로 분할 하는 함수 (리스트 -> 문자열)
+.split() # 리스트로 분할 하는 함수 (리스트 -> 문자열)(입력 -> 리스트)
 
 letters = "abc, def, hij"
 letters.split(",") >>> ['abc', 'def', 'hij']
