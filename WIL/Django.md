@@ -6,10 +6,12 @@ conda create --name jg python=3.10 # 가상환경
 ```bash
 pip install django==4.2 # 장고 설치
 ```
+-----
+### ㅇ새 프로젝트
 ```bash
-django-admin startproject my_first_pjt jg # 프로젝트 시작
+django-admin startproject {project_name} # 프로젝트 시작
 
-django-admin startproject my_first_pjt jg . # 바닥에 파일 생성
+django-admin startproject {project_name} . # 바닥에 파일 생성
 
 cd my_first_pjt # 생성한 프로젝트 폴더로 이동
 ```
@@ -22,6 +24,9 @@ python manage.py runserver # 서버 실행
 # 1. 앱 생성 Bash
 python manage.py startapp articles # 앱 (이름 복수형 권장)
 python manage.py startapp users
+
+mkdir apps/articles # app 파일 위치 변경시
+python manage.py startapp articles apps/articles
 
 # 2. 앱 등록 settings.py 파일 33줄
 INSTALLED_APPS = [
@@ -37,65 +42,6 @@ INSTALLED_APPS = [
 
  마지막에 "," Trailing commas
 ```
-### my_first_pjt
-```py
-#프로젝트 폴더
-
-settings.py # 프로젝트의 설정을 관리하는 곳
-
-urls.py # 어떤 요청을 처리할지 결정하는 곳 
-
-__init__.py # 하나의 폴더를 하나의 파이썬 패키지로 인식하도록 하는 파일
-
-# 3버전 이상으로 가면 필요없음. 하지만, 3버전 이하에서도 동작하도록 호환성을 위해 지키는 규칙
-# 마이그레이션의 경우 삭제 금지
-
-wsgi.py # 웹 서버 관련 설정 파일
-
-manage.py # Django 프로젝트 유틸리티 (조종기 역할)
-```
-### articles , users
-```py
-# 앱내 폴더
-admin.py # 관리자용 페이지 관련 설정
-
-apps.py # 앱 관련 정보 설정
-
-models.py # DB관련 데이터 정의 파일
-
-tests.py # 테스트 관련 파일 
-
-views.py # 요청을 처리하고 처리한 결과를 반환하는 파일
-```
-### DB와 views 관계
-```py
-models.py # 데이터 베이스
-views.py # 데이터 처리 반환
-```
-
-```py
-model # 데이터와 과련된 로직
-template(view) # 레이아웃과 관련된 화면
-view(controller) # model과 view 연결하는 로직, 메인비지니스, 크라이언트 요청 처리, 분기(db 조회, 외부 요청, 응답 클라이언트 전달)
-```
-```
-/ <--- 트래일링 슬러쉬
-```
-```py
-# 함수형 뷰(대부분)
-
-# 클래스형 뷰(상속으로 코드를 줄일 수 있다)
-
-HttpRequest → (URLs) → View→ Template → View → HttpResponse
-```
-```py
-태그 {% tag %} # 반복 또는 논리를 수행 제어 흐름 + 일부 종료 태그 존재
-
-변수 {{ 변수 }} # 딕셔너리의 키값이 오고 간다. 
-필터 {{ 변수|필터 }} # 변수에 추가 작업 + 보여지는 모습 바꿈(ex소문자화) 60개 + 커스텀 가능
-
-주석 {# 한 줄 주석 #}
-```
 ### urls.
 ```py
 import view # view 클릭시 바로 이동
@@ -105,7 +51,8 @@ import view # view 클릭시 바로 이동
 
 from django.contrib import admin
 from django.urls import path
-from articles import views # from(폴더),import(파일)
+from articles import views # from(폴더),import(파일) % 삭제 예정 %
+from . import views # index용
 
 urlpatterns = [
     path("admin/", admin.site.urls),
