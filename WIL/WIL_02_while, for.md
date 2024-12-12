@@ -1,6 +1,14 @@
 
 ### while
 
+
+```py
+range(start, stop, step)
+
+for i in range(1,num+1): # 123....
+
+for i in range(num, 0, -1): # 543...
+```
 ```py
 # while문
 
@@ -352,4 +360,32 @@ for word in words: # 이미 len 포함 + index 대신 값으로 찾음
     else:
         result[word] = 1
 result
+```
+```py
+num = int(input())
+
+for i in range(1, num+1):
+    i += i # 1부터 시작 + 누적이 아니라 i x 2 매번 갱신
+    print(f"1부터 {i}값은 {num_sum}입니다") # 들여 쓰기 바꿔야함
+
+
+num = int(input())
+
+num_sum = 0
+for i in range(1, num+1):
+    num_sum += i
+print(f"1부터 {i}값은 {num_sum}입니다")
+
+```
+```py
+num = 0
+for i in range(1,101):
+    if i % 3 == 0:
+        print(i)
+```
+
+```py
+num = int(input()) # input 기본 값은 문자열
+for i in num: # for은 숫자를 받지 않고 리스틀 받음/ 숫자 사용시 range()
+TypeError: 'int' object is not iterable
 ```

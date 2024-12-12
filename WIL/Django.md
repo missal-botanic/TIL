@@ -137,15 +137,14 @@ urlpatterns = [
  ```
 ```py
 from django.contrib import admin
-from django.urls import path
-from articles import views # from(폴더),import(파일) % 삭제 예정 %
-from . import views # index용 ??? 확인 필요 삭제 필요
+from django.urls import path, include # include 추가
+from articles import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("index/", views.index, name='index'), # 추가 views, index 위치는 app 아래에
     #path("users/<str:username>/, views.users, name='users')
-    path("articles/", include("articles.urls"))
+    path("articles/", include("articles.urls")),
 ]
 ```
 ## model
@@ -175,173 +174,382 @@ db.sqlite3 파일 선택 -> control + shift + p -> sqlite 검색->sqlite OPEN DA
 
 SQLITE EXPLORER # 왼쪽 하단에  생김
 ```
-```
-from django.shortcuts import render, redirect # redirect
-```
-## R
 ```py
-# view
-from .models import Article # 모델 연결
+Article.objects.create(title = "test", content = "test")
+```
+```py
+from django.contrib import admin
+from django.urls import path
+from . import views
 
-def articles(request): # 처음 페이지 로딩시
-    articles = Article.objects.all().order_by("-created_at")  # 모든데이터 호출 제목, 내용, 수정날짜.... / .order_by("-created_at") 역순 정렬 .order_by("-pk")
+urlpatterns = [
+    path('', views.articles, name = 'articles'),
+]
+```
+1) articles 페이지
+```py
+# apps - urls.py
+path('', views.articles, name = 'articles'),
+
+# apps - views.py
+
+def articles(request):
+    articles = Article.objects.all().order_by("-created_at")
     context = {
-        "articles": articles,
+        "articles": articles, # 출력시 전체 / 입력시 부분
     }
     return render(request, "articles.html", context)
 
-# template
-{% for article in articles %}
-    <li>
-        <div>번호 : {{ article.id }}</div>
-        <div>제목 : {{ article.title }}</div>
-        <div>내용 : {{ article.content}}</div>
-        <br>
-    </li>
-{% endfor %}
+
+# apps - template - articles.html 파일
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url "new"%}">글쓰기</a>
+    {% for article in articles %}
+        <div>{{ article.id }}</div>
+        <div>{{ article.title }}</div><br>
+    {% endfor %}
+{% endblock %}
 
 ```
-## C
+
+2) new 페이지
 ```py
+# apps - urls.py 파일
+path('new/', views.new, name = 'new'), # 추가
+path('create/', views.create, name = 'create'), # 추가
 
-<form action="{% url 'create' %}" method="GET"> # 바람직하지 못한 GET 하지만 작동
-    <label for="title">제목</label>
-    <input type="text" name="title" id="title"><br><br>
+# apps - views.py 파일
+from django.shortcuts import render, redirect # redirect
+from .models import Article # apps 내부 model의 Article 함수
 
-    <label for="content">내용</label>
-    <textarea name="content" id="content" cols="30" rows="10"></textarea><br><br>
-
-    <button type="submit">저장</button>
-</form>
-
-# views 파일
-def new(request):# 화면 연출 효과만 존재
+def new(request):
     return render(request, "new.html")
 
 def create(request):
-    title = request.GET.get("title")
-    content = request.GET.get("content")
-
-    # 새로운 article 저장
-    Article.objects.create(title=title, content=content)
-    return render(request, "create.html") # 리턴 내용 없음
-```
-
-```py
-# view file
-from django.shortcuts import render, redirect # redirect
-
-return render(request, "articles.html") # 전 페이지 creat는 Template action POST 위치와 연결되어 있음?
-
-def create(request):
-    title = request.POST.get("title")
-    content = request.POST.get("content")
-
-    # 새로운 article 저장
-    Article.objects.create(title=title, content=content)
-    return render(request, "create.html") # 전
-
-def create(request):
-    title = request.POST.get("title")
-    content = request.POST.get("content")
-    Article.objects.create(title=title, content=content)
-    return redirect("articles") # 후
-
-# create.html 삭제
-```
-```py
-# articles - urls 파일
-path("<int:pk>/", views.article_detail, name="article_detail")
-
-# articles - views 파일
-def article_detail(request, pk):
-    article = Article.objects.get(id=pk) # s가 아님
-    context = {
-        "article": article,
-    }
-    return render(request, "article_detail.html", context)
-
-# articles - template 파일
-
-<h2>article detail</h2>
-
-<h3> {{ article.title }} </h3>
-<p> {{ article.content }} </p>
-<p> {{ article.created_at}} </p>
-```
-
-
-NoReverseMatch at
-```py
-# articles - views 파일
-def create(request):
-    title = request.POST.get("title")
-    content = request.POST.get("content")
-    Article.objects.create(title=title, content=content)
-    return redirect("article_detail") # 오류 발생
-
-def create(request):
-    title = request.POST.get("title")
-    content = request.POST.get("content")
-    article = Article.objects.create(title=title, content=content) # 실행 + 변수 지정
-    return redirect("article_detail", article.pk)  # 실행된 내용이 담긴 변수에서 pk 사용
-```
-```py
-path("delete/", views.delete, name="delete"), # 잘못됨
-path("<int:pk>/delete/", views.delete, name="delete"),
-
-Article.objects.delete(id=pk) # 잘못됨
-article = Article.objects.get(id=pk)
-article.delete()
-
-<a href="{% url 'delete' %}">지우기</a> # 잘못됨
-<form action="{% url 'delete' article.pk %}" method = "POST" >
-    {% csrf_token %}
-    <input type='submit' value='삭제'>
-</form>
-```
-```py
-<input ...  value="{{ article.title }}"/> # value 값에
-<textarea ...> # value 값 없음,
-```
-
-```py
-# articles - urls 파일
-path("<int:pk>/edit/", views.edit, name="edit"),
-path("<int:pk>/update/", views.update, name="update"),
-
-# articles - views 파일
-def update(request, pk):
-  article = Article.objects.get(pk=pk)
-  article.title = request.POST.get("title")
-  article.content = request.POST.get("content")
-  article.save()
-  return redirect("article_detail", article.pk)
-
-
-def update(request, pk):
     if request.method == "POST":
         title = request.POST.get("title")
         content = request.POST.get("content")
-        article = Article.objects.get(id = pk)
-        article = Article.objects.create(title = title, content = content)
-        return redirect("article_detail", article.pk) # request 없음
+        Article.objects.create(title = title, content = content)
+        return redirect("articles")
+    return redirect("articles")
+
+# apps - template - new.html 파일
+
+{% extends "base.html" %}
+{% block content %}
+
+<form action="{% url 'create' %}" method="POST">
+    {% csrf_token %}
+    <h2>new</h2>
+    <label for = 'title'>제목</label>
+    <input type='text' id='title' name='title'><br>
+
+    <label for='content'>내용</label>
+    <input type='text' id='content' name='content' cols='30' rows='10'><br>
+
+    <button type='submit'>저장</button>
+</form>
+<a href = "">뒤로</a>
+
+{% endblock %}
+
+```
+
+3) article_detail 페이지
+```py
+# apps - urls.py
+path('<int:pk>/article-detail/', views.article_detail, name ='article_detail'),
+
+# apps - views.py
+def article_detail(request, pk):
+    article = Article.objects.get(id=pk)
+    context = {
+        "article" : article,
+    }
+    return render(request, "article_detail.html", context)
+
+# apps - article_detail.html
+{% extends "base.html" %}
+
+{% block content %}
+
+<label for='title'>제목:</label>
+<p>{{ article.title }}</p><br>
+<label>내용</label>
+<p>{{ article.content }}</p>
+
+<a href="{% url "articles" %}">뒤로</a>
+<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %}
+<button type="submit">삭제</button>
+</form>
+<a href="">수정</a>
+
+{% endblock content %}
+
+```
+
+4) delete 페이지
+```py
+# apps - urls.py
+path('<int:pk>/delete/', views.delete, name = 'delete'),
+
+# apps - views.py
+def delete(request, pk):
+    if request.method == "POST":
+        article = Article.objects.get(id=pk)
+        article.delete()
+        return redirect("articles")
+    return redirect("articles_detail")
+
+# apps - article_detail.html
+<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %}
+<button type="submit">삭제</button>
+</form>
+```
+
+3) edit 페이지
+```py
+# apps - urls 
+path('<int:pk>/edit/', views.edit, name = 'edit'),
+path('<int:pk>/update', views.update, name = 'update'),
+
+# apps - views
+def edit(request, pk):
+    article = Article.objects.get(id=pk)
+    context = {
+        "article" : article
+    }
+    return render(request, "edit.html", context)
+
+def update(request, pk):
+    if request.method == "POST":
+        #print(request)
+        #print(pk)
+        article = Article.objects.get(id=pk)
+        article.title = request.POST.get("title")
+        article.content = request.POST.get("content")
+        article.save()
+        return redirect("article_detail", article.pk)
     return redirect("article_detail", article.pk)
 
-# article -templates 파일
-  <form action="{% url 'update' article.pk %}" method="POST">  # update 변경
+# app - templates - edit, update.html
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url 'update' article.pk %}" method="POST">
     {% csrf_token %}
-    <div class="input-group input-group-sm mb-3">
-      <span class="input-group-text" id="inputGroup-sizing-sm">Small</span>
-      <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm" name="title" value="{{ article.title }}"/> # value="{{ article.title }}"
-    </div>
+    <h2>new</h2>
+    <label for = 'title'>제목</label>
+    <input type='text' id='title' name='title' value = "{{article.title}}"><br>
 
-    <div class="input-group mb-3">
-      <span class="input-group-text">With textarea</span>
-      <textarea class="form-control" aria-label="With textarea2" name="content">{{ article.content }}</textarea> # {{ article.content }}
-    </div>
-    <button type="submit" class="btn btn-primary">수정</button> # 텍스트 변경
-  </form>
+    <label for='content'>내용</label>
+    <input type='text' id='content' name='content' cols='30' rows='10' value="{{article.content}}"></input><br>
 
-  <a href = {% url "article_detail" article.pk %}>뒤로</a>
+    <button type='submit'>수정</button>
+</form>
+<a href = "">뒤로</a>
+
+{% endblock %}
 ```
+전문
+```py
+# 로컬 - urls
+from django.contrib import admin
+from django.urls import path, include
+from articles import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('index/', views.index, name='index'),
+    path('articles/', include("articles.urls")),
+]
+
+# apps - urls
+
+from django.contrib import admin
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.articles, name = 'articles'),
+    path('new/', views.new, name = 'new'),
+    path('create/', views.create, name = 'create'),
+    path('<int:pk>/article-detail/', views.article_detail, name ='article_detail'),
+    path('<int:pk>/delete/', views.delete, name = 'delete'),
+    path('<int:pk>/edit/', views.edit, name = 'edit'),
+    path('<int:pk>/update', views.update, name = 'update'),
+]
+
+
+# apps - views
+
+from django.shortcuts import render, redirect
+from .models import Article
+
+
+def index(request):
+    return render(request, "index.html")
+
+def articles(request):
+    articles = Article.objects.all().order_by("-created_at")
+    context = {
+        "articles": articles, 
+    }
+    return render(request, "articles.html", context)
+
+def new(request):
+    return render(request, "new.html")
+
+def create(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        Article.objects.create(title = title, content = content)
+        return redirect("articles")
+    return redirect("articles")
+
+def article_detail(request, pk):
+    article = Article.objects.get(id=pk)
+    context = {
+        "article" : article,
+    }
+    return render(request, "article_detail.html", context)
+
+def delete(request, pk):
+    if request.method == "POST":
+        article = Article.objects.get(id=pk)
+        article.delete()
+        return redirect("articles")
+    return redirect("articles_detail")
+    
+
+def edit(request, pk):
+    article = Article.objects.get(id=pk)
+    context = {
+        "article" : article
+    }
+    return render(request, "edit.html", context)
+
+def update(request, pk):
+    if request.method == "POST":
+        #print(request)
+        #print(pk)
+        article = Article.objects.get(id=pk)
+        article.title = request.POST.get("title")
+        article.content = request.POST.get("content")
+        article.save()
+        return redirect("article_detail", article.pk)
+    return redirect("article_detail", article.pk)
+```
+
+### 로컬 - template - base.html
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
+```
+
+### apps - index
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>index</p>
+</body>
+</html>
+```
+
+### apps - article
+```html
+{% extends "base.html" %}
+
+{% block content %}
+<a href="{% url "new"%}">글쓰기</a>
+    {% for article in articles %}
+        <div>{{ article.id }}</div>
+        <div> <a href = "{% url "article_detail" article.pk %}"> {{ article.title }} </a></div><br>
+    {% endfor %}
+{% endblock %}
+```
+
+### apps - article_detail
+```html
+{% extends "base.html" %}
+
+{% block content %}
+
+<label for='title'>제목:</label>
+<p>{{ article.title }}</p><br>
+<label>내용</label>
+<p>{{ article.content }}</p>
+
+<a href="{% url "articles" %}">뒤로</a>
+<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %}
+<button type="submit">삭제</button>
+</form>
+<a href="{% url "edit" article.pk %}">수정</a>
+
+{% endblock content %}
+```
+
+### apps new
+```html
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url 'create' %}" method="POST">
+    {% csrf_token %}
+    <h2>new</h2>
+    <label for = 'title'>제목</label>
+    <input type='text' id='title' name='title'><br>
+
+    <label for='content'>내용</label>
+    <input type='text' id='content' name='content' cols='30' rows='10'><br>
+
+    <button type='submit'>저장</button>
+</form>
+<a href = "">뒤로</a>
+
+{% endblock %}
+```
+### apps - edit
+```html
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{% url 'update' article.pk %}" method="POST">
+    {% csrf_token %}
+    <h2>new</h2>
+    <label for = 'title'>제목</label>
+    <input type='text' id='title' name='title' value = "{{article.title}}"><br>
+
+    <label for='content'>내용</label>
+    <input type='text' id='content' name='content' cols='30' rows='10' value="{{article.content}}"></input><br>
+
+    <button type='submit'>수정</button>
+</form>
+<a href = "">뒤로</a>
+
+{% endblock %}
+```
+
+
