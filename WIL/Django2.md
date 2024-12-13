@@ -90,3 +90,41 @@ def update(request, pk):
     context = {"form":form, "article" : article}
     return render(request, "update.html", context)
 ```
+URL namespace
+```py
+
+# 같은 urls 경우 setting기준으로 제공
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django_extensions',
+    'articles',
+    'users',
+]
+
+# apps - urls 추가
+app_name = "articles" # namespace
+
+# apps - html 변경
+<form action="{% url 'create' %}" method="POST">
+<form action="{% url 'articles:create' %}" method="POST">
+
+# apps - views 변경
+return redirect("article_detail", article.pk)
+return redirect("articles:article_detail", article.pk)
+
+```
+Template Namespace
+```py
+# apps - templates 폴더에 article 폴더 추가
+templates/articles
+
+# apps - view - return render() 수정
+
+
+```
+index 의 articles:hello 의 articles는 urls -> views를 의미한다. views에서는 모든 폴더를 찾는다. 

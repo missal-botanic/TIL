@@ -2,10 +2,10 @@
 
 {% block content %}
 <h1>hello</h1>
-<a href = "{% url 'create'%}">글쓰기</a>
+<a href = "{% url 'articles:create'%}">글쓰기</a>
 <ul>
     {% for article in articles %}
-    <a href ="{% url 'article_detail' article.pk %}">
+    <a href ="{% url 'articles:article_detail' article.pk %}">
         <li>
             <div> [ {{article.id}} ] 제목 : {{ article.title }}</div>
             <br>

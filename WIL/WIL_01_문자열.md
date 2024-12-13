@@ -35,10 +35,6 @@ len()
 
 .replace()
 
-a + b + c + d
-"hello""baby"
-'a' + "e" + '''i''' + """u"""
-
 .capitalize()
 .title()
 .upper()
@@ -51,12 +47,17 @@ a + b + c + d
 .ljust(30)
 .rjust(30)
 
+" "," "
+a + b + c + d
+"hello""baby"
+'a' + "e" + '''i''' + """u"""
+
 name, "님의 ", age, "입니다." 
 "%s님의 %s살입니다" % (name, age) 
 "{0}님의 {1}살입니다.".format(name, age) 
 f"{name}님의 나이는 {age}살입니다."
 
-sep="", end="" 
+sep="", end="" (end=" ")
 ```
 복합 수정
 ```
@@ -486,6 +487,13 @@ print("first", end=""); print("second") # end="" 자동 줄바꿈 제거
 >>>
 firstsecond
 ```
-```
+```py
 a, b, c = map(int, input().split())
+```
+```py
+print(list(map(int, input().split())))  
+>>> [1, 2, 3, 4] # 숫자
+
+print(list(input().split()))
+>>> ['1', '2', '3', '4'] # 문자열
 ```

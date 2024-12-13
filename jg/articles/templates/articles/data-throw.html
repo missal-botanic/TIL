@@ -3,12 +3,12 @@
 {% block content %}
 <h1>hello</h1>
 
-<form action="{% url 'data-catch' %}" method="GET">
+<form action="{% url 'articles:data-catch' %}" method="GET">
     <label for = "message">데이터 입력 : </label>
     <input type = "text" id = "message" name="message">
 
     <button type = "submit">전송</button>
 </form>
 
-    <a href="{% url 'index' %}">home</a>
+    <a href="{% url 'articles:index' %}">home</a>
 {% endblock content %}
