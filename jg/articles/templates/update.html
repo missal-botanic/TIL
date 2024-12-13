@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form action="{% url 'update' article.pk %}" method="POST"> <!-- views.create로 보냄 -->
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">수정</button>
+  </form>
+
+  <a href = {% url "article_detail" article.pk %}>뒤로</a>
+{% endblock %}

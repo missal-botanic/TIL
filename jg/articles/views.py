@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Article # 모델 연결
+from .forms import ArticleForm
 #from django.http import HttpResponse
 
 # Create your views here.
@@ -43,16 +44,53 @@ def article_detail(request, pk):
     return render(request, "article_detail.html", context)
 
 
-def new(request):# 화면 연출 효과만 존재
-    return render(request, "new.html")
+# def new(request):# 화면 연출 효과만 존재
+#     forms = ArticleForm()
+#     context = {"forms" : forms}
+#     return render(request, "new.html", context)
+
 
 def create(request):
     if request.method == "POST":
-        title = request.POST.get("title")
-        content = request.POST.get("content")
-        article = Article.objects.create(title=title, content=content)
-        return redirect("article_detail", article.pk)
-    return redirect("new")
+        form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
+        if form.is_valid(): # 빈데이터 혹은 받지 않을 데이터 있을 경우 필터
+            article = form.save() # form.save()도 작동하지만 진행을 위해 변수 지정
+            return redirect("article_detail", article.pk)
+    else:
+        form = ArticleForm()
+    
+    context = {"form": form}
+    return render(request, "create.html", context)
+
+
+
+
+
+
+# def create(request):
+#     form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
+#     if form.is_valid(): # 빈데이터 혹은 받지 않을 데이터 있을 경우 필터
+#         article = form.save() # form.save()도 작동하지만 진행을 위해 변수 지정
+#         return redirect("article_detail", article.pk)
+#     return redirect("new")
+
+
+# def create(request):
+#     if request.method == "POST":
+#         title = request.POST.get("title")
+#         content = request.POST.get("content")
+#         article = Article.objects.create(title=title, content=content)
+#         return redirect("article_detail", article.pk)
+#     return redirect("new")
+
+
+# def update(request, pk):
+#   article = Article.objects.get(pk=pk)
+#   article.title = request.POST.get("title")
+#   article.content = request.POST.get("content")
+#   article.save()
+#   return redirect("article_detail", article.pk)
+
 
 def delete(request, pk):
     if request.method == "POST":
@@ -61,12 +99,12 @@ def delete(request, pk):
         return redirect("articles")
     return redirect("article_detail", pk)
 
-def edit(request, pk):
-    article = Article.objects.get(id=pk)
-    context = {
-        "article" : article
-    }
-    return render(request, "edit.html", context)
+# def edit(request, pk):
+#     article = Article.objects.get(id=pk)
+#     context = {
+#         "article" : article
+#     }
+#     return render(request, "edit.html", context)
 
 def update(request, pk):
     if request.method == "POST":
@@ -78,12 +116,16 @@ def update(request, pk):
     return redirect("article_detail", article.pk)
 
 
-# def update(request, pk):
-#   article = Article.objects.get(pk=pk)
-#   article.title = request.POST.get("title")
-#   article.content = request.POST.get("content")
-#   article.save()
-#   return redirect("article_detail", article.pk)
 
-
+def update(request, pk):
+    article = Article.objects.get(id=pk)
+    if request.method == "POST":
+        form = ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            article = form.save()
+            return redirect("article_detail", article.pk)
+    else:
+        form = ArticleForm(instance=article)
     
+    context = {"form":form, "article" : article}
+    return render(request, "update.html", context)

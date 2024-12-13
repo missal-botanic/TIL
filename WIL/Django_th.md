@@ -52,7 +52,7 @@ HttpRequest → (URLs) → View→ Template → View → HttpResponse
 ```py
 태그 {% tag %} # 반복 또는 논리를 수행 제어 흐름 + 일부 종료 태그 존재
 
-변수 {{ 변수 }} # 딕셔너리의 키값이 오고 간다. 
+변수 {{ 변수 }} # 딕셔너리의 키값이 오고 간다. /변수/장고폼/
 필터 {{ 변수|필터 }} # 변수에 추가 작업 + 보여지는 모습 바꿈(ex소문자화) 60개 + 커스텀 가능
 
 주석 {# 한 줄 주석 #}
@@ -63,8 +63,9 @@ HttpRequest → (URLs) → View→ Template → View → HttpResponse
 ```py
 from django.http import HttpResponse
 
-def index(request): # 추가 함수 
-	response = HttpResponse("<h1>Hello, Django!</h1>") 
+# 추가 함수 
+def index(request): 
+	response = HttpResponse("<h1>Hello, Django!</h1>") # html바로 코딩 + 라이브러리 로딩 필요
 	return response
 ```
 ### html 뷰

@@ -9,7 +9,7 @@
     <p>수정일시: {{ article.updated_at }}</p>
 
     <a href="{% url 'articles' %}">목록 보기</a>
-    <a href="{% url 'edit' article.pk %}">수정하기</a>
+    <a href="{% url 'update' article.pk %}">수정하기</a>
     <form action="{% url 'delete' article.pk %}" method = "POST" >
         {% csrf_token %}
         <input type='submit' value='삭제'>

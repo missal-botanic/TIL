@@ -387,3 +387,10 @@ print(s+"! "+t)
 print(f'{s}! {t}')
 print("{}! {}".format(s,t))
 ```
+```
+num = int(input())
+
+for i in range(1,num):
+    #print('*'*(num-i),'_'*i, sep='') 
+    print('*'*(num-i)+''+'_'*i)
+```
