@@ -1,4 +1,14 @@
 ### my_first_pjt
+```
+1) 앱생성
+2) setting 등록
+
+3) 루트 urls 편집
+
+4) apps urls 생성 및 편집
+5) apps views 편집
+6) apps template/app/app.html 폴더 생성 및 편집
+```
 ```py
 #프로젝트 폴더
 
@@ -49,8 +59,31 @@ view(controller) # model과 view 연결하는 로직, 메인비지니스, 크라
 
 HttpRequest → (URLs) → View→ Template → View → HttpResponse
 ```
+
+```
+1. view 에서 model에 접근해 모든 아티클을 가지고 온다
+2. view 에서 가져온 아티클을 template으로 넘긴다
+3. tempate에서 넘어온 context를 보여준다
+4. view에서 템플릿을 렌더링해서 리턴한다
+
+model -> view -> template -> context 
+```
 ```py
 import view # view 클릭시 바로 이동
+```
+```py
+from django.shortcuts import render, redirect # redirect
+from .models import Article # 모델 연결
+from django import forms
+```
+```py
+user = form.get_user() # 다른 곳에서 써야할 때
+auth_login(request, user)
+
+-> auth_login(request, form.get_user()) # 한곳에서만 쓸 때
+```
+```py
+# Article() 와 Article. 다르다
 ```
 
 ```bash
@@ -62,7 +95,18 @@ http://127.0.0.1:8000/data-throw/?message=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%E
 # 쿼리(쿼리스트링)
 # ?key=value&key2=value2 과 같은 형식
 ```
+```py
+# 오류 html 표시 내용
+# views 함수에 request 누락시 
+>>>
+TypeError at /accounts/login/
+login() takes 0 positional arguments but 1 was given
 
+pass 만 있을시
+>>>
+ValueError at /accounts/login/
+The view accounts.views.login didn't return an HttpResponse object. It returned None instead.
+```
 ```django
 태그 {% tag %} # 반복 또는 논리를 수행 제어 흐름 + 일부 종료 태그 존재
 {% extends "base.html" %}
@@ -76,11 +120,30 @@ http://127.0.0.1:8000/data-throw/?message=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%E
 변수 {{ 변수 }} # 딕셔너리의 키값이 오고 간다. /변수/장고폼/
 {{ form.as_p }}
 {{article.id}}
-
+{{ request.user.username }}
 
 필터 {{ 변수|필터 }} # 변수에 추가 작업 + 보여지는 모습 바꿈(ex소문자화) 60개 + 커스텀 가능
 
 주석 {# 한 줄 주석 #}
+
+<str:username>
+<username>
+```
+```py
+# 01
+<form action="{% url 'create' %}" method="GET"> #틀림
+{% csrf_token %} # 주소로 오는거 막기
+# 02
+if request.method == "POST":
+
+# 03
+@require_POST
+@require_http_methods(["GET", "POST"])
+```
+```py
+# 산
+return render(request, "hello.html", context)
+{% url 'update' article.pk %}
 ```
 ### urls.py
 ```py
@@ -237,6 +300,12 @@ www.web.com/ # 디렉토리
 # 원래 url은 path 가 반듯이 있어야 하지만 자동으로 / 붙이고, 자동 index.html 파일 찾음
 ```
 ### Variable Routing
+
+```py
+users/<username>/ # 미입력시 str
+users/<str:username>/ # 문자열
+users/<int:username>/ # 0또는 양의 정수
+```
 ```py
 # urls.py
 path('users/<username>/', views.profile) # <인수> URL에서 'username' 인수를 받겠다 정의
@@ -248,11 +317,17 @@ def profile(request, username):  # url 의 /'username' 내용 받는 인수
     }
     return render(request, "profile.html", context) # context 반환 
 ```
-# 02 urls
-from django.urls import path
-from . import views # . 같은 폴더에 위치
+### urls 
+```py
+# 통째로 혹은 일부
 
-# app urls
+from .models import Article # .은 현재 파일과 동일한 디렉토리에 있는 models.py 파일에서 Article 클래스
+from .forms import ArticleForm # .은 현재 디렉토리 내의 forms.py 파일 그 파일에서 ArticleForm을 가져오는 코드
+from . import views # . 현재 디렉토리 내의 views.py 파일을 통째로
+```
+
+### app urls
+```py
 urlpatterns = [
     path('users/<str:username>/', views.profile) # 이전버전
     path('<str:username>/', views.profile), # 수정 후 
@@ -262,21 +337,21 @@ urlpatterns = [
 ]
 ```
 ```py
-urlpatterns = [
-    path('data-throw/', views.data_throw, name="data-throw"),
-    path("data-catch/", views.data_catch, name="data-catch"), # name="data-catch" 추가 (루트 name화)
-]
+# name="data-throw" 주소 네임화
+
+# urls
+path("data-catch/", views.data_catch, name="data-catch"), # name="data-catch" 추가 (루트 name화)
 
 # HTMl
-<form action="
-/articles/data-catch/" method="GET"> # html 파일 수정 전
+<form action="/articles/data-catch/" method="GET"> # 수정 전
 
-<form action="{% url 'data-catch' %}" method="GET"> # html 파일 수정 후 
+<form action="{% url 'data-catch' %}" method="GET"> # 수정 후 
 ```
 
 # Template Inheritance
-### base
-```py
+### template 상속
+### base.html
+```django
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -291,26 +366,18 @@ urlpatterns = [
 </html>
 ```
 ### 상속 받는 HTML
-```py
+```django
 {% extends 'base.html' %}
 
 {% block content %} # 도출 시작
     <h1>hello!</h1> # 내용
 {% endblock content %} # 돌출 끝
 ```
-
-
-```py
-users/<username>/ # 미입력시 str
-users/<str:username>/ # 문자열
-users/<int:username>/ # 0또는 양의 정수
-```
-
-
+### include()
 ```py
 # 01 urls
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include # 추가
 from articles import views 
 
 urlpatterns = [
@@ -319,15 +386,12 @@ urlpatterns = [
     path('articles/', include("articles.urls")), # include() + 폴더.파일
     path('user/', include("users.urls"))
 ]
-
-
 ```
-
-### models 마이그레이션
+## models 마이그레이션
 ```py
 데이터 # 데이터가 모인 곳
-쿼리 #조작 언어
-스키마 #관계의 정의#
+쿼리 # 조작 언어
+스키마 # 관계의 정의
 
 1. 테이블
 3. Priamay key = 테이블 인덱스 # 장고는 자동 생성
@@ -344,7 +408,7 @@ objects # manage의 기본 이름
 ```
 
 **CRUD** Create Read Updata Delete 
-
+### shell 명령어 모음
 ```bash
 Create
 # shell에서 사용
@@ -352,6 +416,8 @@ Create
 article = Article() # 클래스로 객체 생성
 article.title = 'first_title'  # 생성된 객체의 title 필드에 'first_title'을 할당
 article.content = 'my_content' # 생성된 객체의 content 필드에 'my_content'를 할당
+
+article = Article.objects.get(id=pk)
 
 # 여기에서 전체 Article을 조회해보면
 Article.objects.all() # 비어있다
@@ -362,11 +428,9 @@ article.save()
 
 article = Article(title='두번째 제목', content='두번째 내용')
 
-Article.objects.create(title='third title', content='마지막 방법임')
-# save()가 필요하지 않음
-```
+# save()가 필요하지 않는 방법
+Article.objects.create(title='third title', content='마지막 방법')
 
-```bash
 Read
 # 다시 전체 Article을 조회해보면 하나의 article 확인 가능
 Article.objects.all()
@@ -382,8 +446,7 @@ Article.objects.filter(id__gt=2) # 2보다 큰 id
 Article.objects.filter(id__in=[1,2,3]) # 1,2,3에 속하는 id
 Article.objects.filter(content__contains='my') # content에 'my'가 포함된
 ...
-```
-```py
+
 # 속성 하나씩 접근하기
 
 article.title # 제목 
@@ -396,22 +459,10 @@ article.id # pk(id)
 
 .all() # 조회시 내용 추가
 ```
-```py
-class Article(models.Model):
-    title = models.CharField(max_length=50) 
-    content = models.TextField(default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self): # 추가된 내용(선택)
-        return self.title
-
->>>
-<QuerySet [<Article: Article object (1)>, <Article: Article object (2)>]> # 전 
-<QuerySet [<Article: 첫번째 제목>, <Article: 두번째 제목>, <Article: 세번째 내용>]> # 후
-```
 
 ```py
+# 수정
+
 article = Article.objects.get(id=1) # 실제 데이터를 수정하기 위해 변수에 연결시키는 작업
 article.title = 'updated title'
 article.save()
@@ -430,52 +481,59 @@ first_article.content
 
 ```
 ```py
+# 삭제
+
 article = Article.objects.get(id=2)
 article.delete()
 >>>
 (1, {'articles.Article': 1})
-
 ```
-
 ```py
-# Article() 와 Article. 다르다
-```
-```
-1. view 에서 model에 접근해 모든 아티클을 가지고 온다
-2. view 에서 가져온 아티클을 template으로 넘긴다
-3. tempate에서 넘어온 context를 보여준다
-4. view에서 템플릿을 렌더링해서 리턴한다
+# model 파일 출력 추가
 
-model -> view -> template -> context 
-```
-```
-# template 파일
+class Article(models.Model):
+    title = models.CharField(max_length=50) 
+    content = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-<form action="" method="GET"> # form으로 묶음
+    def __str__(self): # 추가된 내용/ 출력 확인 용(선택)
+        return self.title
+
+>>>
+<QuerySet [<Article: Article object (1)>, <Article: Article object (2)>]> # 전 
+<QuerySet [<Article: 첫번째 제목>, <Article: 두번째 제목>, <Article: 세번째 내용>]> # 후
+```
+template 파일
+
+```html
+<form action="" method="GET">  <!-- db 사용시 -->
 # 입력 내용들
 </form>
 ```
 ```py
-# id = pk
-{{article.id}}
+# id = pk 같은 효과
+{{article.id}} 
 {{article.pk}}
+article = Article.objects.get(id=pk)
 ```
 
 ```py
 # get 방식은 DB에 영향을 주지 않는것
 
-# 서버에서 유저 기억하는 방식 세션
+# POST 와 GET 차이
+# GET 은 data 를 url로 보낸다
+# POST 는 body에 담아 보낸다
 
-POST 와 GET 차이
-
-# template 파일
-<form action="{% url 'create' %}" method="POST"> # 1) POST 
-    {% csrf_token %} # csrf token 3) 추가
-
-# views 파일
+# views
 def create(request):
     title = request.POST.get("title") # 2) POST
     content = request.POST.get("content")
+
+# template
+<form action="{% url 'create' %}" method="POST"> # 1) POST 
+    {% csrf_token %} # csrf token 3) 추가
+
 ```
 
 ```py
@@ -491,63 +549,21 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 ```
-
-```
-GET 은 data 를 url로 보낸다
-POST 는 body에 담아 보낸다
-```
-```
+```py
 return redirect("articles") # 바른 연결
-return redirect("articles.html") # create/articles 연결
+return redirect("articles.html") # 틀린방식
 ```
 ```py
-<a href="{% url "delete" article.pk %}">삭제</a> # 틀림
-<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %} 삭제</form>
-#버튼 필요
+<a href="{% url "delete" article.pk %}">삭제</a> # <a> 태그는 기본적으로 GET 요청을 보내는 링크
+<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %} 삭제</form> # <form> 태그는 POST 요청을 보내는 방법
 ```
 
-```py
-from django.shortcuts import render, redirect # redirect
-```
-## R
-```py
-# view
-from .models import Article # 모델 연결
-
-def articles(request): # 처음 페이지 로딩시
-    articles = Article.objects.all().order_by("-created_at")  # (복수형) 모든데이터 호출 제목, 내용, 수정날짜.... / .order_by("-created_at") 역순 정렬 .order_by("-pk")
-    context = {
-        "articles": articles,
-    }
-    return render(request, "articles.html", context)
-
-# template
-{% for article in articles %}
-    <li>
-        <div>번호 : {{ articles.id }}</div>
-        <div>제목 : {{ articles.title }}</div>
-        <div>내용 : {{ articles.content}}</div>
-        <br>
-    </li>
-{% endfor %}
-
-```
 
 ## C
 ```py
+# views
 
-<form action="{% url 'create' %}" method="GET"> # 바람직하지 못한 GET 하지만 작동
-    <label for="title">제목</label>
-    <input type="text" name="title" id="title"><br><br>
-
-    <label for="content">내용</label>
-    <textarea name="content" id="content" cols="30" rows="10"></textarea><br><br>
-
-    <button type="submit">저장</button>
-</form>
-
-# views 파일
-def new(request):# 화면 연출 효과만 존재
+def new(request): # 화면 연출 효과만 존재
     return render(request, "new.html")
 
 def create(request):
@@ -557,19 +573,33 @@ def create(request):
     # 새로운 article 저장
     Article.objects.create(title=title, content=content)
     return render(request, "create.html") # 리턴 내용 없음
+
+# html
+
+<form action="{% url 'create' %}" method="GET"> # 바람직하지 못한 GET 하지만 view에서 대비가 없다면 작동
+    <label for="title">제목</label>
+    <input type="text" name="title" id="title"><br><br>
+
+    <label for="content">내용</label>
+    <textarea name="content" id="content" cols="30" rows="10"></textarea><br><br>
+
+    <button type="submit">저장</button>
+</form>
+
+
 ```
 
 ```py
-# view file
-from django.shortcuts import render, redirect # redirect
+redirect
+
+# view
+from django.shortcuts import render, redirect # 추가
 
 return render(request, "articles.html") # 전 페이지 creat는 Template action POST 위치와 연결되어 있음?
 
 def create(request):
     title = request.POST.get("title")
     content = request.POST.get("content")
-
-    # 새로운 article 저장
     Article.objects.create(title=title, content=content)
     return render(request, "create.html") # 전
 
@@ -581,11 +611,36 @@ def create(request):
 
 # create.html 삭제
 ```
+## R
 ```py
-# articles - urls 파일
+게시판 기본 형태
+
+# view
+from .models import Article # 모델 연결
+
+def articles(request): # 처음 페이지 로딩시
+    articles = Article.objects.all().order_by("-created_at")  # (복수형) 모든데이터 호출 제목, 내용, 수정날짜.... / .order_by("-created_at") 역순 정렬 .order_by("-pk")
+    context = {
+        "articles": articles,
+    }
+    return render(request, "articles.html", context)
+
+# html
+{% for article in articles %}
+    <li>
+        <div>번호 : {{ articles.id }}</div>
+        <div>제목 : {{ articles.title }}</div>
+        <div>내용 : {{ articles.content}}</div>
+        <br>
+    </li>
+{% endfor %}
+```
+### article detail
+```py
+# urls
 path("<int:pk>/", views.article_detail, name="article_detail")
 
-# articles - views 파일
+# views
 def article_detail(request, pk):
     article = Article.objects.get(id=pk) # s가 아님
     context = {
@@ -593,7 +648,7 @@ def article_detail(request, pk):
     }
     return render(request, "article_detail.html", context)
 
-# articles - template 파일
+# html
 
 <h2>article detail</h2>
 
@@ -619,39 +674,35 @@ def create(request):
     return redirect("article_detail", article.pk)  # 실행된 내용이 담긴 변수에서 pk 사용
 ```
 ```py
-path("delete/", views.delete, name="delete"), # 잘못됨
-path("<int:pk>/delete/", views.delete, name="delete"),
+path("delete/", views.delete, name="delete"), # 1) 잘못됨
+path("<int:pk>/delete/", views.delete, name="delete"), # 1) id 필요
 
-Article.objects.delete(id=pk) # 잘못됨
-article = Article.objects.get(id=pk)
+Article.objects.delete(id=pk) # 2) 잘못됨
+article = Article.objects.get(id=pk) # 2) 호출 후 개별 진행 필요
 article.delete()
-
-<a href="{% url 'delete' %}">지우기</a> # 잘못됨
-<form action="{% url 'delete' article.pk %}" method = "POST" >
-    {% csrf_token %}
-    <input type='submit' value='삭제'>
-</form>
 ```
-```py
-<input ...  value="{{ article.title }}"/> # value 값에
-<textarea ...> # value 값 없음,
+```html
+<input ...  value="{{ article.title }}"/> <!-- value 값에 -->
+<textarea ...> <!-- value 값 없이 <>안에<> -->
 ```
 
 ```py
-# articles - urls 파일
+# 수정하기
+
+# articles - urls
 path("<int:pk>/edit/", views.edit, name="edit"),
 path("<int:pk>/update/", views.update, name="update"),
 
-# articles - views 파일
+# views
 def update(request, pk):
-  article = Article.objects.get(pk=pk)
+  article = Article.objects.get(id=pk)
   article.title = request.POST.get("title")
   article.content = request.POST.get("content")
   article.save()
   return redirect("article_detail", article.pk)
 
 
-def update(request, pk):
+def update(request, pk): # POST 구분
     if request.method == "POST":
         title = request.POST.get("title")
         content = request.POST.get("content")
@@ -660,7 +711,7 @@ def update(request, pk):
         return redirect("article_detail", article.pk) # request 없음
     return redirect("article_detail", article.pk)
 
-# article -templates 파일
+# html
   <form action="{% url 'update' article.pk %}" method="POST">  # update 변경
     {% csrf_token %}
     <div class="input-group input-group-sm mb-3">
@@ -670,60 +721,41 @@ def update(request, pk):
 
     <div class="input-group mb-3">
       <span class="input-group-text">With textarea</span>
-      <textarea class="form-control" aria-label="With textarea2" name="content">{{ article.content }}</textarea> # {{ article.content }}
+      <textarea class="form-control" aria-label="With textarea2" name="content">{{ article.content }}</textarea> # > {{ article.content }} <
     </div>
-    <button type="submit" class="btn btn-primary">수정</button> # 텍스트 변경
+    <button type="submit" class="btn btn-primary">수정</button> # 텍스트 수정으로 변경
   </form>
 
   <a href = {% url "article_detail" article.pk %}>뒤로</a>
 ```
-
+### 로그인
+```py
+# 로그아웃은 세션을 지우는것
 ```
-앱생성- setting 등록 - 루트 urls 편집 - apps urls 생성 및 편집 - apps views 편집 - apps template/app/app.html 생성 및 편집
-```
-views 함수에 request 누락시
->>>
-TypeError at /accounts/login/
-login() takes 0 positional arguments but 1 was given
-
-pass 만 있을시
->>>
-ValueError at /accounts/login/
-The view accounts.views.login didn't return an HttpResponse object. It returned None instead.
-```
-```
-user = form.get_user() # 다른 곳에서 써야할 때
-auth_login(request, user)
-
--> auth_login(request, form.get_user()) # 한곳에서만 쓸 때
-
-```
-```
-로그아웃은 세션을 지우는것
-```
-```
-    <div class="navbar">
-        <a href="{% url "accounts:login" %}">로그인</a>
-        <form action="{% url 'accounts:logout' %}" method="POST">
-            {% csrf_token %}
-            <input type="submit" value="로그아웃"></input>
-        </form> # 이부분 누락시 로그인시 로그인 세션 형성이 안됨
-    </div>
+```django
+ <!-- base.html -->
+<div class="navbar">
+    <a href="{% url "accounts:login" %}">로그인</a>
+    <form action="{% url 'accounts:logout' %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="로그아웃"></input>
+    </form> # 이부분 누락시 로그인시 로그인 세션 형성이 안됨
+</div>
 ```
 ```
 200 성공
 400 클라이언트 실패
 500 서버에서 실패
-```
-get(주소창으로 명령어 날리는거 )-> 방어 -> 405 오류
+get(주소창으로 명령어 날리는거 )-> 방어 -> 405 오류유도
 ```
 
-```
+```django
 모든 template에서 항상 접근 가능한 context가 있다.
 request.user에서의 auth.User 혹은 AnonymousUser 인스턴스
+{% if request.user.is_authenticated %}
+{{ request.user.username }}
 ```
-```
+```py
 # 로그인 후 다음에 들어갈 주소
 ?next=/
-
 ```
