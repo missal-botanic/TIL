@@ -3,8 +3,8 @@
 apps - forms.py 생성
 ```
 ```py
-# apps - forms.py
-from django import forms
+# forms
+from django import forms # 추가
 
 class ArticleForm(forms.Form):
     GENRE_CHOICES = [
@@ -14,49 +14,39 @@ class ArticleForm(forms.Form):
     ]
     title = forms.CharField(max_length=50)
     content = forms.CharField(widget=forms.Textarea)
-    #genre = forms.ChoiceField(choices=GENRE_CHOICES)
+    genre = forms.ChoiceField(choices=GENRE_CHOICES) # 드롭다운 예시
 
-# apps - html
-{% extends 'base.html' %}
-
-{% block content %}
-  <form action="{% url 'create' %}" method="POST"> <!-- views.create로 보냄 -->
-    {% csrf_token %}
-    {{ forms.as_p}}
-    <button type="submit" class="btn btn-primary">Primary</button>
-  </form>
-
-  <a href = {% url 'articles' %}>뒤로</a>
-{% endblock %}
-```
-
-```py
-# apps - views.py
+# views
 def create(request):
     form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
     if form.is_valid(): # 빈데이터 혹은 받지 않을 데이터 있을 경우 필터
         article = form.save() # form.save()도 작동하지만 진행을 위해 변수 지정
         return redirect("article_detail", article.pk)
     return redirect("new")
+
+# html
+<form action="{% url 'create' %}" method="POST"> <!-- views.create로 보냄 -->
+    {% csrf_token %}
+    {{ forms.as_p}} # 추가
+    <button type="submit" class="btn btn-primary">제출</button>
+</form>
+  <a href = {% url 'articles' %}>뒤로</a>
 ```
 
-new +> create # 통합 + 이름변경
+new +> create 통합, 이름변경
 
 ```py
-# apps - forms.py
+# forms
 from django import forms
-
-from articles.models import Article
+from articles.models import Article # 모델 호출
 
 class ArticleForm(forms.ModelForm): # 이름 변경가능
     class Meta: # 이름 변경 불가능
         model = Article
-        fields = "__all__"
-        #fields = ["title", "content"]
-        #exclude = ("title",) # __all__ 이후 예외 지정 / 괄호 확인 필요
-```
+        fields = "__all__" # or fields = ["title", "content"]
+        exclude = ("title",) # __all__ 이후 예외 지정 / 괄호 확인 필요
 
-```py
+# views
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
@@ -70,9 +60,7 @@ def create(request):
     return render(request, "create.html", context)
 ```
 
-
-
-edit - update
+edit - update 통합, 이름변경
 
 ```py
 #instance 가 없으면 생성
@@ -81,20 +69,26 @@ edit - update
 def update(request, pk):
     article = Article.objects.get(id=pk)
     if request.method == "POST":
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST, instance=article) # POST 수정 사항 반영 용도, 해당 인스턴스를 지정하는것 id 역할
         if form.is_valid():
             article = form.save()
             return redirect("article_detail", article.pk)
     else:
-        form = ArticleForm(instance=article)
+        form = ArticleForm(instance=article) # GET 처음 사이트 보여줄 때 용도
     
     context = {"form":form, "article" : article}
     return render(request, "update.html", context)
+
+# html
+<input type='text' id='title' name='title' value = "{{article.title}}"><br> # 전
+
+{{ form.as_p }} # 후
+
 ```
-URL namespace
+## URL namespace
 ```py
 
-# 같은 urls 경우 setting기준으로 제공
+# 같은 urls 경우 setting기준으로 순서 제공
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -107,51 +101,29 @@ INSTALLED_APPS = [
     'users',
 ]
 
-# apps - urls 추가
+# apps - urls 상단에 추가
 app_name = "articles" # namespace
 
 # apps - html 변경
-<form action="{% url 'create' %}" method="POST">
-<form action="{% url 'articles:create' %}" method="POST">
+<form action="{% url 'create' %}" method="POST"> # 전
+<form action="{% url 'articles:create' %}" method="POST"> # 후
 
 # apps - views - redirect 변경
-return redirect("article_detail", article.pk)
-return redirect("articles:article_detail", article.pk)
+return redirect("article_detail", article.pk) # 전
+return redirect("articles:article_detail", article.pk) # 후
 
 ```
-Template Namespace
+### Template Namespace
 ```py
 # apps - templates 폴더에 article 폴더 추가
 templates/articles
 
 # apps - view - return render() 변경
-return render(request, "profile.html", context)
-return render(request, "articles/profile.html", context)
+return render(request, "profile.html", context) # 전
+return render(request, "articles/profile.html", context) # 후
 
 ```
-index 의 articles:hello 의 articles는 urls -> views를 의미한다. views에서는 모든 폴더를 찾는다. 
-```
-```
-```
-auth (인증, 권한)
 
-비연결 지향, 한번 통신하고 끝
-무상태, 서로를 잊어버림 + 독립적 메세지
-
->>> 매번 로그인하고 작업해야한다.
-
-쿠키 = 항상 같이 보내는 자료(유저의 로컬에 저장, 변경 가능)
-
-섹션 = 로그인 하면 그 쿠키에 서버가 로그인 넘버를 넣어서 클라이언트에게 전달
-클라이언트가 서버에 쿠키를 통해 임의의 난수(세션 id)전달 
-
-세션쿠기 : 브라우저가 닫히면 쿠키 삭제
-지속쿠키 : 하드디스크에 저장됨 ( MAX_Age 지정하면 삭제가능 )
-```
-```
-로그인 - Session을 Create함
-장고 기본적인 Model user table 가지고 있음, 필요하면 확장
-```
 ```bash
 python manage.py createsuperuser
 admin / adim1234
@@ -160,9 +132,9 @@ admin@test.com
 
 
 ```py
-# 01차
+# views
+# 1차 로그인 화면만 구성
 from django.contrib.auth.forms import AuthenticationForm
-
 
 def login(request):
     form = AuthenticationForm()
@@ -171,7 +143,7 @@ def login(request):
     }
     return render(request, "accounts/login.html", context)
 
-# 02차
+# 02차 실제 작동하게 구성
 from django.contrib.auth import login as auth_login
 
 def login(request):
@@ -179,7 +151,7 @@ def login(request):
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            auth_login(request, user)
+            auth_login(request, user) # 단축 가능
             return redirect("index")
         
     else:
@@ -188,32 +160,29 @@ def login(request):
         "form" : form
     }
     return render(request, "accounts/login.html", context)
----
 
-{% extends "base.html" %}
+# html
 
-{% block content  %}
 <h1>login</h1>
 <form action = "{% url "accounts:login" %}" method = "POST">
-{% csrf_token %}
-{{form.as_p}}
+    {% csrf_token %}
+    {{form.as_p}}
 
-<button type = "submit">login</button>
-
+    <button type = "submit">login</button>
 </form>
 
-{% endblock content %}
 ```
-로그아웃
-```
-
+### 로그아웃
+```py
+# urls
 path('logout/', views.logout, name='logout'),
 
+# views
 def logout(request):
     auth_logout(request)
     return redirect("index")
 
-    
+# html
 <div class="navbar">
     <a href="{% url "accounts:login" %}">로그인</a>
 </div>
@@ -222,38 +191,40 @@ def logout(request):
         <input type="submit" value="로그아웃">
 </form>
 ```
-
+### 오류 처리
 ```py
-일반적
+# pythonic
 try:
     article = Article.objects.get(id=pk)
 except Article.DoesNotExist:
     return redirect("articles:articles")
-장고적
 
+#django way
 from django.shortcuts import render, redirect, get_object_or_404
 
 def article_detail(request, pk):
     #article = Article.objects.get(id=pk)
-    article = get_object_or_404(Article, id=pk)
+    article = get_object_or_404(Article, id=pk) # 변경
     context = {
         "article": article,
     }
     return render(request, "articles/article_detail.html", context)
 ```
+@require_POST 처리
 ```py
+# views
 from django.views.decorators.http import require_POST
 
-@require_POST
+@require_POST # POST 만 받는 경우, html 존재 하지 않는 경우, 분기점 필요 없음
 def logout(request):
     auth_logout(request)
     return redirect("index")
 
-#
+
 from django.views.decorators.http import require_POST, require_http_methods
 
 @require_http_methods(["GET", "POST"]) # 두가지 외에 차단
-def login(request): # 두가지중 분기점 필요
+def login(request): # 두가지중 분기점은 필요
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
@@ -268,7 +239,7 @@ def login(request): # 두가지중 분기점 필요
     return render(request, "accounts/login.html", context)
 
 
-
+# 줄이는 방법 참고용
 @require_http_methods(["GET", "POST"]) 
 def login(request):
     form = AuthenticationForm(request, data=request.POST or None)
@@ -277,7 +248,7 @@ def login(request):
         return redirect("index")
     return render(request, "accounts/login.html", {"form": form})
 
-
+# html
 {% if request.user.is_authenticated %}
     <a href="{% url 'articles:create' %}">글쓰기</a>
 {% else %}
@@ -287,15 +258,16 @@ def login(request):
 ```
 
 ```py
-#
+# views
 
-@require_POST
+@require_POST #  URL에 직접 접근하거나 GET 요청을 통해 로그아웃을 시도하는 것을 방지
 def logout(request):
-    if request.user.is_authenticated:
+    if request.user.is_authenticated: # 추가/ 로그인 상태일 때만 로그아웃 처리 / 로그아웃 처리에 보안을 강화 / 불필요한 로그아웃 시도를 방지
         auth_logout(request)
     return redirect("index")
-
-#
+```
+```django
+# html
 {% if request.user.is_authenticated %}
 <h3>{{ request.user.username }}안녕하세요.</h3>
 <form action="{% url 'accounts:logout' %}" method="POST">
@@ -308,24 +280,24 @@ def logout(request):
     <a href="{% url "accounts:login" %}">로그인</a>
 </div>
 ```
-
+### ?next=/ 사용하기
 ```py
  from django.contrib.auth.decorators import login_required   
-# b
+# 전
 if form.is_valid():
     user = form.get_user()
     auth_login(request, user)
     return redirect("index")
-# a
+# 후
 if form.is_valid():
     user = form.get_user()
     auth_login(request, user)
-    next_url = request.GET.get("next") or "index" # 추가
+    next_url = request.GET.get("next") or "index" # 추가(?next=/ 부분 넣어주기)
     return redirect(next_url) # 추가
 
-
+# html
 <h1>login</h1>
-<form action = "" method = "POST"> # action 지워서 마지막 위치로 복귀
+<form action = "" method = "POST"> # action 지워서 ?next=/ 유도 복귀
 {% csrf_token %}
 {{form.as_p}}
 <button type = "submit">login</button>

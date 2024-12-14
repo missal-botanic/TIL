@@ -72,9 +72,14 @@ model -> view -> template -> context
 import view # view 클릭시 바로 이동
 ```
 ```py
+from django import forms
 from django.shortcuts import render, redirect # redirect
 from .models import Article # 모델 연결
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login as auth_login
+from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 ```
 ```py
 user = form.get_user() # 다른 곳에서 써야할 때
@@ -729,6 +734,33 @@ def update(request, pk): # POST 구분
   <a href = {% url "article_detail" article.pk %}>뒤로</a>
 ```
 ### 로그인
+
+```
+index 의 articles:hello 의 articles는 
+urls.py에서 정의된 네임스페이스
+
+views에서는 모든 폴더를 찾는다. 
+```
+```
+auth (인증, 권한)
+
+비연결 지향, 한번 통신하고 끝
+무상태, 서로를 잊어버림 + 독립적 메세지
+
+>>> 매번 로그인하고 작업해야한다.
+
+쿠키 = 항상 같이 보내는 자료(유저의 로컬에 저장, 변경 가능)
+
+섹션 = 로그인 하면 그 쿠키에 서버가 로그인 넘버를 넣어서 클라이언트에게 전달
+클라이언트가 서버에 쿠키를 통해 임의의 난수(세션 id)전달 
+
+세션쿠기 : 브라우저가 닫히면 쿠키 삭제
+지속쿠키 : 하드디스크에 저장됨 ( MAX_Age 지정하면 삭제가능 )
+```
+```
+로그인 - Session을 Create함
+장고 기본적인 Model user table 가지고 있음, 필요하면 확장
+```
 ```py
 # 로그아웃은 세션을 지우는것
 ```
