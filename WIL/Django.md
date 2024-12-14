@@ -50,7 +50,7 @@ python manage.py runserver # 서버 실행
 ### 앱 생성
 app 생성 - urls등록 - views등록 - template 폴더생성 - html 만들기
 
-```py
+```bash
 
 # 최상위폴더(manage.py와 같은 위치로 이동)
 python manage.py startapp articles # 앱 (이름 복수형 권장)
@@ -58,7 +58,8 @@ python manage.py startapp users
 
 mkdir apps/articles # app 파일 위치 변경시
 python manage.py startapp articles apps/articles
-
+```
+```py
 # 2. 앱 등록 settings.py 파일 33줄
 INSTALLED_APPS = [
     'django.contrib.admin',

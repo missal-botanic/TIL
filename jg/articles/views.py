@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article # 모델 연결
 from .forms import ArticleForm
+from django.contrib.auth.decorators import login_required
 #from django.http import HttpResponse
 
 # Create your views here.
@@ -37,7 +38,8 @@ def articles(request): # 처음 페이지 로딩시
     return render(request, "articles/articles.html", context)
 
 def article_detail(request, pk):
-    article = Article.objects.get(id=pk)
+    #article = Article.objects.get(id=pk)
+    article = get_object_or_404(Article, id=pk)
     context = {
         "article": article,
     }
@@ -49,7 +51,7 @@ def article_detail(request, pk):
 #     context = {"forms" : forms}
 #     return render(request, "new.html", context)
 
-
+@login_required
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
@@ -94,7 +96,7 @@ def create(request):
 
 def delete(request, pk):
     if request.method == "POST":
-        article = Article.objects.get(id=pk)
+        article = get_object_or_404(Article, id=pk)
         article.delete()
         return redirect("articles:articles")
     return redirect("articles:article_detail", pk)
@@ -118,7 +120,7 @@ def delete(request, pk):
 
 
 def update(request, pk):
-    article = Article.objects.get(id=pk)
+    article = get_object_or_404(Article, id=pk)
     if request.method == "POST":
         form = ArticleForm(request.POST, instance=article)
         if form.is_valid():

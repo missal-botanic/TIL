@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name="index"), # 파일.함수
     path('articles/', include("articles.urls")), #폴더.파일
-    path('users/', include("users.urls"))
+    path('users/', include("users.urls")),
+    path('accounts/', include("accounts.urls")),
 ]

@@ -50,33 +50,59 @@ view(controller) # model과 view 연결하는 로직, 메인비지니스, 크라
 HttpRequest → (URLs) → View→ Template → View → HttpResponse
 ```
 ```py
+import view # view 클릭시 바로 이동
+```
+
+```bash
+# name 의 data를 지정하지 않아서 본인 url로 보내짐
+http://127.0.0.1:8000/data-throw/?message=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94#
+
+# 프로토콜 : 약속
+# request, response
+# 쿼리(쿼리스트링)
+# ?key=value&key2=value2 과 같은 형식
+```
+
+```django
 태그 {% tag %} # 반복 또는 논리를 수행 제어 흐름 + 일부 종료 태그 존재
+{% extends "base.html" %}
+{% block content %}
+
+{% csrf_token %}
+{% for article in articles %}
+{% url "accounts:login" %}
+{% if request.user.is_authenticated %}
 
 변수 {{ 변수 }} # 딕셔너리의 키값이 오고 간다. /변수/장고폼/
+{{ form.as_p }}
+{{article.id}}
+
+
 필터 {{ 변수|필터 }} # 변수에 추가 작업 + 보여지는 모습 바꿈(ex소문자화) 60개 + 커스텀 가능
 
 주석 {# 한 줄 주석 #}
 ```
-
-
+### urls.py
+```py
+path("articles/", include("articles.urls"))
+```
 ### views.py
 ```py
 from django.http import HttpResponse
 
-# 추가 함수 
+# HttpResponse
 def index(request): 
 	response = HttpResponse("<h1>Hello, Django!</h1>") # html바로 코딩 + 라이브러리 로딩 필요
 	return response
 ```
-### html 뷰
 ```py
-# my_first_pjt/articles/views.py
+# html render
 from django.shortcuts import render
 
 def index(request):
     return render(request, "index.html") # 기본 코드
 ```
-### Template
+
 ```py
 # 기초 딕셔너리
 def hello(request):
@@ -99,13 +125,14 @@ def hello(request):
     }
     return render(request, "hello.html", context) # context 추가
 ```
-### HTML
-```py
-    <h1>hello {{name}}</h1> # 컨텐츠 호출
-    <p>첫번째 태그 {{tags.0|upper}}</p> # 딕셔너리 선택
-    <p>{{books}}</p> # 전체 호출
-    <li>{{books.1}}</li> 
-    <li>{{books.2}}</li> # 부분 호출
+### templates HTML
+```django
+<h1>hello {{name}}</h1> # 컨텐츠 호출
+
+<p>첫번째 태그 {{tags.0|upper}}</p> # 딕셔너리 선택
+<p>{{books}}</p> # 전체 호출
+<li>{{books.1}}</li> 
+<li>{{books.2}}</li> # 부분 호출
 
 <ul> # for문 연속 출력
     {% for book in books %}
@@ -114,22 +141,18 @@ def hello(request):
 </ul>
 ```
 ### tag 예시
-```
+```django
 {{ tags|join:","}}
 {{ tags|length}}
 {{ books.today}}
 ```
 
-```py
-import view # view 클릭시 바로 이동
-```
 
 ### HTML type 과 id
 ```html
 <form action="#" method="#"> <!-- action 데이터 전송 될 url  method GET, POST 방식-->
     <label for = "my-data">데이터 입력 : </label>
     <input type = "text" id = "my-data" > <!-- for과 id 일치 -->
-
     <button type = "submit">전송</button>
 ```
 ### HTML name
@@ -137,7 +160,6 @@ import view # view 클릭시 바로 이동
 <form action="#" method="#"> 
     <label for = "message">데이터 입력 : </label>
     <input type = "text" id = "message" name="message"> <!--  대다수 모두 일치 시킨다 -->
-
     <button type = "submit">전송</button>
 ```
 ```html
@@ -145,17 +167,14 @@ import view # view 클릭시 바로 이동
 <form action="http://127.0.0.1:8000/data-catch/" method="GET">
 <!-- 02 -->
 <form action="/data-catch/" method="GET">
+<!-- 03 -->
+<form action="{% url 'articles' %}" method="GET">
+<form action="{% url 'articles:articles' %}" method="GET">
+<!-- 04 -->
+<form action="" method="GET">
+?next=/ 조합
 ```
 
-```bash
-# name 의 data를 지정하지 않아서 본인 url로 보내짐
-http://127.0.0.1:8000/data-throw/?message=%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94#
-
-# 프로토콜 : 약속
-# request, response
-# 쿼리(쿼리스트링)
-# ?key=value&key2=value2 과 같은 형식
-```
 
 ```py
 # 입력페이지 전문
@@ -184,49 +203,17 @@ def data_catch(request):
     return render(request, "data_catch.html", context) # 마지막 context 추가
 ```
 ```py
-# class 파일 예시
-
-class QueryDict:
-    def __init__(self, data):
-        # 데이터는 딕셔너리 형태로 저장
-        self.data = data
-    
-    def get(self, key, default=None):
-        # key가 존재하면 해당 값을 반환하고, 없으면 default 값을 반환
-        return self.data.get(key, default)
-
-
-class HttpRequest:
-    def __init__(self, get_data):
-        # GET 데이터를 QueryDict 객체로 저장
-        self.GET = QueryDict(get_data)
-
-# 가상의 GET 데이터 (쿼리 스트링)
-get_data = {
-    'name': 'Alice',
-    'age': '25'
-}
-
-# HttpRequest 객체 생성
-request = HttpRequest(get_data)
-
-# request.GET.get을 사용하여 쿼리 데이터를 안전하게 가져오기
-print(request.GET.get('name'))  # 'Alice'
-print(request.GET.get('age'))   # '25'
-print(request.GET.get('city', 'Unknown'))  # 'Unknown' (기본값 사용)
-
-```
-
-```py
-# 출력 페이지
-<h1>Data Catch</h1>
-<h3>Current Data</h3>
-<p>Curent data is : {{ message }} </p> # "message" (view의 context 부분)
-```
-```py
 변수.get("message") # 파이썬 문법
 변수.get("message", 2) # 없을시 2를 반환
 ```
+```django
+# 출력 페이지
+<h1>Data Catch</h1>
+<h3>Current Data</h3>
+<p>Curent data is : {{ message }} </p> 
+<!-- "message" (view의 context{} 부분) -->
+```
+
 ### request, request 출력확인
 ```py
 print(request) 
@@ -237,6 +224,7 @@ print(request.GET)
 >>>
 <QueryDict: {'message': ['sacs']}> #  QuertDict 타입 장고의 class
 ```
+----
 ```py
 dispatcher # 데이터를 목적지로 보내는 주체
 URL # 들어온 요청을 어디로 보내서 처리할지 결정하는것
@@ -688,4 +676,54 @@ def update(request, pk):
   </form>
 
   <a href = {% url "article_detail" article.pk %}>뒤로</a>
+```
+
+```
+앱생성- setting 등록 - 루트 urls 편집 - apps urls 생성 및 편집 - apps views 편집 - apps template/app/app.html 생성 및 편집
+```
+views 함수에 request 누락시
+>>>
+TypeError at /accounts/login/
+login() takes 0 positional arguments but 1 was given
+
+pass 만 있을시
+>>>
+ValueError at /accounts/login/
+The view accounts.views.login didn't return an HttpResponse object. It returned None instead.
+```
+```
+user = form.get_user() # 다른 곳에서 써야할 때
+auth_login(request, user)
+
+-> auth_login(request, form.get_user()) # 한곳에서만 쓸 때
+
+```
+```
+로그아웃은 세션을 지우는것
+```
+```
+    <div class="navbar">
+        <a href="{% url "accounts:login" %}">로그인</a>
+        <form action="{% url 'accounts:logout' %}" method="POST">
+            {% csrf_token %}
+            <input type="submit" value="로그아웃"></input>
+        </form> # 이부분 누락시 로그인시 로그인 세션 형성이 안됨
+    </div>
+```
+```
+200 성공
+400 클라이언트 실패
+500 서버에서 실패
+```
+get(주소창으로 명령어 날리는거 )-> 방어 -> 405 오류
+```
+
+```
+모든 template에서 항상 접근 가능한 context가 있다.
+request.user에서의 auth.User 혹은 AnonymousUser 인스턴스
+```
+```
+# 로그인 후 다음에 들어갈 주소
+?next=/
+
 ```
