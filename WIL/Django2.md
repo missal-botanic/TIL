@@ -364,7 +364,7 @@ def signup(request):
     context = {"form":form}
     return render(request, "accounts/signup.html",context)
 
-# 02 POST용
+# 02 POST용 추가
 @require_http_methods(["GET", "POST"])# 리스트 화 필수
 def signup(request):
     if request.method == "POST":
@@ -378,10 +378,10 @@ def signup(request):
     return render(request, "accounts/signup.html",context)
 
 # 03 자동로그인 추가
-@require_http_methods(["GET", "POST"])# 리스트 화 필수
+@require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST) # 바이딩 폼
+        form = UserCreationForm(request.POST) 
         if form.is_valid():
             user = form.save() # 변경(model form은 save 하는 순간 자신의 instance를 돌려준다 ex pop)
             auth_login(request, user) # 추가
@@ -391,9 +391,10 @@ def signup(request):
     context = {"form":form}
     return render(request, "accounts/signup.html",context)
 ```
+회원 삭제
 ```py
 
-
+# 아이디 삭제
 @require_POST
 def delete(request):
     if request.user.is_authenticated:
@@ -401,16 +402,23 @@ def delete(request):
         auth_logout(request) # 세션도 삭제(위 아래 순서조심)
     return redirect("index")
 ```
-수정
+회원 수정
 ```py
+# view 1차 get
+@require_http_methods(['GET', 'POST'])
+def update(request):
+    form = UserChangeForm(instance = request.user)
+    context = {"form":form}
+    return render(request, "accounts/update.html", context)
 
 
+# form 추가
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
 
 class CustomUserChangeForm(UserChangeForm):
-    password = None # 함수 분석 이후 덮어쓰기!
+    password = None # 함수 분석 이후 덮어쓰기!(필요시 사용)
     class Meta: # 오버라이딩
         model = get_user_model() # 활성호된 유저만 불러오는 장고 함수
         fields = [
@@ -420,25 +428,18 @@ class CustomUserChangeForm(UserChangeForm):
         ]
 
 
-
-@require_http_methods(['GET', 'POST'])
-def update(request):
-    form = UserChangeForm(instance = request.user)
-    context = {"form":form}
-    return render(request, "accounts/update.html", context)
-
-
+# view 2차 커스텀 버전으로 변경
 @require_http_methods(['GET', 'POST'])
 def update(request):
     form = CustomUserChangeForm(instance = request.user)
     context = {"form":form}
     return render(request, "accounts/update.html", context)
 
-
+# view 3차 POST 추가
 @require_http_methods(['GET', 'POST'])
 def update(request):
     if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, instance = request.user)
+        form = CustomUserChangeForm(request.POST, instance = request.user) # instance
         if form.is_valid():
             form.save()
             return redirect("index")
@@ -447,18 +448,18 @@ def update(request):
     context = {"form":form}
     return render(request, "accounts/update.html", context)
 ```
-
+회원 비번 변경
 ```py
-
+# user 필수 확인
 def __init__(
     self, user: AbstractBaseUser | None, *args: Any, **kwargs: Any
 ) -> None: ...
 
-
+# view 1차 비번 변경 
 @require_http_methods(["GET", "POST"])
 def change_password(request):
     if request == "POST":
-        form = PasswordChangeForm(request.user, request.POST)
+        form = PasswordChangeForm(request.user, request.POST) # request.user, request.POST 순서
         if form.is_valid():
             form.save()
             return redirect("index")
@@ -480,3 +481,4 @@ def change_password(request):
         form = PasswordChangeForm(request.user)
     context = {"form": form}
     return render(request, "accounts/change_password.html", context)
+```

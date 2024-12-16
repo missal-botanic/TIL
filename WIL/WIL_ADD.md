@@ -387,10 +387,63 @@ print(s+"! "+t)
 print(f'{s}! {t}')
 print("{}! {}".format(s,t))
 ```
-```
+```py
 num = int(input())
 
 for i in range(1,num):
     #print('*'*(num-i),'_'*i, sep='') 
     print('*'*(num-i)+''+'_'*i)
 ```
+```py
+nums = int(input().strip().split(" "))
+
+added = 0
+added_list = []
+
+for num in nums:
+    if num % 2 == 0:
+        added += num
+print(sorted(added)) 
+
+
+nums = list(map(int, input().strip().split()))
+added = 0
+added_list = []
+
+for num in nums:
+    if num % 2 == 0:
+        added += num
+        added_list.append(num)
+print(f"{nums}, {sorted(nums)} 짝수함 = {added}") 
+
+
+nums = list(map(int, input().strip().split()))
+even_sum = sum(num for num in nums if num % 2 == 0)
+print(f"정렬: {sorted(nums)}, 짝수합: {even_sum}")
+```
+```
+nums = list(map(int, input().strip()))
+
+nums_sort = nums.sort()
+print(nums_sort)
+
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+Cell In[7], line 1
+----> 1 nums = list(map(int, input().strip()))
+      3 nums_sort = nums.sort()
+      4 print(nums_sort)
+
+ValueError: invalid literal for int() with base 10: ' '
+```
+
+```
+#nums.sort() #nums_sort = nums.sort() 틀림
+nums_sort = sorted(nums)
+```
+
+
+
+
+
+
