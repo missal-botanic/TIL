@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article # 모델 연결
 from .forms import ArticleForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST, require_http_methods
 #from django.http import HttpResponse
 
 # Create your views here.
@@ -51,8 +52,11 @@ def article_detail(request, pk):
 #     context = {"forms" : forms}
 #     return render(request, "new.html", context)
 
-@login_required
+@login_required # url(get)방식 접근 차단 기본값은 accounts/login
 def create(request):
+    if not request.user.is_authenticated:
+        return redirect("account:login")
+
     if request.method == "POST":
         form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
         if form.is_valid(): # 빈데이터 혹은 받지 않을 데이터 있을 경우 필터
@@ -94,12 +98,16 @@ def create(request):
 #   return redirect("article_detail", article.pk)
 
 
+
+@login_required
+@require_POST
 def delete(request, pk):
-    if request.method == "POST":
-        article = get_object_or_404(Article, id=pk)
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, pk=pk)
         article.delete()
-        return redirect("articles:articles")
-    return redirect("articles:article_detail", pk)
+    return redirect("articles:articles")
+
+
 
 # def edit(request, pk):
 #     article = Article.objects.get(id=pk)

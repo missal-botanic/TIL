@@ -289,6 +289,7 @@ if form.is_valid():
     auth_login(request, user)
     return redirect("index")
 # 후
+@login_required # 로그인해야 한는 곳에 비로그인 접근시 사용
 if form.is_valid():
     user = form.get_user()
     auth_login(request, user)
@@ -302,3 +303,180 @@ if form.is_valid():
 {{form.as_p}}
 <button type = "submit">login</button>
 </form>
+```
+
+```py
+# 수동 차단
+@require_http_methods(["GET", "POST"])
+def create(request):
+    if not request.user.is_authenticated: # 로그인 상태가 아닌경우 돌리기 + url(get) 접근 차단
+        return redirect("account:login")
+    if request.method == "POST":
+        form = ArticleForm(request.POST) 
+        if form.is_valid(): 
+            article = form.save() 
+            return redirect("articles:article_detail", article.pk)
+    else:
+        form = ArticleForm()
+    
+    context = {"form": form}
+    return render(request, "articles/create.html", context)
+
+#자동 차단
+@login_required # url(get)방식 접근 차단 기본값은 accounts/login
+@require_http_methods(["GET", "POST"])
+def create(request):
+    if request.method == "POST":
+        form = ArticleForm(request.POST) 
+        if form.is_valid():
+            article = form.save()
+            return redirect("articles:article_detail", article.pk)
+    else:
+        form = ArticleForm()
+    
+    context = {"form": form}
+    return render(request, "articles/create.html", context)
+```
+
+```py
+# 전
+def delete(request, pk):
+    if request.method == "POST": # @require_POST 사용시 삭제
+        article = get_object_or_404(Article, id=pk)
+        article.delete()
+        return redirect("articles:articles") # @require_POST 삭제
+    return redirect("articles:article_detail", pk)
+
+# 후
+@login_required # 삭제 필요. next가 get 요청.
+@require_POST
+def delete(request, pk):
+    if request.user.is_authenticated: # @login_required 삭제 이후에도 로그인 사용자가 사용하기 위함
+        article = get_object_or_404(Article, pk=pk)
+        article.delete()
+    return redirect("articles:articles")
+```
+회원 가입
+```py
+# 01 GET용
+def signup(request):
+    form = UserCreationForm()
+    context = {"form":form}
+    return render(request, "accounts/signup.html",context)
+
+# 02 POST용
+@require_http_methods(["GET", "POST"])# 리스트 화 필수
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST) # 바이딩 폼
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = UserCreationForm()
+    context = {"form":form}
+    return render(request, "accounts/signup.html",context)
+
+# 03 자동로그인 추가
+@require_http_methods(["GET", "POST"])# 리스트 화 필수
+def signup(request):
+    if request.method == "POST":
+        form = UserCreationForm(request.POST) # 바이딩 폼
+        if form.is_valid():
+            user = form.save() # 변경(model form은 save 하는 순간 자신의 instance를 돌려준다 ex pop)
+            auth_login(request, user) # 추가
+            return redirect("index")
+    else:
+        form = UserCreationForm()
+    context = {"form":form}
+    return render(request, "accounts/signup.html",context)
+```
+```py
+
+
+@require_POST
+def delete(request):
+    if request.user.is_authenticated:
+        request.user.delete()
+        auth_logout(request) # 세션도 삭제(위 아래 순서조심)
+    return redirect("index")
+```
+수정
+```py
+
+
+from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
+
+class CustomUserChangeForm(UserChangeForm):
+    password = None # 함수 분석 이후 덮어쓰기!
+    class Meta: # 오버라이딩
+        model = get_user_model() # 활성호된 유저만 불러오는 장고 함수
+        fields = [
+            "first_name",
+            "last_name",
+            "email",
+        ]
+
+
+
+@require_http_methods(['GET', 'POST'])
+def update(request):
+    form = UserChangeForm(instance = request.user)
+    context = {"form":form}
+    return render(request, "accounts/update.html", context)
+
+
+@require_http_methods(['GET', 'POST'])
+def update(request):
+    form = CustomUserChangeForm(instance = request.user)
+    context = {"form":form}
+    return render(request, "accounts/update.html", context)
+
+
+@require_http_methods(['GET', 'POST'])
+def update(request):
+    if request.method == "POST":
+        form = CustomUserChangeForm(request.POST, instance = request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = CustomUserChangeForm(instance = request.user)
+    context = {"form":form}
+    return render(request, "accounts/update.html", context)
+```
+
+```py
+
+def __init__(
+    self, user: AbstractBaseUser | None, *args: Any, **kwargs: Any
+) -> None: ...
+
+
+@require_http_methods(["GET", "POST"])
+def change_password(request):
+    if request == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("index")
+    else:
+        form = PasswordChangeForm(request.user)
+    context = {"form":form}
+    return render(request, "accounts/change_password.html", context)
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def change_password(request):
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user) # 변경 후 세션 자동 변경해서 로그인 유지
+            return redirect("index")
+    else:
+        form = PasswordChangeForm(request.user)
+    context = {"form": form}
+    return render(request, "accounts/change_password.html", context)
