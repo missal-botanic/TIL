@@ -12,5 +12,6 @@ urlpatterns = [
     path("<int:pk>/delete/", views.delete, name="delete"), # 페이지 없어도 명령어로 실행
     # path("<int:pk>/edit/", views.edit, name="edit"),
     path("<int:pk>/update/", views.update, name="update"),
+    path("<int:pk>/comment/", views.comment_create, name="comment_create"),
     
 ]

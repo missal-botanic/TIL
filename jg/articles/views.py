@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Article # 모델 연결
-from .forms import ArticleForm
+from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST, require_http_methods
 #from django.http import HttpResponse
@@ -41,8 +41,12 @@ def articles(request): # 처음 페이지 로딩시
 def article_detail(request, pk):
     #article = Article.objects.get(id=pk)
     article = get_object_or_404(Article, id=pk)
+    comment_form = CommentForm()
+    comments = article.comment_set.all().order_by("-pk")
     context = {
         "article": article,
+        "comment_form" : comment_form,
+        "comments" : comments
     }
     return render(request, "articles/article_detail.html", context)
 
@@ -139,3 +143,18 @@ def update(request, pk):
     
     context = {"form":form, "article" : article}
     return render(request, "articles/update.html", context)
+
+@require_POST
+def comment_create(request, pk):
+    article = get_object_or_404(Article, id=pk)
+    form = CommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False) #데이터 베이스 저장 전 상태로 만들기 
+        comment.article = article
+        comment.save()
+        return redirect("articles:article_detail", article.pk)
+
+
+
+
+    

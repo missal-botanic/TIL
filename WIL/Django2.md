@@ -596,3 +596,20 @@ def create(request):
 >>>
 이미지 올리면 자동으로 media/images 폴더 생기고 이미지 저장 # 모델에 upload_to = "images/" 이렇게 명령 했기 때문
 ```
+## admin
+```py
+장소 adim 최소 권한은 staff부터
+
+# 1차 apps - admin.py
+admin.site.register(Article) # 기본값
+
+# 2차 apps - admin.py
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ("title", "created_at") # 표에서 보이는 행
+    search_fields = ("title", "content") # 검색창 추가하고 검색 되는 부분이 제목과 내용
+    list_filter = ("created_at",) # 오른쪽에 날짜 필터 생성
+    date_hierarchy = "created_at" # 상단에 시간 필터
+    ordering = ("-created_at",) # 정렬 순서
+```
+
