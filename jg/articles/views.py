@@ -58,7 +58,7 @@ def create(request):
         return redirect("account:login")
 
     if request.method == "POST":
-        form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
+        form = ArticleForm(request.POST, request.FILES) # 데이터가 바인딩된 폼
         if form.is_valid(): # 빈데이터 혹은 받지 않을 데이터 있을 경우 필터
             article = form.save() # form.save()도 작동하지만 진행을 위해 변수 지정
             return redirect("articles:article_detail", article.pk)

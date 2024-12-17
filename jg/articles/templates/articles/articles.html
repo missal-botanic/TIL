@@ -9,8 +9,6 @@
     <a href="{% url "accounts:login" %}">로인그하고 작성하기</a>
 {% endif %}
     
-
-
 <ul>
     {% for article in articles %}
     <a href ="{% url 'articles:article_detail' article.pk %}">

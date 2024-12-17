@@ -441,7 +441,10 @@ ValueError: invalid literal for int() with base 10: ' '
 #nums.sort() #nums_sort = nums.sort() 틀림
 nums_sort = sorted(nums)
 ```
-
+```
+key, *_, value = input().split()
+print({key: value})
+```
 
 
 

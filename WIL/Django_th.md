@@ -791,3 +791,52 @@ request.user에서의 auth.User 혹은 AnonymousUser 인스턴스
 # 로그인 후 다음에 들어갈 주소
 ?next=/
 ```
+
+```
+null = True # DB에 null 을 저장해도 된다
+null은 정의되지 않는값, 빈값이 아니다.
+텍스트 필드에 db에 ""와 null이 혼동 될 수 있다. 
+```
+```py
+# 클래스 확인하기 
+form - ModelForm - BaseModelForm
+class BaseModelForm(BaseForm):
+    instance: Any = ...
+    def __init__(
+        self,
+        data: Mapping[str, Any] | None = ..., # request.POST 부분
+        files: Mapping[str, File] | None = ..., # 파일 부분
+        auto_id: bool | str = ...,
+        ...
+```
+```
+python manage.py runserver # 개발용 임시 환경
+동시 20~25명 정도면 터짐`
+```
+```
+<img src="{% static "articles/image.png" %}" alt="image"> # 이미지 실패 했을 때
+```
+배포시
+```bash
+collectstatic # 마지막 배포시 한곳에 모음
+python manage.py collectstatic
+```
+```py
+DEBUG = True # True 경우 STATIC_ROOT가 작동하지 않는다.
+```
+```py
+# 통합 전 코드
+filse = request.FILES
+form = ArticleForm(request.POST, filse)
+# 통합 후 코드
+form = ArticleForm(request.POST, request.FILES) # 추가
+```
+```py
+
+input_image = request.FILES["image"]
+article.image = input_image
+article.save() # views 장고 폼을 쓰지 않을 경우
+
+<input type="file" name="image"> # html장고폼을 쓰지 않을 경우
+
+```

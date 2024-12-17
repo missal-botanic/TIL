@@ -355,3 +355,6 @@ for word in start1:
 ```
 
 
+```
+min(user_input)
+max(user_input)

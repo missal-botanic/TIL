@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <form action="{% url 'articles:create' %}" method="POST"> <!-- views.create로 보냄 -->
+  <form action="{% url 'articles:create' %}" method="POST" enctype="multipart/form-data"> <!-- views.create로 보냄 -->
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit" class="btn btn-primary">Primary</button>

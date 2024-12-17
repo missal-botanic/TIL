@@ -482,3 +482,117 @@ def change_password(request):
     context = {"form": form}
     return render(request, "accounts/change_password.html", context)
 ```
+## 미디어 업로드 (STATIC, MADIA)
+STATIC_URL
+```py
+# settings
+
+#실제 주소가 아닌 URL만 존재
+STATIC_URL = 'static/' # ex mystatic/ 으로 바꾸면 작동도 하고 웹에서 주소가 mystatic으로 시작한다. 
+STATIC_ROOT = BASE_DIR / "staticfiles"  # 배포 때 사용
+STATICFILES_DIRS = [BASE_DIR / "static"] # 공통의 경우 찾는 루트를 static로 지정
+```
+```py
+apps/static/apps # 폴더 생성
+```
+```django
+<!-- html -->
+{% load static %}
+<img src="{% static "articles/image.png" %}">
+```
+
+## css
+Media files 추가내용
+```py
+# settings 
+MEDIA_URL = "/media/" # urls if settings.DEBUG: 디버깅 모드 추가시 , 이 다음 부터 루트는 디버깅 강제 루트 settings.MEDIA_ROOT에서 찾기(미디어 경로)
+MEDIA_ROOT = BASE_DIR / "media" # 공통 실제 저장 경로
+
+#DB 에는 경로 저장
+```
+```
+my_first_pjt(루트)/static/css/style.css # 폴더 + 파일 생성
+```
+
+```django
+<!-- html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 추가부분 start -->
+    <link rel="stylesheet" href="{% static "css/style.css" %}}"> 
+    <!-- 추가부분 end -->
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    {% block header %}
+    {% endblock header %}
+```
+```css
+/* css */
+.img-200{
+  width: 200px;
+}
+```
+```py
+# html
+<img src="{% static "articles/image.png" %}" class="img-200">
+```
+### 유저업로드 파일 (static file 제외)
+
+```
+# 설치        
+pip install pillow
+```
+```py
+# url 추가분
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)# 디버그 상태일 때 파일접근 가능하게
+
+# 1차 model 추가분
+class Article(models.Model):
+    title = models.CharField(max_length=50) 
+    content = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField() # 추가 # fileField 상속받은 함수
+
+# 2차 model 추가분
+    # Create your models here.
+class Article(models.Model):
+    title = models.CharField(max_length=50)
+    content = models.TextField(default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    image = models.ImageField(
+        upload_to = "images/",
+        blank = True # 빈 이미지 가능
+    )
+# 마이그레이션 이후 템플릿 화면에 자동으로 출력
+```
+```py
+
+# views 파일 추가 코드
+def create(request):
+    if not request.user.is_authenticated:
+        return redirect("account:login")
+
+    if request.method == "POST":
+        form = ArticleForm(request.POST, request.FILES) # 추가
+
+
+# html - create
+<form ation="{% url 'articles:create' %}" method="POST" enctype="multipart/form-data"> # 추가
+
+# html - detail
+{% if article.image %} # 이미지가 없을 경우 오류 생성방지
+    <img src="{{ article.image.url }}" alt="">
+{% endif %} # 출력화면
+
+<img src="{% static "articles/image.png" %}"> # static과 다름
+>>>
+이미지 올리면 자동으로 media/images 폴더 생기고 이미지 저장 # 모델에 upload_to = "images/" 이렇게 명령 했기 때문
+```

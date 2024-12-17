@@ -18,6 +18,9 @@ from django.contrib import admin
 from django.urls import path, include
 from articles import views # from(폴더),import(파일)
 
+from django.conf import settings # media
+from django.conf.urls.static import static # media
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name="index"), # 파일.함수
@@ -25,3 +28,6 @@ urlpatterns = [
     path('users/', include("users.urls")),
     path('accounts/', include("accounts.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
