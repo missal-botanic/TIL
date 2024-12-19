@@ -840,3 +840,37 @@ article.save() # views 장고 폼을 쓰지 않을 경우
 <input type="file" name="image"> # html장고폼을 쓰지 않을 경우
 
 ```
+```bash
+python manage.py makemigrations  # 생성
+python manage.py migrate  # 반영
+
+```
+```
+print(pk)
+>>> 40
+숫자만 출력
+```
+```
+**objects**는 **매니저(Manager)**의 이름으로, Django 모델의 쿼리 인터페이스를 제공하는 역할을 하며, 복수 형태로 사용되는 이유는 여러 객체에 대한 쿼리 작업을 처리하기 위해서입니다.
+**get_object_or_404**는 단일 객체를 반환하는 헬퍼 함수로, object라는 단수형을 사용합니다.
+```
+```bash
+<int:comment-pk> # 터짐
+<int:comment_pk> # 정상 작동
+```
+settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles")
+
+기본값 : user.article_set.all
+```py
+AUTH_USER_MODEL = 'accounts.User' # Django에서 기본 사용자 모델 대신 accounts 앱에 정의된 User 모델을 사용하도록 설정하는 코드
+```
+```
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # 첫 번째 디렉터리
+    BASE_DIR / "assets",  # 두 번째 디렉터리
+]
+```
+```py
+ /~/ # 사용자의 홈 디렉터리에서 시작하는 절대 경로
+ ~/ # 경로 구분자로 사용되며, 상대 경로나 절대 경로
+ ```

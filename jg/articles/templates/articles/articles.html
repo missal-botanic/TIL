@@ -14,6 +14,7 @@
     <a href ="{% url 'articles:article_detail' article.pk %}">
         <li>
             <div> [ {{article.id}} ] 제목 : {{ article.title }}</div>
+            <p> 작성자: {{article.author}} </p>
             <br>
         </li>
     </a>

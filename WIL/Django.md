@@ -30,7 +30,7 @@ python manage.py shell
 python manage.py shell_plus # 기본 라이브러리 all load
 ```
 -----
-### ㅇ새 프로젝트
+### 새 프로젝트
 ```bash
 # 1. 앱 생성 Bash
 
@@ -89,6 +89,20 @@ TEMPLATES = [
         },
     },
 ]
+
+# USER author
+AUTH_USER_MODEL = 'accounts.User'
+
+# STATIC_URL 
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / "staticfiles" # 배포시 사용
+STATICFILES_DIRS = [BASE_DIR / "static"] # 배포전에도 사용 가능하게
+
+# Media files
+MEDIA_URL = "/media/" 
+MEDIA_ROOT = BASE_DIR / "media"
+
+
 # BASE_DIR는 Django 프로젝트의 기본 디렉토리 경로를 나타내며, 보통 settings.py 파일이 위치한 곳입니다.
 ```
 ```py
@@ -99,8 +113,10 @@ TEMPLATES = [
 
 ```
 ### urls.
-루트 - templates -  base.html 파일
+
 ```html
+<!-- 루트 / templates / base -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -114,15 +130,16 @@ TEMPLATES = [
 </body>
 </html>
 ```
-apps - templates - index.html 파일
+
 ```html
+<!-- apps / templates / index -->
 {% extends "base.html" %}
 
 {% block content %}
 <p>index</p>
 {% endblock content %}
 ```
-article - urls.py 파일
+articles - urls
 ```py
 from django.contrib import admin
 from django.urls import path
@@ -134,9 +151,10 @@ urlpatterns = [
 ```
 루트 - urls 파일
 ```py
-  path("articles/", include("articles.urls")) -> path("articles/", include("articles.urls"))
+path("articles/", include("articles.urls"))
  ```
 ```py
+# 루트 / urls
 from django.contrib import admin
 from django.urls import path, include # include 추가
 from articles import views
@@ -149,31 +167,55 @@ urlpatterns = [
 ]
 ```
 ## model
-```bash
-python manage.py makemigrations  # 생성
-python manage.py migrate  # 반영
 
-```
 apps - models.py 파일
 ```py
-class Article(models.Model):
+from django.db import models
+
+class Article(models.Model): # (모듈.클래스)
     title = models.CharField(max_length=50) 
     content = models.TextField(default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True) # 객체 처음 생성될 때 자동으로 현재 시간
+    updated_at = models.DateTimeField(auto_now=True) # 객체가 수정될 때마다 자동으로 현재 시간
+
+# models.Model은 Django 모델 클래스의 기반 클래스이고, models.CharField는 모델 필드의 하위 클래스
+# 코드는 같고 용도의 차이
+```
+```py
+# accounts / modesl
+from django.contrib.auth.models import AbstractUser # 추가
+
+class User(AbstractUser):
+    pass
+```
+```py
+# settings
+AUTH_USER_MODEL = 'accounts.User'
 ```
 manage.py 와 같은 곳에서 실행
 ```bash
 # 마이그레이션 : 파이썬 모델을 DB에 생성 준비
 python manage.py makemigrations  # 생성
-```
-```bash
+
 # 마이그레이션 : 파이썬 모델을 DB에 반영
 python manage.py migrate  # 반영
-
+```
+```bash
 db.sqlite3 파일 선택 -> control + shift + p -> sqlite 검색->sqlite OPEN DATABASE -> db.sqlite3 # 선택
 
 SQLITE EXPLORER # 왼쪽 하단에  생김
+```
+```bash
+# 방법01
+article = Article() # 클래스로 객체 생성
+article.title = 'first_title'  # 생성된 객체의 title 필드에 'first_title'을 할당
+article.content = 'my_content' # 생성된 객체의 content 필드에 'my_content'를 할당
+article.save() # save()하기전에는 저장되지 않음
+
+# 방법02
+article = Article(title='두번째 제목', content='두번째 내용')
+Article.objects.create(title='third title', content='세번째 내용') # save()가 필요하지 않는 방법
+
 ```
 ```py
 Article.objects.create(title = "test", content = "test")

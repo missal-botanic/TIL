@@ -13,5 +13,6 @@ urlpatterns = [
     # path("<int:pk>/edit/", views.edit, name="edit"),
     path("<int:pk>/update/", views.update, name="update"),
     path("<int:pk>/comment/", views.comment_create, name="comment_create"),
-    
+    path("<int:pk>/comment/<int:comment_pk>/comment-delete/", 
+         views.comment_delete, name="comment_delete"),
 ]

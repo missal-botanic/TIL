@@ -8,7 +8,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.views.decorators.http import require_POST, require_http_methods
 from django.contrib.auth.forms import UserCreationForm
-from .forms import CustomUserChangeForm
+from .forms import CustomUserChangeForm, CustomUserCreationForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -42,13 +42,13 @@ def logout(request):
 @require_http_methods(["GET", "POST"])# 리스트 화 필수
 def signup(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST) # 바이딩 폼
+        form = CustomUserCreationForm(request.POST) # 바이딩 폼
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
             return redirect("index")
     else:
-        form = UserCreationForm() # 누군지 몰라도 되기에 request.user 없어도 됨
+        form = CustomUserCreationForm() # 누군지 몰라도 되기에 request.user 없어도 됨
     context = {"form":form}
     return render(request, "accounts/signup.html",context)
 

@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 # Create your models here.
 class Article(models.Model):
@@ -6,7 +7,13 @@ class Article(models.Model):
     content = models.TextField(default='') # 빈문자열
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    image = models.ImageField(upload_to = "images/", blank = True)
+    image = models.ImageField(upload_to = "images/", blank = True) # 기본은 빈상태 불허
+
+    author = models.ForeignKey(
+		settings.AUTH_USER_MODEL, 
+        on_delete=models.CASCADE, 
+        related_name="articles",
+        )
 
     def __str__(self):
         return self.title
@@ -18,4 +25,4 @@ class Comment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.content
+        return self.content # self는 그 메서드를 호출하는 현재 객체 자체
