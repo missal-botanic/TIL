@@ -874,3 +874,27 @@ STATICFILES_DIRS = [
  /~/ # 사용자의 홈 디렉터리에서 시작하는 절대 경로
  ~/ # 경로 구분자로 사용되며, 상대 경로나 절대 경로
  ```
+ ```
+ Django에서 settings.AUTH_USER_MODEL은 settings.py에서 정의된 사용자 모델을 참조하는 방식입니다. 이는 사용자가 커스텀 사용자 모델을 설정한 경우 유용합니다. 반면 get_user_model은 현재 프로젝트에서 실제로 사용되는 사용자 모델을 동적으로 반환하는 함수입니다. 
+ ```
+ ```py
+
+@login_required # next 존재 미처리시 오류
+@require_POST
+def like(request, pk):
+
+
+@require_POST
+def like(request, pk):
+    if request.uesr.is_authenticated: # 함수 진행 정지로 오류 없음
+
+```
+# 같다
+if:
+else:
+ return
+
+if
+return
+
+```

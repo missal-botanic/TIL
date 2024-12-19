@@ -14,6 +14,10 @@ class Article(models.Model):
         on_delete=models.CASCADE, 
         related_name="articles",
         )
+    
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="like_articles"
+    )
 
     def __str__(self):
         return self.title

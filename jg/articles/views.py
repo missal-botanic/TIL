@@ -71,7 +71,6 @@ def create(request):
     return render(request, "articles/create.html", context)
 
 
-
 @login_required
 @require_POST
 def delete(request, pk):
@@ -81,11 +80,7 @@ def delete(request, pk):
     return redirect("articles:articles")
 
 
-@require_POST
-def comment_delete(requset, pk, comment_pk):
-    comment = get_object_or_404(Comment, pk=comment_pk)
-    comment.delete()
-    return redirect("articles:article_detail", pk)
+
 
 
 def update(request, pk):
@@ -101,6 +96,7 @@ def update(request, pk):
     context = {"form":form, "article" : article}
     return render(request, "articles/update.html", context)
 
+
 @require_POST
 def comment_create(request, pk):
     article = get_object_or_404(Article, id=pk)
@@ -110,6 +106,26 @@ def comment_create(request, pk):
         comment.article = article # 끼워 넣기
         comment.save()
         return redirect("articles:article_detail", article.pk)
+    
+@require_POST
+def comment_delete(requset, pk, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    comment.delete()
+    return redirect("articles:article_detail", pk)
+
+
+@require_POST
+def like(request, pk):
+    if request.user.is_authenticated:
+        article = get_object_or_404(Article, id=pk)
+        if article.like_users.filter(pk=request.user.pk).exists():
+            article.like_users.remove(request.user) # 좋아요 취소
+        else:
+            article.like_users.add(request.user)
+        return redirect("articles:articles")
+    return redirect("accounts:login") # 미로그인시
+
+
 
 
 

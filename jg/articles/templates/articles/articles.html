@@ -18,6 +18,14 @@
             <br>
         </li>
     </a>
+    <form action="{% url 'articles:like' article.pk %}" method="POST">
+        {% csrf_token %}
+        {% if request.user in article.like_users.all %}
+            <input type="submit" value="좋아요 취소">
+        {% else %}
+            <input type="submit" value="좋아요">
+        {% endif %}
+    </form>
     {% endfor %}
 </ul>
 {% endblock content %}

@@ -234,7 +234,7 @@ class Article(models.Model):
     image = models.ImageField(upload_to = "images/", blank = True)
 
     author = models.ForeignKey(
-		settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles") # 추가 (AUTH_USER_MODEL 대신에 get_user_model() 넣어도 작동한다.)
+		settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles") # 추가 (AUTH_USER_MODEL 대신에 get_user_model 넣어도 작동한다.) + from django.contrib.auth import get_user_model 필요
 
     def __str__(self):
         return self.title
@@ -271,3 +271,128 @@ def create(request):
 작성자: {{ article.author }} # {{ article.author.username }} 작성자 이름 표시 
 ```
 ## Model Relationship (M:N)
+
+한 명의 유저는 여러개의 게시글을 좋아할 수 있고
+하나의 게시글도 여러명의 유저에게 좋아요를 받을 수 있다
+
+중계테이블 필요
+
+```py
+# article / models
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="like_articles"
+    ) # -> user.like_articles.all() 접근 가능 / 미지정시 like_user_set 이 기본 매니저
+
+# models.ManyToManyField 사용 하면 자동 중계테이블 생성
+```
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+```bash
+#  변수 지정
+article_1 = Article.objects.get(id=1)
+article_2 = Article.objects.get(id=2)
+
+admin_user = User.objects.get(id=1)
+test01_user = User.objects.get(id=2)
+
+# 좋아요 누르기(양방향 가능)
+article_1.like_users.add(admin_user)
+article_2.like_users.add(test01_user)
+article_1.like_users.remove(admin_user)
+or
+test01_user.like_articles.add(article_2)
+
+# 조회
+article_1.like_users.all()
+article_2.like_users.all()
+
+# 역조회
+admin_user.like_articles.all() # related_name="like_articles"
+test01_uesr.like_articles.all()
+```
+```py
+path("<int:pk>/like/", views.like, name="like"), # <int:pk>는 pk부분을 추가로 넘긴다는 의미, view 함수에서 pk 인수 필요
+
+
+@require_POST
+def like(request, pk):
+    if request.uesr.is_authenticated:
+        article = get_object_or_404(Article, id=pk)
+        if article.like_users.filter(pk=request.user.pk).exists():
+            article.like_user.remove(request.user) # 좋아요 취소
+        else:
+            article.like_user.add(request.user)
+        return redirect("articles:articles")
+    return redirect("articles:login") # 미로그인시
+
+# filter()와 exists()는 장고 ORM(Django Object-Relational Mapping) 문법
+
+    <form action="{% url 'articles:like' article.pk %}" method="POST"># urls 에 pk 인수에 맞게 pk
+        {% csrf_token %}
+        {% if request.user in article.like_users.all %} # request.user 대신 user 도 가능
+            <input type="submit" value="좋아요 취소">
+        {% else %}
+            <input type="submit" value="좋아요">
+        {% endif %}
+    </form>
+
+ ## 팔로우 기능
+
+ 모델에서 'self' 사용
+ symmetrical=True 사용가능 (기본값 True)# 팔로우 하면 자동 서로 팔로우 기능/ False 필요 / 친구 맺기에 필요
+
+
+class User(AbstractUser):
+    followings = models.ManyToManyField("self", symmetrical=False, related_name="followers")
+
+
+path('<int:user_id>/follow/', views.follows, name='follow') # 단수 사용
+
+
+
+@require_POST
+def follow(request, user_id): # 다른 유저
+    if request.user.is_authenticated: # 본인
+        member = get_object_or_404(get_user_model, id=user_id) # 전체 유저 모델 중 id
+        if member != request.user:
+            if member.followers.filter(pk=request.user.pk).exists(): # 상태 팔로워 조회 / 내가 팔로워 중이 아닐 때
+                member.followers.remove(request.user)
+            else:
+                member.followers.add(request.user)
+        return redirect("users:profile", username = member.username)
+    else:
+        return redirect("accounts/login")
+
+
+def profile(request, username): # 전
+    context = {
+        "username" : username,
+    }
+    return render(request, "profile.html", context)
+
+
+def profile(request, username):  # 후
+    member = get_object_or_404(get_user_model(), username=username)
+    context = {
+        "member" : member,
+    }
+    return render(request, "profile.html", context)
+
+
+<h1>{{username}} Profile</h1># 전
+<h1>{{member.username}} Profile</h1># 후
+
+
+
+{% if request.user != member %}# 후
+    <form action="{% url "users:follow" member.pk %}" method="POST">
+        {% csrf_token %}
+            {% if request.user in member.followers.all %}
+                <input type="submit" value="언팔로우">
+            {% else %}
+                <input type="submit" value="팔로우">
+            {% endif %}
+    </form>
+{% endif %}
