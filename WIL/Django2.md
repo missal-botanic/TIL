@@ -1,9 +1,24 @@
-### djang.forms
+```py
+# form
+# namespace
+# account
+# ?next=/ 
+# @require_POST
+# @login_required 
+# 회원가입
+# 로그인
+# 로그아웃
+# STATIC
+# 파일 업로드
+# amin
+```
+# djang.forms
 ```py
 apps - forms.py 생성
 ```
 ```py
-# forms
+### articles / forms
+
 from django import forms # 추가
 
 class ArticleForm(forms.Form):
@@ -16,7 +31,9 @@ class ArticleForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea)
     genre = forms.ChoiceField(choices=GENRE_CHOICES) # 드롭다운 예시
 
-# views
+
+### articles / views
+
 def create(request):
     form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
     if form.is_valid(): # 빈데이터 혹은 받지 않을 데이터 있을 경우 필터
@@ -24,8 +41,10 @@ def create(request):
         return redirect("article_detail", article.pk)
     return redirect("new")
 
-# html
-<form action="{% url 'create' %}" method="POST"> <!-- views.create로 보냄 -->
+
+### article / html
+
+<form action="{% url 'create' %}" method="POST"> # views.create로 보냄
     {% csrf_token %}
     {{ forms.as_p}} # 추가
     <button type="submit" class="btn btn-primary">제출</button>
@@ -33,20 +52,23 @@ def create(request):
   <a href = {% url 'articles' %}>뒤로</a>
 ```
 
-new +> create 통합, 이름변경
+### new +> create 통합 가능, 이름 변경
 
 ```py
-# forms
+### articles / forms
+
 from django import forms
 from articles.models import Article # 모델 호출
 
 class ArticleForm(forms.ModelForm): # 이름 변경가능
-    class Meta: # 이름 변경 불가능
+    class Meta: # forms.ModelForm의 오버라이딩으로 Meta 이름 변경 불가능
         model = Article
         fields = "__all__" # or fields = ["title", "content"]
         exclude = ("title",) # __all__ 이후 예외 지정 / 괄호 확인 필요
 
-# views
+
+### articles / views
+
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST) # 데이터가 바인딩된 폼
@@ -60,11 +82,13 @@ def create(request):
     return render(request, "create.html", context)
 ```
 
-edit - update 통합, 이름변경
+### edit +> update 통합 가능, 이름 변경
 
 ```py
-#instance 가 없으면 생성
-#instance = article 있으면 수정
+# instance 가 없으면 생성
+# instance = article 있으면 수정
+
+### articles / views
 
 def update(request, pk):
     article = Article.objects.get(id=pk)
@@ -79,13 +103,15 @@ def update(request, pk):
     context = {"form":form, "article" : article}
     return render(request, "update.html", context)
 
-# html
+
+### articles / html
+
 <input type='text' id='title' name='title' value = "{{article.title}}"><br> # 전
 
 {{ form.as_p }} # 후
 
 ```
-## URL namespace
+# URL namespace
 ```py
 
 # 같은 urls 경우 setting기준으로 순서 제공
@@ -101,14 +127,18 @@ INSTALLED_APPS = [
     'users',
 ]
 
-# apps - urls 상단에 추가
+### articles / urls 상단에 추가
+
 app_name = "articles" # namespace
 
-# apps - html 변경
+
+### articles / html ':'추가
+
 <form action="{% url 'create' %}" method="POST"> # 전
 <form action="{% url 'articles:create' %}" method="POST"> # 후
 
-# apps - views - redirect 변경
+
+### articles / views redirect 변경
 return redirect("article_detail", article.pk) # 전
 return redirect("articles:article_detail", article.pk) # 후
 
@@ -117,23 +147,24 @@ return redirect("articles:article_detail", article.pk) # 후
 ```py
 # apps - templates 폴더에 article 폴더 추가
 templates/articles
+```
+```py
+### apps / view  return render() 변경
 
-# apps - view - return render() 변경
 return render(request, "profile.html", context) # 전
 return render(request, "articles/profile.html", context) # 후
 
 ```
-
+# account
 ```bash
 python manage.py createsuperuser
 admin / adim1234
 admin@test.com
 ```
-
-
+### 로그인
 ```py
-# views
-# 1차 로그인 화면만 구성
+### articles / views  1차 로그인 화면 구성
+
 from django.contrib.auth.forms import AuthenticationForm
 
 def login(request):
@@ -143,14 +174,16 @@ def login(request):
     }
     return render(request, "accounts/login.html", context)
 
-# 02차 실제 작동하게 구성
+
+### articles / view  02차 실제 작동하게 구성
+
 from django.contrib.auth import login as auth_login
 
 def login(request):
     if request.method == "POST":
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
-            user = form.get_user()
+            user = form.get_user() # 중요
             auth_login(request, user) # 단축 가능
             return redirect("index")
         
@@ -161,63 +194,81 @@ def login(request):
     }
     return render(request, "accounts/login.html", context)
 
-# html
+
+### articles / html
 
 <h1>login</h1>
 <form action = "{% url "accounts:login" %}" method = "POST">
     {% csrf_token %}
     {{form.as_p}}
-
     <button type = "submit">login</button>
 </form>
-
 ```
 ### 로그아웃
 ```py
-# urls
+### articles / urls
+
 path('logout/', views.logout, name='logout'),
 
-# views
+
+### articles / views
+
 def logout(request):
-    auth_logout(request)
+    auth_logout(request) # 로그아웃
     return redirect("index")
 
-# html
+
+### articles / html
+
 <div class="navbar">
     <a href="{% url "accounts:login" %}">로그인</a>
 </div>
+
 <form action="{% url 'accounts:logout' %}" method="POST">
-        {% csrf_token %}
-        <input type="submit" value="로그아웃">
+    {% csrf_token %}
+    <input type="submit" value="로그아웃">
 </form>
 ```
 ### 오류 처리
 ```py
 # pythonic
+
 try:
     article = Article.objects.get(id=pk)
 except Article.DoesNotExist:
     return redirect("articles:articles")
 
-#django way
-from django.shortcuts import render, redirect, get_object_or_404
+
+# django way
+
+from django.shortcuts import render, redirect, get_object_or_404 # 추가
 
 def article_detail(request, pk):
-    #article = Article.objects.get(id=pk)
+    #article = Article.objects.get(id=pk) # 전
     article = get_object_or_404(Article, id=pk) # 변경
     context = {
         "article": article,
     }
     return render(request, "articles/article_detail.html", context)
 ```
-@require_POST 처리
+## @require_POST 처리
 ```py
-# views
+### articles / views 1차
+
 from django.views.decorators.http import require_POST
 
 @require_POST # POST 만 받는 경우, html 존재 하지 않는 경우, 분기점 필요 없음
 def logout(request):
     auth_logout(request)
+    return redirect("index")
+
+
+### articles / views 2차
+
+@require_POST #  URL에 직접 접근하거나 GET 요청을 통해 로그아웃을 시도하는 것을 방지
+def logout(request):
+    if request.user.is_authenticated: # 추가/ 로그인 상태일 때만 로그아웃 처리 / 로그아웃 처리에 보안을 강화 / 불필요한 로그아웃 시도를 방지
+        auth_logout(request)
     return redirect("index")
 
 
@@ -248,7 +299,9 @@ def login(request):
         return redirect("index")
     return render(request, "accounts/login.html", {"form": form})
 
-# html
+
+### articles / html
+
 {% if request.user.is_authenticated %}
     <a href="{% url 'articles:create' %}">글쓰기</a>
 {% else %}
@@ -256,18 +309,9 @@ def login(request):
 {% endif %}
 
 ```
-
 ```py
-# views
+### articles / html
 
-@require_POST #  URL에 직접 접근하거나 GET 요청을 통해 로그아웃을 시도하는 것을 방지
-def logout(request):
-    if request.user.is_authenticated: # 추가/ 로그인 상태일 때만 로그아웃 처리 / 로그아웃 처리에 보안을 강화 / 불필요한 로그아웃 시도를 방지
-        auth_logout(request)
-    return redirect("index")
-```
-```django
-# html
 {% if request.user.is_authenticated %}
 <h3>{{ request.user.username }}안녕하세요.</h3>
 <form action="{% url 'accounts:logout' %}" method="POST">
@@ -280,15 +324,21 @@ def logout(request):
     <a href="{% url "accounts:login" %}">로그인</a>
 </div>
 ```
-### ?next=/ 사용하기
+## ?next=/ 사용하기
 ```py
  from django.contrib.auth.decorators import login_required   
+
+
 # 전
+
 if form.is_valid():
     user = form.get_user()
     auth_login(request, user)
     return redirect("index")
+
+
 # 후
+
 @login_required # 로그인해야 한는 곳에 비로그인 접근시 사용
 if form.is_valid():
     user = form.get_user()
@@ -296,15 +346,17 @@ if form.is_valid():
     next_url = request.GET.get("next") or "index" # 추가(?next=/ 부분 넣어주기)
     return redirect(next_url) # 추가
 
-# html
+
+### articles / html
+
 <h1>login</h1>
 <form action = "" method = "POST"> # action 지워서 ?next=/ 유도 복귀
-{% csrf_token %}
-{{form.as_p}}
+    {% csrf_token %}
+    {{form.as_p}}
 <button type = "submit">login</button>
 </form>
 ```
-
+### @login_required 유/무
 ```py
 # 수동 차단
 @require_http_methods(["GET", "POST"])
@@ -340,6 +392,7 @@ def create(request):
 
 ```py
 # 전
+
 def delete(request, pk):
     if request.method == "POST": # @require_POST 사용시 삭제
         article = get_object_or_404(Article, id=pk)
@@ -347,7 +400,9 @@ def delete(request, pk):
         return redirect("articles:articles") # @require_POST 삭제
     return redirect("articles:article_detail", pk)
 
+
 # 후
+
 @login_required # 삭제 필요. next가 get 요청.
 @require_POST
 def delete(request, pk):
@@ -356,15 +411,18 @@ def delete(request, pk):
         article.delete()
     return redirect("articles:articles")
 ```
-회원 가입
+## 회원 가입
 ```py
-# 01 GET용
+### accounts / views 01 GET용 1차
+
 def signup(request):
     form = UserCreationForm()
     context = {"form":form}
     return render(request, "accounts/signup.html",context)
 
-# 02 POST용 추가
+
+### accounts / views 02 POST용 추가 2차
+
 @require_http_methods(["GET", "POST"])# 리스트 화 필수
 def signup(request):
     if request.method == "POST":
@@ -377,24 +435,26 @@ def signup(request):
     context = {"form":form}
     return render(request, "accounts/signup.html",context)
 
-# 03 자동로그인 추가
+
+### accounts / views 자동로그인 추가 3차
+
 @require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST) 
         if form.is_valid():
             user = form.save() # 변경(model form은 save 하는 순간 자신의 instance를 돌려준다 ex pop)
-            auth_login(request, user) # 추가
+            auth_login(request, user) # 자동로그인 추가
             return redirect("index")
     else:
         form = UserCreationForm()
     context = {"form":form}
     return render(request, "accounts/signup.html",context)
 ```
-회원 삭제
+### 회원 삭제
 ```py
+### accounts / views
 
-# 아이디 삭제
 @require_POST
 def delete(request):
     if request.user.is_authenticated:
@@ -402,17 +462,21 @@ def delete(request):
         auth_logout(request) # 세션도 삭제(위 아래 순서조심)
     return redirect("index")
 ```
-회원 수정
+### 회원 수정
 ```py
-# view 1차 get
+### accounts / views 1차 get
+
 @require_http_methods(['GET', 'POST'])
 def update(request):
     form = UserChangeForm(instance = request.user)
     context = {"form":form}
     return render(request, "accounts/update.html", context)
 
+```
+## 커스텀 회원가입
+```py
+### accounts / forms 추가
 
-# form 추가
 from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.models import User
 from django.contrib.auth import get_user_model
@@ -428,14 +492,14 @@ class CustomUserChangeForm(UserChangeForm):
         ]
 
 
-# view 2차 커스텀 버전으로 변경
+### accounts / views 2차 커스텀 버전으로 변경
 @require_http_methods(['GET', 'POST'])
 def update(request):
-    form = CustomUserChangeForm(instance = request.user)
+    form = CustomUserChangeForm(instance = request.user) # 변경
     context = {"form":form}
     return render(request, "accounts/update.html", context)
 
-# view 3차 POST 추가
+### accounts / view 3차 POST 추가
 @require_http_methods(['GET', 'POST'])
 def update(request):
     if request.method == "POST":
@@ -448,14 +512,17 @@ def update(request):
     context = {"form":form}
     return render(request, "accounts/update.html", context)
 ```
-회원 비번 변경
+### 회원 비번 변경
 ```py
 # user 필수 확인
+
 def __init__(
     self, user: AbstractBaseUser | None, *args: Any, **kwargs: Any
 ) -> None: ...
 
-# view 1차 비번 변경 
+
+### accounts / view 1차 비번 변경 
+
 @require_http_methods(["GET", "POST"])
 def change_password(request):
     if request == "POST":
@@ -468,6 +535,9 @@ def change_password(request):
     context = {"form":form}
     return render(request, "accounts/change_password.html", context)
 
+
+### accounts / view 2차 비번 변경
+
 @login_required
 @require_http_methods(["GET", "POST"])
 def change_password(request):
@@ -475,17 +545,17 @@ def change_password(request):
         form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            update_session_auth_hash(request, form.user) # 변경 후 세션 자동 변경해서 로그인 유지
+            update_session_auth_hash(request, form.user) # 변경 후에도 세션 자동 변경해서 로그인 유지
             return redirect("index")
     else:
         form = PasswordChangeForm(request.user)
     context = {"form": form}
     return render(request, "accounts/change_password.html", context)
 ```
-## 미디어 업로드 (STATIC, MADIA)
-STATIC_URL
+# 미디어 업로드 (STATIC, MADIA)
+### STATIC_URL
 ```py
-# settings
+### settings
 
 #실제 주소가 아닌 URL만 존재
 STATIC_URL = 'static/' # ex mystatic/ 으로 바꾸면 작동도 하고 웹에서 주소가 mystatic으로 시작한다. 
@@ -495,8 +565,8 @@ STATICFILES_DIRS = [BASE_DIR / "static"] # 공통의 경우 찾는 루트를 sta
 ```py
 apps/static/apps # 폴더 생성
 ```
-```django
-<!-- html -->
+```py
+### 루트 html
 {% load static %}
 <img src="{% static "articles/image.png" %}">
 ```
@@ -510,7 +580,7 @@ MEDIA_ROOT = BASE_DIR / "media" # 공통 실제 저장 경로
 
 #DB 에는 경로 저장
 ```
-```
+```bash
 my_first_pjt(루트)/static/css/style.css # 폴더 + 파일 생성
 ```
 
@@ -538,21 +608,21 @@ my_first_pjt(루트)/static/css/style.css # 폴더 + 파일 생성
 }
 ```
 ```py
-# html
+### html
 <img src="{% static "articles/image.png" %}" class="img-200">
 ```
-### 유저업로드 파일 (static file 제외)
+## 유저업로드 파일 (static file 제외)
 
-```
+```bash
 # 설치        
 pip install pillow
 ```
 ```py
-# url 추가분
+### 루트 / url 하단 추가분
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)# 디버그 상태일 때 파일접근 가능하게
 
-# 1차 model 추가분
+### articles / model 1차 추가분
 class Article(models.Model):
     title = models.CharField(max_length=50) 
     content = models.TextField(default='')
@@ -560,8 +630,7 @@ class Article(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField() # 추가 # fileField 상속받은 함수
 
-# 2차 model 추가분
-    # Create your models here.
+### articles / model 2차 추가분
 class Article(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField(default='')
@@ -575,7 +644,8 @@ class Article(models.Model):
 ```
 ```py
 
-# views 파일 추가 코드
+### articles / views 파일 추가 코드
+
 def create(request):
     if not request.user.is_authenticated:
         return redirect("account:login")
@@ -584,19 +654,23 @@ def create(request):
         form = ArticleForm(request.POST, request.FILES) # 추가
 
 
-# html - create
+# articles / create.html
+
 <form ation="{% url 'articles:create' %}" method="POST" enctype="multipart/form-data"> # 추가
 
-# html - detail
+
+# articles / detail.html
+
 {% if article.image %} # 이미지가 없을 경우 오류 생성방지
     <img src="{{ article.image.url }}" alt="">
 {% endif %} # 출력화면
 
 <img src="{% static "articles/image.png" %}"> # static과 다름
 >>>
-이미지 올리면 자동으로 media/images 폴더 생기고 이미지 저장 # 모델에 upload_to = "images/" 이렇게 명령 했기 때문
+# 이미지 올리면 자동으로 media/images 폴더 생기고 이미지 저장 
+# 모델에 upload_to = "images/" 이렇게 명령 했기 때문
 ```
-## admin
+# admin
 ```py
 장소 adim 최소 권한은 staff부터
 

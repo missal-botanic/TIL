@@ -135,8 +135,11 @@ MEDIA_ROOT = BASE_DIR / "media"
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/style.css" %}}"> 
 </head>
 <body>
+    {% load static %}
+
     {% block content %}
     {% endblock content %}
 </body>
@@ -622,10 +625,6 @@ def update(request, pk):
 
 {% endblock %}
 ```
-```py
-# form 없음
-# namespace 없음
-# account 없음
-```
+
 
 

@@ -964,16 +964,19 @@ json_data = serializer.data # 함수호출
 
 ```bash
 # 방법01
-
-article = Article() # 클래스로 객체 생성
-article.title = 'first_title'  # 생성된 객체의 title 필드에 'first_title'을 할당
-article.content = 'my_content' # 생성된 객체의 content 필드에 'my_content'를 할당
+article = Article()
+article.title = 'first_title' 
+article.content = 'my_content'
 article.save() # save()하기전에는 저장되지 않음
 
 # 방법02
 article = Article(title='두번째 제목', content='두번째 내용')
-Article.objects.create(title='third title', content='세번째 내용') # save()가 필요하지 않는 방법
-```
+article.save()
+
+
+# 방법03
+Article.objects.create(title='third title', content='세번째 내용') 
+``
 ```py
 def create(request):
     if request.method == "POST":
@@ -982,6 +985,14 @@ def create(request):
         Article.objects.create(title = title, content = content)
         return redirect("articles")
     return redirect("articles")
+```
+```py
+def create(request):
+    form = ArticleForm(request.POST)
+    if form.is_valid():
+        article = form.save()
+        return redirect("article_detail", article.pk)
+    return redirect("new")
 ```
 ```html
 <form action="{% url 'create' %}" method="POST">
@@ -996,4 +1007,9 @@ def create(request):
     <button type='submit'>저장</button>
 </form>
 <a href = "">뒤로</a>
+```
+```py
+<input type='text' id='title' name='title' value = "{{article.title}}"><br> # 전
+
+{{ form.as_p }} # 후
 ```
