@@ -501,8 +501,10 @@ def update(request, pk):
     return redirect("article_detail", article.pk)
 ```
 
-### 로컬 - template - base.html
-```html
+
+```py
+### 로컬 / base.html
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -517,8 +519,10 @@ def update(request, pk):
 </html>
 ```
 
-### apps - index
-```html
+
+```py
+### articles / index
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -532,21 +536,28 @@ def update(request, pk):
 </html>
 ```
 
-### apps - article
-```html
+
+```py
+### articles / article.html
+
 {% extends "base.html" %}
 
 {% block content %}
 <a href="{% url "new"%}">글쓰기</a>
     {% for article in articles %}
         <div>{{ article.id }}</div>
-        <div> <a href = "{% url "article_detail" article.pk %}"> {{ article.title }} </a></div><br>
+
+        <div> 
+        <a href = "{% url "article_detail" article.pk %}"> {{ article.title }} </a> # 클릭시 이동
+        </div><br>
+
     {% endfor %}
 {% endblock %}
 ```
 
-### apps - article_detail
-```html
+```py
+### article / article_detail.html
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -565,8 +576,10 @@ def update(request, pk):
 {% endblock content %}
 ```
 
-### apps new
-```html
+
+```py
+### article / new.html
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -586,8 +599,10 @@ def update(request, pk):
 
 {% endblock %}
 ```
-### apps - edit
-```html
+
+```py
+### articles / edit
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -606,6 +621,11 @@ def update(request, pk):
 <a href = "">뒤로</a>
 
 {% endblock %}
+```
+```py
+# form 없음
+# namespace 없음
+# account 없음
 ```
 
 
