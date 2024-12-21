@@ -279,13 +279,28 @@ def create(request):
 
 ```py
 # article / models
-    like_users = models.ManyToManyField(
+    like_users = models.ManyToManyField( # 사용 하면 자동 관계 테이블 생성
         settings.AUTH_USER_MODEL, related_name="like_articles"
-    ) # -> user.like_articles.all() 접근 가능 / 미지정시 like_user_set 이 기본 매니저
+    ) # -> user.like_articles.all() 방식으로 접근 가능 / 미지정시 like_user_set 이 기본 매니저
+```
+```py
 
-# models.ManyToManyField 사용 하면 자동 중계테이블 생성
+# 커스텀 like model(수동 관계 테이블 생성)
+from django.db import models
+from django.contrib.auth import get_user_model
+
+class ArticleLike(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="like_articles")
+    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name="like_users")
+    rating = models.IntegerField(default=1)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user} likes {self.article} with rating {self.rating}"
 ```
-```
+```bash
+# 마이그레이션 진행
 python manage.py makemigrations
 python manage.py migrate
 ```
@@ -313,8 +328,11 @@ admin_user.like_articles.all() # related_name="like_articles"
 test01_uesr.like_articles.all()
 ```
 ```py
+# article / urls
+
 path("<int:pk>/like/", views.like, name="like"), # <int:pk>는 pk부분을 추가로 넘긴다는 의미, view 함수에서 pk 인수 필요
 
+# article / views
 
 @require_POST
 def like(request, pk):
@@ -326,8 +344,9 @@ def like(request, pk):
             article.like_user.add(request.user)
         return redirect("articles:articles")
     return redirect("articles:login") # 미로그인시
-
 # filter()와 exists()는 장고 ORM(Django Object-Relational Mapping) 문법
+
+# article / html
 
     <form action="{% url 'articles:like' article.pk %}" method="POST"># urls 에 pk 인수에 맞게 pk
         {% csrf_token %}
@@ -342,15 +361,20 @@ def like(request, pk):
 
  모델에서 'self' 사용
  symmetrical=True 사용가능 (기본값 True)# 팔로우 하면 자동 서로 팔로우 기능/ False 필요 / 친구 맺기에 필요
-
+```
+## follow 기능
+```py
+## user / model
 
 class User(AbstractUser):
     followings = models.ManyToManyField("self", symmetrical=False, related_name="followers")
 
+## user / urls
 
 path('<int:user_id>/follow/', views.follows, name='follow') # 단수 사용
 
 
+## views
 
 @require_POST
 def follow(request, user_id): # 다른 유저
@@ -372,7 +396,6 @@ def profile(request, username): # 전
     }
     return render(request, "profile.html", context)
 
-
 def profile(request, username):  # 후
     member = get_object_or_404(get_user_model(), username=username)
     context = {
@@ -380,10 +403,10 @@ def profile(request, username):  # 후
     }
     return render(request, "profile.html", context)
 
+## html
 
 <h1>{{username}} Profile</h1># 전
 <h1>{{member.username}} Profile</h1># 후
-
 
 
 {% if request.user != member %}# 후
@@ -396,3 +419,4 @@ def profile(request, username):  # 후
             {% endif %}
     </form>
 {% endif %}
+```

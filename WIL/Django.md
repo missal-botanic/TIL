@@ -8,7 +8,7 @@ pip install django==4.2 # 장고 설치
 ```
 ### SQL(model) 설치
 ``` bash
-sqlite # 익스텐션 설치
+'sqlite' # vscode익스텐션 설치
 
 python manage.py migrate # 동기화 + 최초 한번은 마이그레이션 필요
 
@@ -22,12 +22,22 @@ SQLITE EXPLORER # 왼쪽 하단에  생김
 ```
 shell 필요실 설치
 ```bash
+# 장고 shell 설치
 pip install django-extensions # 장고 익스텐션 설치 shell +
 pip install ipython 
-```
-```bash
+
+# 장고 shell 실행
 python manage.py shell
 python manage.py shell_plus # 기본 라이브러리 all load
+```
+```bash
+# 파일첨부
+pip install pillow
+```
+```bash
+# 무작위 DB생성
+pip install django-seed
+pip install psycopg2
 ```
 -----
 ### 새 프로젝트
@@ -36,7 +46,7 @@ python manage.py shell_plus # 기본 라이브러리 all load
 
 django-admin startproject {project_name} # 프로젝트 시작
 
-django-admin startproject {project_name} . # 바닥에 파일 생성
+django-admin startproject {project_name} . # 바닥에 파일 생성(추천)
 
 rm - rf {project_name} # 설치 제거
 
@@ -68,6 +78,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_seed',
+    'rest_framework',
+    # 서드파티 앱
     'articles', # <- 추가
     'users', # <- 추가
 ]
@@ -110,7 +123,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 # 루트 폴더 내에 templates + base.html 부모 만들기
 # app 폴더 내에 templates + index.html 자식 만들기
 # app 폴더 내에 urls.py 만들기
-
 ```
 ### urls.
 
@@ -133,14 +145,30 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 ```html
 <!-- apps / templates / index -->
+
 {% extends "base.html" %}
 
 {% block content %}
 <p>index</p>
 {% endblock content %}
 ```
-articles - urls
 ```py
+###  루트 / urls
+from django.contrib import admin
+from django.urls import path, include # include 추가
+from articles import views
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("index/", views.index, name='index'), # 추가 views, index 위치는 app에
+    path("articles/", include("articles.urls")),
+    path("users/<str:username>/", views.users, name='users'),
+    
+]
+```
+```py
+### articles / urls
+
 from django.contrib import admin
 from django.urls import path
 from . import views
@@ -149,27 +177,12 @@ urlpatterns = [
     path('', views.articles, name = 'articles'),
 ]
 ```
-루트 - urls 파일
-```py
-path("articles/", include("articles.urls"))
- ```
-```py
-# 루트 / urls
-from django.contrib import admin
-from django.urls import path, include # include 추가
-from articles import views
 
-urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("index/", views.index, name='index'), # 추가 views, index 위치는 app 아래에
-    #path("users/<str:username>/, views.users, name='users')
-    path("articles/", include("articles.urls")),
-]
-```
 ## model
 
-apps - models.py 파일
 ```py
+### articles - models
+
 from django.db import models
 
 class Article(models.Model): # (모듈.클래스)
@@ -182,7 +195,7 @@ class Article(models.Model): # (모듈.클래스)
 # 코드는 같고 용도의 차이
 ```
 ```py
-# accounts / modesl
+### accounts / modesl
 from django.contrib.auth.models import AbstractUser # 추가
 
 class User(AbstractUser):
@@ -207,34 +220,31 @@ SQLITE EXPLORER # 왼쪽 하단에  생김
 ```
 ```bash
 # 방법01
+
 article = Article() # 클래스로 객체 생성
 article.title = 'first_title'  # 생성된 객체의 title 필드에 'first_title'을 할당
 article.content = 'my_content' # 생성된 객체의 content 필드에 'my_content'를 할당
 article.save() # save()하기전에는 저장되지 않음
 
+
 # 방법02
+
 article = Article(title='두번째 제목', content='두번째 내용')
+article.save()
+
+
+# 방법03
+
 Article.objects.create(title='third title', content='세번째 내용') # save()가 필요하지 않는 방법
+```
+### articles
+```py
+### articles / urls
 
-```
-```py
-Article.objects.create(title = "test", content = "test")
-```
-```py
-from django.contrib import admin
-from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('', views.articles, name = 'articles'),
-]
-```
-1) articles 페이지
-```py
-# apps - urls.py
 path('', views.articles, name = 'articles'),
 
-# apps - views.py
+
+### articles / views
 
 def articles(request):
     articles = Article.objects.all().order_by("-created_at")
@@ -244,7 +254,8 @@ def articles(request):
     return render(request, "articles.html", context)
 
 
-# apps - template - articles.html 파일
+### articles / template / articles
+
 {% extends "base.html" %}
 
 {% block content %}
@@ -254,16 +265,18 @@ def articles(request):
         <div>{{ article.title }}</div><br>
     {% endfor %}
 {% endblock %}
-
 ```
 
-2) new 페이지
+### create
 ```py
-# apps - urls.py 파일
+### articles / urls
+
 path('new/', views.new, name = 'new'), # 추가
 path('create/', views.create, name = 'create'), # 추가
 
-# apps - views.py 파일
+
+### articles / views
+
 from django.shortcuts import render, redirect # redirect
 from .models import Article # apps 내부 model의 Article 함수
 
@@ -272,40 +285,37 @@ def new(request):
 
 def create(request):
     if request.method == "POST":
-        title = request.POST.get("title")
+        title = request.POST.get("title") # Django의 HttpRequest 객체의 속성 중 하나
         content = request.POST.get("content")
         Article.objects.create(title = title, content = content)
         return redirect("articles")
     return redirect("articles")
 
-# apps - template - new.html 파일
 
-{% extends "base.html" %}
-{% block content %}
+### articles / template /html
 
-<form action="{% url 'create' %}" method="POST">
+<form action="{% url 'create' %}" method="POST"> # form
     {% csrf_token %}
-    <h2>new</h2>
+ 
     <label for = 'title'>제목</label>
-    <input type='text' id='title' name='title'><br>
+    <input type='text' id='title' name='title'><br> # 'name' 중요
 
     <label for='content'>내용</label>
-    <input type='text' id='content' name='content' cols='30' rows='10'><br>
+    <input type='text' id='content' name='content' cols='30' rows='10'><br> # 'name' 중요
 
     <button type='submit'>저장</button>
 </form>
 <a href = "">뒤로</a>
-
-{% endblock %}
-
 ```
-
-3) article_detail 페이지
+### article_detail
 ```py
-# apps - urls.py
-path('<int:pk>/article-detail/', views.article_detail, name ='article_detail'),
+### articles / urls
 
-# apps - views.py
+path('<int:pk>/article-detail/', views.article_detail, name ='article_detail'), # pk가 있으면 views.article_detail 에도 pk인수를 받음
+
+
+### articles / views
+
 def article_detail(request, pk):
     article = Article.objects.get(id=pk)
     context = {
@@ -313,10 +323,8 @@ def article_detail(request, pk):
     }
     return render(request, "article_detail.html", context)
 
-# apps - article_detail.html
-{% extends "base.html" %}
 
-{% block content %}
+### articles / html
 
 <label for='title'>제목:</label>
 <p>{{ article.title }}</p><br>
@@ -324,21 +332,23 @@ def article_detail(request, pk):
 <p>{{ article.content }}</p>
 
 <a href="{% url "articles" %}">뒤로</a>
-<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %}
-<button type="submit">삭제</button>
+
+<form action ="{% url "delete" article.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">삭제</button>
 </form>
-<a href="">수정</a>
 
-{% endblock content %}
-
+<a href="{% url "edit" article.pk %}">수정</a>
 ```
-
-4) delete 페이지
+### delete
 ```py
-# apps - urls.py
+### articles / urls
+
 path('<int:pk>/delete/', views.delete, name = 'delete'),
 
-# apps - views.py
+
+### articles / views
+
 def delete(request, pk):
     if request.method == "POST":
         article = Article.objects.get(id=pk)
@@ -346,19 +356,25 @@ def delete(request, pk):
         return redirect("articles")
     return redirect("articles_detail")
 
-# apps - article_detail.html
-<form action ="{% url "delete" article.pk %}" method="POST">{% csrf_token %}
-<button type="submit">삭제</button>
+
+### articles / html
+
+<form action ="{% url "delete" article.pk %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">삭제</button>
 </form>
 ```
 
-3) edit 페이지
+### edit
 ```py
-# apps - urls 
+### articles / urls 
+
 path('<int:pk>/edit/', views.edit, name = 'edit'),
 path('<int:pk>/update', views.update, name = 'update'),
 
-# apps - views
+
+### articles / views
+
 def edit(request, pk):
     article = Article.objects.get(id=pk)
     context = {
@@ -368,8 +384,6 @@ def edit(request, pk):
 
 def update(request, pk):
     if request.method == "POST":
-        #print(request)
-        #print(pk)
         article = Article.objects.get(id=pk)
         article.title = request.POST.get("title")
         article.content = request.POST.get("content")
@@ -377,29 +391,27 @@ def update(request, pk):
         return redirect("article_detail", article.pk)
     return redirect("article_detail", article.pk)
 
-# app - templates - edit, update.html
-{% extends "base.html" %}
 
-{% block content %}
+### articles / html # created와 같은 모양의 페이지 필요
 
-<form action="{% url 'update' article.pk %}" method="POST">
+<form action="{% url 'update' article.pk %}" method="POST"> # views 만 있는 url
     {% csrf_token %}
-    <h2>new</h2>
+
     <label for = 'title'>제목</label>
-    <input type='text' id='title' name='title' value = "{{article.title}}"><br>
+    <input type='text' id='title' name='title' value = "{{article.title}}"><br> # title 미리 채워짐
 
     <label for='content'>내용</label>
-    <input type='text' id='content' name='content' cols='30' rows='10' value="{{article.content}}"></input><br>
+    <input type='text' id='content' name='content' cols='30' rows='10' value="{{article.content}}"></input><br> # content 미리 채워짐
 
     <button type='submit'>수정</button>
 </form>
-<a href = "">뒤로</a>
 
-{% endblock %}
+<a href="{% url "articles" %}">뒤로</a>
 ```
-전문
+# 전문
 ```py
-# 로컬 - urls
+### 로컬 / urls
+
 from django.contrib import admin
 from django.urls import path, include
 from articles import views
@@ -410,7 +422,8 @@ urlpatterns = [
     path('articles/', include("articles.urls")),
 ]
 
-# apps - urls
+
+### articles / urls
 
 from django.contrib import admin
 from django.urls import path
@@ -427,7 +440,7 @@ urlpatterns = [
 ]
 
 
-# apps - views
+### articles / views
 
 from django.shortcuts import render, redirect
 from .models import Article

@@ -858,7 +858,58 @@ print(pk)
 <int:comment-pk> # 터짐
 <int:comment_pk> # 정상 작동
 ```
-settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="articles")
+settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_# def
+```py
+요청(Request)
+
+- Start Line
+    - Method, Traget, HTTP Version
+- Headers
+    - 요청에 필요한 여러가지 메타 정보
+- Body
+    - 요청에 필요한 여러가지 데이터
+
+응답(Response)
+
+- Start Line
+    - HTTP Version,  Status Code, Status Message
+- Headers
+    - 응답에 대한 열가지 메타 정보
+- Body
+    - 요청을 처리한 여러가지 데이터 # 장고 기초에서는 html이 응답
+```
+
+```py
+'POST' '/articles/' #새로운 article 생성
+
+'GET' '/articles/' # 목록 조회
+
+'GET' '/articles/1' # 1번 article 조회
+
+'DELETE' '/articles/1/' #1번 article 삭제
+
+'PATCH'  # 일부 수정
+
+→ 'POST' '/articles/create/' (X)
+
+→ 'POST' '/articles/' (O)
+```
+```py
+1. url(로컬)
+2. url(앱) # 비어 있더라도 만들어야함
+3. model
+```
+
+JSON
+```py
+'.json' # 형식으로 사용
+문자는 '"'으로 묶여야하며  # 사용 '' 사용 x 
+'true' 'false' , #True 사용 x
+
+[json]: 순서보장
+{josn}: 순서 x
+```
+name="articles")
 
 기본값 : user.article_set.all
 ```py
@@ -889,6 +940,7 @@ def like(request, pk):
     if request.uesr.is_authenticated: # 함수 진행 정지로 오류 없음
 
 ```
+```
 # 같다
 if:
 else:
@@ -896,5 +948,52 @@ else:
 
 if
 return
+```
 
+```py
+1. url(로컬)
+2. url(앱) # 비어 있더라도 만들어야함
+3. model
+```
+{% for article in articles %} # article 새 변수
+
+
+json_data = serializer.data # 속성접근 
+json_data = serializer.data # 함수호출
+
+
+```bash
+# 방법01
+
+article = Article() # 클래스로 객체 생성
+article.title = 'first_title'  # 생성된 객체의 title 필드에 'first_title'을 할당
+article.content = 'my_content' # 생성된 객체의 content 필드에 'my_content'를 할당
+article.save() # save()하기전에는 저장되지 않음
+
+# 방법02
+article = Article(title='두번째 제목', content='두번째 내용')
+Article.objects.create(title='third title', content='세번째 내용') # save()가 필요하지 않는 방법
+```
+```py
+def create(request):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        Article.objects.create(title = title, content = content)
+        return redirect("articles")
+    return redirect("articles")
+```
+```html
+<form action="{% url 'create' %}" method="POST">
+    {% csrf_token %}
+    <h2>new</h2>
+    <label for = 'title'>제목</label>
+    <input type='text' id='title' name='title'><br>
+
+    <label for='content'>내용</label>
+    <input type='text' id='content' name='content' cols='30' rows='10'><br>
+
+    <button type='submit'>저장</button>
+</form>
+<a href = "">뒤로</a>
 ```
