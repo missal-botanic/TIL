@@ -1,10 +1,11 @@
 ```py
 # 댓글
+# Custom UserModel
 # 좋아요
 # 팔로우
 ```
 
-## 1:N
+## 1:N 관계
 ```
 글
 
@@ -21,11 +22,13 @@
 A 테이블의 값이 / B 테이블 id와 매치(A테이블 pk와 연동되는 B 테이블 'article_id' 생성)
 ```
 ```py
-
+# ForeignKey
 models.ForeignKey(<참조하는 모델 클래스>, on_delete=<옵션>)
 on_delete= # 글이 삭제 되었을 때 옵션
+```
+```py
+### articles / model
 
-# articles / model
 apps - models
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE) # sql에서는 article_id로 변경 된다.(자동)
@@ -36,7 +39,9 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
 
-# articles / forms
+
+### articles / forms
+
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
@@ -55,21 +60,31 @@ comment.save()
 ```
 ```bash
 # 1 방법
-article = Article.object.get(pk=1)
-comment = Commnet()
+article = Article.objects.get(pk=1)
+comment = Comment()
+
 comment.article = article
 comment.content = "first comment"
 comment.save()
 
 # 2 방법
-article = Article.object.get(pk=1)
-comment.object.create(content="second comment", article=article) # 자동으로 sql의 _id 변경
+article = Article.objects.get(pk=1)
+Comment.objects.create(content="second comment", article=article) # 자동으로 sql의 _id 변경
 
 # 출력
-article = Article.object.get(pk=1)
+comment = Comment.objects.get(id=1)
 comment.article.title
 comment.article.content
 comment.article.created_at
+
+
+# 글에 해당하는 댓글 출력
+article = Article.objects.get(pk=1)
+comments = article.comment_set.all()
+
+for comment in comments:
+    print(comment.content) 
+    print(comment.created_at) 
 ```
 ```py
 정참조 : 댓글에서 글로 참조를 찾는것(정방향 참조) 
@@ -80,42 +95,47 @@ comment_set : 역방향 참조 매니저
 ```
 ```bash
 # comment_set 예시
+
 article = Article.objects.get(id=1)
 article.comment_set.all # get, filter 가능
 >>> 댓글 역참조 조회
 ```
 ```py
-# 역참조 명령어 변경하기
+### articles / model
 
-# articles / model
 article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="comments") # comment_set 명령어 -> comments 변경
 
-```
 
-```py
-# urls
+### articles / urls
+
 path("<int:pk>/comment/", views.comment_create, name="comment_create"),
 
-# 1차 views
-@require_POST
+
+### articles / views 1차
+
+@require_POST # 어느 글에 댓글인지 알 수 없음, pk 사용필요
 def comment_create(request, pk):
     form = CommentForm(request.POST) # CommentForm은 form파일
     if form.is_valid():
         form.save()
         return redirect("articles:article_detail", pk) # 이 경우 새로고침 효과
 
-# 2차 views
+
+### articles / views 2차
+
 @require_POST
 def comment_create(request, pk):
     form = CommentForm(request.POST)
     if form.is_valid():
-        comment = form.save(commit=False) # 데이터 베이스 저장 전 상태로 만들기 
+        comment = form.save(commit=False) #  폼 데이터를 기반으로 객체를 생성하지만, 아직 데이터베이스에 저장하지 않고 객체만 생성하는 메서드
         comment.article_id = pk # article에 끼워 넣기
         comment.save()
         return redirect("articles:article_detail", pk)
 # commit=False를 설정하면 데이터베이스에 바로 저장되지 않고, 객체만 생성된 상태로 반환됩니다. 이렇게 한 이유는 댓글 객체를 만들고 나서 article_id라는 추가 정보를 설정하기 위해서입니다. (댓글 객체를 만들고, 게시글 ID를 연결합니다.)
 
-# 3차 article 사용시
+
+### articles / views 3차
+
 @require_POST
 def comment_create(request, pk):
     article = get_object_or_404(Article, id=pk) # 추가
@@ -125,11 +145,13 @@ def comment_create(request, pk):
         comment.article = article # article에 끼워 넣기
         comment.save()
         return redirect("articles:article_detail", article.pk) #article.pk
+```
+### article_detail 페이지 추가 내용
+```py
+### articles / views 1차
 
-# article_detail 페이지 추가 내용
-
-# 1차
 def article_detail(request, pk):
+    #article = Article.objects.get(id=pk)
     article = get_object_or_404(Article, id=pk)
     comment_form = CommentForm() # 추가
     context = {
@@ -138,20 +160,22 @@ def article_detail(request, pk):
     }
     return render(request, "articles/article_detail.html", context)
 
-# 2차
+
+### articles / views 2차
+
 def article_detail(request, pk):
-    #article = Article.objects.get(id=pk)
     article = get_object_or_404(Article, id=pk)
     comment_form = CommentForm()
     comments = article.comment_set.all().order_by("-pk") # 오름차순 # comment를 불러온는 작업
     context = {
         "article": article,
-        "comment_form" : comment_form,# 댓글 입력창
+        "comment_form" : comment_form, # 댓글 입력창
         "comments" : comments # 이미 입력된 댓글
     }
     return render(request, "articles/article_detail.html", context)
 
-# html
+
+### articles / html
 
     {% for comment in comments %} # comments는 뷰 변수/ comment는 comment_create의 객체
     <ul>
