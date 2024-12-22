@@ -196,10 +196,20 @@ def article_detail(request, pk):
 ```bash
 # 마이그래이션 초기화
 
+
+### 루트
+
 db.sqlite3 # 삭제
+
+
+### apps - migrations
+
 0001_initial.py # 마이그레이션은 다 체인으로 엮어있다.
 0002_article_image.py
 0003_comment.py
+
+
+### shell
 
 python manage.py makemigrations
 python manage.py migrate
@@ -211,13 +221,16 @@ python manage.py createsuperuser
 AUTH_USER_MODEL = 'accounts.User' # 'accounts.User'는 accounts 앱에 있는 User 모델을 사용하여 인증과 사용자 관리 기능을 처리하겠다는 설정
 ```
 ```py
-# accounts / modesl
+### accounts / modesl
+
 from django.contrib.auth.models import AbstractUser # 추가
 
 class User(AbstractUser):
     pass
 
-# accounts / form
+
+### accounts / form
+
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm # 추가
 
 class CustomUserCreationForm(UserCreationForm): # 추가
@@ -226,7 +239,8 @@ class CustomUserCreationForm(UserCreationForm): # 추가
         fields = UserCreationForm.Meta.fields + () # ex) ('nickname')
 
 
-# accounts / views
+### accounts / views
+
 from .forms import CustomUserChangeForm, CustomUserCreationForm # 추가
 
 @require_http_methods(["GET", "POST"])
@@ -242,7 +256,9 @@ def signup(request):
     context = {"form":form}
     return render(request, "accounts/signup.html", context)
 
-# account / admin
+
+### account / admin
+
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin # 추가
 from .models import User # 추가
@@ -250,7 +266,7 @@ from .models import User # 추가
 admin.site.register(User, UserAdmin)
 
 ```
-## author 추가
+### author 추가
 ```py
 
 # articles / models
@@ -270,14 +286,17 @@ class Article(models.Model):
         return self.title
 
 
-# articles / forms
+### articles / forms
+
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = "__all__"
         exclude = ("author",) # 추가(모둔 리스트 뜨는것 방지)
 
-# articles / views
+
+### articles / views
+
 @login_required 
 def create(request):
     if not request.user.is_authenticated:
@@ -297,31 +316,41 @@ def create(request):
     return render(request, "articles/create.html", context)
 ```
 ```py
+### articles / html
+
 {% if user == article.author %} # 해당 작성자만 보이게
 작성자: {{ article.author }} # {{ article.author.username }} 작성자 이름 표시 
+{% endif %}
 ```
 ## Model Relationship (M:N)
-
+```
 한 명의 유저는 여러개의 게시글을 좋아할 수 있고
 하나의 게시글도 여러명의 유저에게 좋아요를 받을 수 있다
 
 중계테이블 필요
-
+```
 ```py
-# article / models
+### article / models 자동 관계 테이블
+
     like_users = models.ManyToManyField( # 사용 하면 자동 관계 테이블 생성
         settings.AUTH_USER_MODEL, related_name="like_articles"
     ) # -> user.like_articles.all() 방식으로 접근 가능 / 미지정시 like_user_set 이 기본 매니저
 ```
 ```py
-
-# 커스텀 like model(수동 관계 테이블 생성)
+### article / models 수동 관계 테이블 생성
+# like model
 from django.db import models
 from django.contrib.auth import get_user_model
 
+class Article(models.Model):
+...
+like_users = model.ManyManyField(
+    settings.AUTH_USER_MODEL, through="ArticleLike", related_name="like_article"
+)
+
 class ArticleLike(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="like_articles")
-    article = models.ForeignKey('Article', on_delete=models.CASCADE, related_name="like_users")
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name="like_users")
     rating = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -358,11 +387,12 @@ admin_user.like_articles.all() # related_name="like_articles"
 test01_uesr.like_articles.all()
 ```
 ```py
-# article / urls
+### article / urls
 
 path("<int:pk>/like/", views.like, name="like"), # <int:pk>는 pk부분을 추가로 넘긴다는 의미, view 함수에서 pk 인수 필요
 
-# article / views
+
+### article / views
 
 @require_POST
 def like(request, pk):
@@ -376,7 +406,8 @@ def like(request, pk):
     return redirect("articles:login") # 미로그인시
 # filter()와 exists()는 장고 ORM(Django Object-Relational Mapping) 문법
 
-# article / html
+
+### article / html
 
     <form action="{% url 'articles:like' article.pk %}" method="POST"># urls 에 pk 인수에 맞게 pk
         {% csrf_token %}
@@ -386,7 +417,8 @@ def like(request, pk):
             <input type="submit" value="좋아요">
         {% endif %}
     </form>
-
+```
+```py
  ## 팔로우 기능
 
  모델에서 'self' 사용
@@ -394,17 +426,18 @@ def like(request, pk):
 ```
 ## follow 기능
 ```py
-## user / model
+### accounts / model
 
 class User(AbstractUser):
     followings = models.ManyToManyField("self", symmetrical=False, related_name="followers")
 
-## user / urls
+
+### user / urls
 
 path('<int:user_id>/follow/', views.follows, name='follow') # 단수 사용
 
 
-## views
+### user / views
 
 @require_POST
 def follow(request, user_id): # 다른 유저
@@ -433,7 +466,8 @@ def profile(request, username):  # 후
     }
     return render(request, "profile.html", context)
 
-## html
+
+### users / html
 
 <h1>{{username}} Profile</h1># 전
 <h1>{{member.username}} Profile</h1># 후
