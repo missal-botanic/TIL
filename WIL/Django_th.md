@@ -1,4 +1,12 @@
 ### my_first_pjt
+생성
+확인
+추가
+수정
+삭제
+업데이트
+인덱싱
+
 ```
 1) 앱생성
 2) setting 등록
@@ -86,6 +94,21 @@ user = form.get_user() # 다른 곳에서 써야할 때
 auth_login(request, user)
 
 -> auth_login(request, form.get_user()) # 한곳에서만 쓸 때
+```
+```py
+## articles / urls
+
+from django.urls import path
+from . import views
+
+app_name = "articles"
+urlpatterns = [
+    path("html/", views.article_list_html, name="article_list_html"), 
+    # path("html/", = # http://localhost:8000/articles/html/
+]
+# views.article_list_html는 함수 이름 
+# article_list_html 닉네임도 주로 template 용도
+# articles/article_list.html 실제파일 연결 루트 이름이지만, url에서 직접 쓰이지는 않음
 ```
 ```py
 # Article() 와 Article. 다르다
@@ -1012,4 +1035,71 @@ def create(request):
 <input type='text' id='title' name='title' value = "{{article.title}}"><br> # 전
 
 {{ form.as_p }} # 후
+```
+```py
+## articles / views
+
+def article_list_html(request):
+    articles = Article.objects.all()
+    context = {"articles":articles}
+    return render(request, "articles/article_list.html", context)
+
+
+## articles / html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Article</h2>
+    <hr><br>
+
+    {% for article in articles %}
+    <h3>{{ article.title}}</h3>
+    <p>{{article.content}}</p>
+    <p>{{article.created_at}}</p>
+    <p>{{article.updated_at}}</p>
+    <hr>
+    
+    {% endfor %}
+    
+    
+</body>
+</html>
+```
+
+```py
+def json_01(request):
+articles = Article.objects.all() # query set
+json_res = []
+
+for article in articles:
+    json_res.append(
+        {
+        "title": article.title,
+        "content": article.content,
+        "created_at": article.created_at,
+        "updated_at": article.updated_at,
+        }
+    )
+return JsonResponse(json_res, safe=False) # 리스트일 경우 safe=False, 딕셔너리일 경우 기본값 사용(적지 않아도 됨)
+```
+### json02
+```py
+### articles / urls
+
+path("json-02/", views.json_02, name='json_02'),
+
+
+### articles / views
+
+def json_02(request):
+    articles = Article.objects.all()
+    res_data = serializers.serialize("json", articles)
+    return HttpResponse(res_data, content_type="application/json") 
+    # return JsonResponse(json_res, safe=False) 이것도 가능
 ```

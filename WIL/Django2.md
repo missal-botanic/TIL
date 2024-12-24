@@ -1,7 +1,7 @@
 ```py
 # form
 # namespace
-# account
+# accounts
 # ?next=/ 
 # @require_POST
 # @login_required 

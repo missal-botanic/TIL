@@ -118,12 +118,31 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 # BASE_DIR는 Django 프로젝트의 기본 디렉토리 경로를 나타내며, 보통 settings.py 파일이 위치한 곳입니다.
 ```
+## accounts
 ```py
 상속
 # 루트 폴더 내에 templates + base.html 부모 만들기
 # app 폴더 내에 templates + index.html 자식 만들기
 # app 폴더 내에 urls.py 만들기
 ```
+```py
+### accounts / modesl
+from django.contrib.auth.models import AbstractUser # 추가
+
+class User(AbstractUser):
+    pass
+```
+```py
+# settings
+AUTH_USER_MODEL = 'accounts.User'
+```
+```bash
+python manage.py createsuperuser
+
+python manage.py seed articles --number=30
+
+python manage.py seed articles --number=20 --seeder "Comment.article_id" 1
+```py
 ### urls.
 
 ```html
@@ -197,17 +216,7 @@ class Article(models.Model): # (모듈.클래스)
 # models.Model은 Django 모델 클래스의 기반 클래스이고, models.CharField는 모델 필드의 하위 클래스
 # 코드는 같고 용도의 차이
 ```
-```py
-### accounts / modesl
-from django.contrib.auth.models import AbstractUser # 추가
 
-class User(AbstractUser):
-    pass
-```
-```py
-# settings
-AUTH_USER_MODEL = 'accounts.User'
-```
 manage.py 와 같은 곳에서 실행
 ```bash
 # 마이그레이션 : 파이썬 모델을 DB에 생성 준비
