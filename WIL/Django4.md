@@ -637,3 +637,105 @@ class ArticleListAPIView(APIView):
 ```py
 print(request.user.username) # 로그인한 유저 확인
 ```
+ORM
+```py
+
+python manage.py startapp products
+settings = "products",
+#
+from django.db import models
+
+class Product(models.Model):
+    CATEGORY_CHOICES = (
+        ("F", "Fruit"),
+        ("V", "Vegetable"),
+        ("M", "Meat"),
+        ("O", "Other"),
+    )
+
+    name = models.CharField(max_length=30)
+    price = models.PositiveIntegerField()# IntegerField 음수도 가능
+    quantity = models.PositiveIntegerField()
+    category = models.CharField(max_length=1, choices = CATEGORY_CHOICES)
+
+    def __str__(self):
+        return self.name
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py seed products --number=30
+```
+```py
+from django.db.models import Avg, Case, Count, F, Max, Min, Prefetch, Q, Sum, When
+
+Product.objects.all()
+
+Product.objects.all().count()
+```
+#### Q() 를 이용해서 여러 조건 연결하기
+
+```py
+# & : and, | : or, ~ : not 연산자 활용 가능!
+gt
+gte
+lt
+lte
+
+Product.objects.filter(Q(price__gt=15000) | Q(quantity__lt=3000))
+
+products = Product.objects.filter(Q(price__gt=15000) | Q(quantity__lt=3000))
+
+products.count()
+products[0].id
+```
+### F() 를 이용해서 필드값 가져오기
+```py
+for문 처리를 대신
+
+Product.objects.update(price = F('price') + 1000) # db 바뀐다
+```
+### annotate() 를 사용해서 추가 정보 제공하기 == 주석을 달다
+```py
+.all # 생략
+.filter # 사용해서 특정 db만 적용 가능
+
+product = Product.objects.annotate(total_price=F('price') * F('quantity')) # db 바뀌지 않는다.
+
+product[0].total_price
+
+```
+
+aggregate() 를 사용해서 쿼리하기
+```py
+.all # 생략
+.filter # 사용해서 특정 db만 적용 가능
+
+# Avg, Sum, Count
+
+Product.objects.aggregate(Avg('price')) # 자동 키값 
+>>> {'price__avg': 20159.4}
+
+Product.objects.aggregate(my_avg = Avg('price')) # 
+>>> {'my_avg': 20159.4}
+
+
+>>> 30
+```
+### group
+```py
+
+Product.objects.aggregate(Count('category'))
+>>>30
+
+Product.objects.aggregate(catagory_count = Count('category'))
+>>>{'catagory_count': 30}
+
+
+# .values 먼저 실행
+
+Product.objects.values('category') # 1 내가 원하는 컬럼만 뽑기 전처리
+
+Product.objects.values('category').annotate(Count('category')) # 2
+
+Product.objects.values('category').annotate(catagory_count = Count('category')) # 3
+>>> <QuerySet [{'category': 'F', 'catagory_count': 6}, {'category': 'M', 'catagory_count': 8}, {'category': 'O', 'catagory_count': 6}, {'category': 'V', 'catagory_count': 10}]>
