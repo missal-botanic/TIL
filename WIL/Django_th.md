@@ -66,27 +66,24 @@ HttpRequest (POST 요청) → URL Dispatcher → View → HttpResponse
 2. view 에서 가져온 아티클을 template으로 넘긴다
 3. tempate 에서 넘어온 context를 보여준다
 4. view 에서 템플릿을 렌더링해서 리턴한다
-
-model → view → template → context 
 ```
 ```py
 import view # view 클릭시 바로 이동
 ```
 ```py
-from django import forms
-from django.shortcuts import render, redirect # redirect
-from .models import Article # 모델 연결
-from django import forms
-from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
 from django.contrib.auth import login as auth_login
-from django.views.decorators.http import require_POST
+from django.contrib.auth.forms import AuthenticationForm
 from django.views.decorators.http import require_POST, require_http_methods
+
+from django import forms
+from .models import Article # 모델 연결
 ```
 ```py
 user = form.get_user() # 다른 곳에서 써야할 때
 auth_login(request, user)
 
--> auth_login(request, form.get_user()) # 한곳에서만 쓸 때
+→ auth_login(request, form.get_user()) # 한곳에서만 쓸 때 하나로 통합
 ```
 ```py
 ## articles / urls
