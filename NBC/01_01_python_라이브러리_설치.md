@@ -83,3 +83,11 @@ pip install fsspec
 !pip uninstall numpy
 !pip install numpy==1.26.4
 ```
+```bash
+pip install imageio
+pip install einops
+pip install gradio
+pip install loguru
+```
+
+

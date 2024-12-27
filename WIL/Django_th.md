@@ -1,14 +1,6 @@
 ### my_first_pjt
-생성
-확인
-추가
-수정
-삭제
-업데이트
-인덱싱
-
 ```
-1) 앱생성
+1) 앱 생성
 2) setting 등록
 
 3) 루트 urls 편집
@@ -18,24 +10,24 @@
 6) apps template/app/app.html 폴더 생성 및 편집
 ```
 ```py
-#프로젝트 폴더
+# 프로젝트 폴더
 
 settings.py # 프로젝트의 설정을 관리하는 곳
 
 urls.py # 어떤 요청을 처리할지 결정하는 곳 
 
 __init__.py # 하나의 폴더를 하나의 파이썬 패키지로 인식하도록 하는 파일
-
 # 3버전 이상으로 가면 필요없음. 하지만, 3버전 이하에서도 동작하도록 호환성을 위해 지키는 규칙
-# 마이그레이션의 경우 삭제 금지
+# 마이그레이션의 제거의 경우 삭제 금지
 
-wsgi.py # 웹 서버 관련 설정 파일
+wsgi.py # 웹 서버 배포 관련 설정 파일
 
 manage.py # Django 프로젝트 유틸리티 (조종기 역할)
 ```
 ### articles , users
 ```py
 # 앱내 폴더
+
 admin.py # 관리자용 페이지 관련 설정
 
 apps.py # 앱 관련 정보 설정
@@ -49,12 +41,13 @@ views.py # 요청을 처리하고 처리한 결과를 반환하는 파일
 ### DB와 views 관계
 ```py
 models.py # 데이터 베이스
-views.py # 데이터 처리 반환
-```
 
-```py
+views.py # 데이터 처리 반환
+
 model # 데이터와 과련된 로직
+
 template(view) # 레이아웃과 관련된 화면
+
 view(controller) # model과 view 연결하는 로직, 메인비지니스, 크라이언트 요청 처리, 분기(db 조회, 외부 요청, 응답 클라이언트 전달)
 ```
 ```
@@ -65,16 +58,16 @@ view(controller) # model과 view 연결하는 로직, 메인비지니스, 크라
 
 # 클래스형 뷰(상속으로 코드를 줄일 수 있다)
 
-HttpRequest → (URLs) → View→ Template → View → HttpResponse
-```
+HttpRequest (GET 요청) → URL Dispatcher → View → /Template/ → HttpResponse
 
-```
+HttpRequest (POST 요청) → URL Dispatcher → View → HttpResponse
+
 1. view 에서 model에 접근해 모든 아티클을 가지고 온다
 2. view 에서 가져온 아티클을 template으로 넘긴다
-3. tempate에서 넘어온 context를 보여준다
-4. view에서 템플릿을 렌더링해서 리턴한다
+3. tempate 에서 넘어온 context를 보여준다
+4. view 에서 템플릿을 렌더링해서 리턴한다
 
-model -> view -> template -> context 
+model → view → template → context 
 ```
 ```py
 import view # view 클릭시 바로 이동
@@ -1103,3 +1096,27 @@ def json_02(request):
     return HttpResponse(res_data, content_type="application/json") 
     # return JsonResponse(json_res, safe=False) 이것도 가능
 ```
+```py
+path("",) # 장고의 index (제일 초기 페이지) 
+
+from . import
+from .model import
+
+
+OPEN_API_KEY ='' #변하지 않는 값은 대문자로 상수
+```
+```
+from django.conf import settings # 장고 세팅값 불러오기 view에서 api키 사용가능
+```
+reqiure
+request
+respone
+return
+<a href="javascript:void(0);">버튼</a>
+
+dsfk32rk2dk23d
+
+sadi0sd0sad0asdos0
+
+코드 정렬 컨트롤 + 알트 + L (옵션 + 커멘드 + L)
+시프트 + 탭 = 탭 취소

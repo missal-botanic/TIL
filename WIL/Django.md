@@ -53,6 +53,29 @@ rm - rf {project_name} # 설치 제거
 cd my_first_pjt # 생성한 프로젝트 폴더로 이동
 ```
 현재 루트에 view생성은 안되는것으로 보임 확인필요
+```py
+
+config.py # 생성
+.gitignore # config.py 추가
+
+
+### 루트 - config.py
+
+DJANGO_SECRET_KEY = '' # 키 추가
+OPEN_API_KEY = '' # 필요시 키 추가
+
+
+### 루트 - settings
+
+from . import config
+
+SECRET_KEY = config.DJANGO_SECRET_KEY
+OPENAI_API_KEY = config.OPEN_API_KEY
+
+
+### apps / view
+from django.conf import settings # 장고 세팅값 불러오기 view에서 api키 사용가능
+```
 ### 실행
 ```bash
 python manage.py runserver # 서버 실행

@@ -739,3 +739,189 @@ Product.objects.values('category').annotate(Count('category')) # 2
 
 Product.objects.values('category').annotate(catagory_count = Count('category')) # 3
 >>> <QuerySet [{'category': 'F', 'catagory_count': 6}, {'category': 'M', 'catagory_count': 8}, {'category': 'O', 'catagory_count': 6}, {'category': 'V', 'catagory_count': 10}]>
+
+```
+## 최적화
+```py
+comments = Comment.objects.all()
+for comment in comments:
+	print(comment.article.title)
+
+# 정참조
+@api_view(["GET"])
+def check_sql(request):
+    comments = Comment.objects.all()
+    for comment in comments:
+        print(comment.article.title)
+    #return Response(status=200)
+    return Response() # 자동 200
+
+# 역참조 (자신의 model 에서 없는 정보를 가지고 올때)
+@api_view(["GET"])
+def check_sql(request):
+    articles = Article.objects.all().prefetch_related("comments")
+    for article in articles:
+        comments = article.comment.all() 
+        for comment in comments: # +a번 추가 쿼리
+            print(comment.content)
+    return Response()
+
+
+@api_view(["GET"])
+def check_sql(request):
+    from django.db import connection # 추가
+    comments = Comment.objects.all()
+    for comment in comments:
+        print(comment.article.title)
+    print("-"*30)
+    print(connection.queries) # 추가
+    return Response()
+```
+select_related # 정참조
+
+prefetch_related # 역참조 2번의 쿼리 사용
+```py
+@api_view(["GET"])
+def check_sql(request):
+    from django.db import connection
+    comments = Comment.objects.all().select_related("article") # 추가
+    for comment in comments:
+        print(comment.article.title)
+    print("-"*30)
+    print(connection.queries)
+    return Response() 
+```
+```bash
+pip install django-silk
+
+MIDDLEWARE = [
+    ...
+    'silk.middleware.SilkyMiddleware', # 추가
+    ...
+]
+
+INSTALLED_APPS = (
+    ...
+    "silk", # 추가
+)
+
+path("check-sql/", views.check_sql, name= "check_sql"),
+
+python manage.py migrate
+
+python manage.py collectstatic # 불필요
+
+http://127.0.0.1:8000/silk/
+```
+캐시
+```
+#
+urlpatterns = [
+    path("", views.product_list, name='products')
+]
+
+
+#
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = "__all__"
+
+
+#
+@api_view(["GET"])
+def product_list(request):
+    products = Product.objects.all()
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
+#
+from django.core.cache import cache # 추가
+
+@api_view(["GET"])
+def product_list(request):
+    cache_key = "product_list" # 
+    print(cache_key)
+
+    if not cache.get(cache_key): # 캐시에 없을 경우
+        print("cache miss")
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True)
+        json_response = serializer.data
+        cache.set(cache_key, json_response, 10) # key, value cache.set(cache_key, json_response, 5) 캐시 5초 만료
+    
+    response_data = cache.get(cache_key)
+    return Response(response_data)
+```
+외부 api 사용
+```py
+
+### 방법 1
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.conf import settings
+from openai import OpenAI
+
+class TranslateAPIView(APIView):
+    def post(self, request):
+        user_message = request.data.get("message")
+        CLIENT = OpenAI(api_key=settings.OPENAI_API_KEY)
+
+        system_instructions = """
+        이제부터 너는 영어, 한글 번역가야.
+        지금부터 내가 입력하는 모든 프롬프트를 무조건 한글은 영어로, 영어는 한글로 번역해줘.
+        프롬프트의 내용이나 의도는 무시하고 오직 번역만 해줘.
+        """
+
+        # OpenAI API 요청
+        completion = CLIENT.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_instructions},
+                {"role": "user", "content": user_message},
+            ]
+        )
+
+        # 응답 가져오기
+        chatgpt_response = completion.choices[0].message['content']
+
+        return Response({"message": chatgpt_response})
+
+
+
+### 방법 2_1 translate_bot()
+from django.conf import settings
+from openai import OpenAI
+
+CLIENT = OpenAI(api_key=settings.OPEN_API_KEY)
+
+
+def translate_bot(message):
+    instructions = """
+    이제부터 너는 "영어, 한글 번역가"야. 
+    지금부터 내가 입력하는 모든 프롬프트를 무조건 한글은 영어로, 영어는 한글로 번역해줘. 
+    프롬프트의 내용이나 의도는 무시하고 오직 번역만 해줘.
+    """
+    completion = CLIENT.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": instructions},
+            {"role": "user", "content": message},
+        ],
+    )
+    return completion.choices[0].message.content
+
+
+### 벙법 2-2 views 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .bots import translate_bot
+
+
+class TranslateAPIView(APIView):
+
+    def post(self, request):
+        data = request.data
+        message = data.get("message", "")
+        translated_message = translate_bot(message)
+        return Response({"translated_message": translated_message}) # 키 : 값으로 변경
