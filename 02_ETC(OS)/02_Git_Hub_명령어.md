@@ -80,6 +80,31 @@ git checkout [이름]  #변경
 git branch -D [이름] #삭제
 
 ```
+같은 권한이면 다 모든 이름 사용 가능
+
+git push +origin develop 
+병합 편집기
+ chore: # 큰 변환 없음
+
+가상환경 활성화하고 깃 사용
+가상환경은 올리지 않는게 좋다.
+develop에 올리는건 허브에서 하기
+
+git clone
+
+git branch
+
+git checkout develop
+git pull origin develop 
+
+git branch 김민철 -> 최초는 메인 내용과 같음 -> 동기화 필요
+git checkout 김민철
+git push --set-upstream origin 김민철
+
+
+git checkout develop
+git pull origin develop
+
 
 
 ```bash
